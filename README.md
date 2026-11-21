@@ -130,7 +130,7 @@ python -m faq_assistant.llm data/examples/mail_reklamacja.png
 
 ### 3.3. Pierwsze uruchomienie – co dzieje się automatycznie
 * **Indeks bazy wiedzy** (`chroma_db/`) buduje się sam przy pierwszym starcie (ok. 8 s). Ręcznie: `python scripts/build_index.py`.
-* **Klasyfikator HerBERT** (`models/herbert-faq`, 479 MB) nie jest w repozytorium. Jeśli go brak, aplikacja sama
+* **Klasyfikator HerBERT** (`models/herbert-faq`, 479 MB) jest w archiwum do oddania, ale nie w repozytorium git. Jeśli go brak, aplikacja sama
   trenuje zastępczy klasyfikator TF-IDF (< 1 s). Pełny HerBERT odtwarza się poleceniem (ok. 30 s na GPU,
   kilka minut na CPU; dane treningowe są w repozytorium):
   ```bash
@@ -305,5 +305,6 @@ tests/                       testy jednostkowe
   limity `max_tokens` dawały puste odpowiedzi.
 
 ### Archiwum do oddania
-Archiwum `Piotr_Smoła_125162_Projekt_LLM.zip` zawiera repozytorium bez `.venv/`, `models/` i `chroma_db/`
-(odtwarzane zgodnie z punktem 3.3).
+Archiwum `Piotr_Smoła_125162_Projekt_LLM.zip` zawiera repozytorium razem z wytrenowanym klasyfikatorem
+`models/herbert-faq` (479 MB) i klasyfikatorem zastępczym `models/tfidf_lr.joblib`. Nie zawiera środowiska `.venv/`
+(instalacja według punktu 3.2) ani indeksu `chroma_db/` (budowany automatycznie przy pierwszym uruchomieniu).
