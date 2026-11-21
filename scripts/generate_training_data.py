@@ -37,7 +37,7 @@ def generate_batch(llm: LMStudioClient, category: str, faq: list[dict], n: int, 
             category=category, description=CATEGORY_DESCRIPTIONS[category], seeds=seeds, n=n
         )
     # wysoka temperatura = większa różnorodność; inny seed w każdej partii
-    params = GenerationParams(temperature=1.0, top_p=0.95, top_k=60, max_tokens=3000, seed=seed)
+    params = GenerationParams(temperature=1.0, top_p=0.95, top_k=60, max_tokens=4096, seed=seed)
     raw = llm.complete(prompt, system=GENERATE_TRAINING_SYSTEM, params=params)
     items = parse_json(raw)
     return [s.strip() for s in items if isinstance(s, str) and len(s.strip()) >= 3]

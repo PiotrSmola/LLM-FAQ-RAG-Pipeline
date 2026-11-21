@@ -37,7 +37,7 @@ Kategorie:
 """ + "\n".join(f"- {c}: {CATEGORY_DESCRIPTIONS[c]}" for c in CATEGORIES) + """
 
 Zasady:
-- Zwróć wyłącznie obiekt JSON: {"category": "<nazwa_kategorii>"} – bez komentarzy.
+- Zwróć wyłącznie obiekt JSON: {"category": "<nazwa_kategorii>"}, bez komentarzy.
 - Jeśli pytanie dotyczy kilku kategorii, wybierz tę, która opisuje główny problem klienta.
 - Pytania niezwiązane ze sklepem przypisz do "poza_zakresem".
 
@@ -76,6 +76,15 @@ Uzupełnij brakujący kontekst (np. „a ile to kosztuje?” -> „Ile kosztuje 
 Jeśli pytanie jest już samodzielne, przepisz je bez zmian. Nie odpowiadaj na pytanie.
 Zwróć tylko przepisane pytanie, bez cudzysłowów i komentarzy."""
 
+# --------------------------------------------------------------------------- pytanie złożone -> podpytania
+DECOMPOSE_SYSTEM = """Klient zadał w jednej wiadomości kilka pytań do obsługi sklepu internetowego.
+Rozbij wiadomość na listę SAMODZIELNYCH podpytań (każde zrozumiałe bez reszty wiadomości), maksymalnie 12. Łącz w jedno podpytanie drobne pytania o tę samą rzecz, ale nie pomijaj żadnej sprawy.
+Każde podpytanie ma zawierać potrzebny kontekst z wiadomości: o który produkt chodzi, jego cenę, daty zakupu
+i doręczenia, sposób zakupu. Nie zakładaj, że czytelnik zna inne podpytania (np. zamiast „czy mogę go oddać”
+napisz „czy mogę oddać smartfon za 1800 zł kupiony w salonie 3 marca”).
+Jedna sprawa może dać kilka podpytań, jeśli pyta o kilka różnych rzeczy.
+Zwróć wyłącznie tablicę JSON z napisami, np. ["pytanie 1", "pytanie 2"]."""
+
 # --------------------------------------------------------------------------- obraz -> pytanie (3.5)
 VISION_EXTRACT = """Na obrazie jest wiadomość, dokument lub zdjęcie przesłane przez klienta sklepu internetowego.
 1. Odczytaj istotny tekst z obrazu (OCR).
@@ -86,7 +95,7 @@ Zwróć wyłącznie obiekt JSON: {"ocr": "<odczytany tekst>", "question": "<pyta
 
 # --------------------------------------------------------------------------- odpowiedź RAG (5.0)
 QA_SYSTEM = f"""Jesteś wirtualnym konsultantem obsługi klienta sklepu internetowego {SHOP}.
-Odpowiadasz po polsku, uprzejmie, konkretnie i zwięźle (maks. 5–6 zdań lub krótka lista kroków).
+Odpowiadasz po polsku, uprzejmie, konkretnie i zwięźle (maks. 5-6 zdań lub krótka lista kroków).
 
 Zasady korzystania ze źródeł:
 1. Fakty dotyczące sklepu (ceny, terminy, limity, procedury) podawaj WYŁĄCZNIE na podstawie
@@ -96,11 +105,14 @@ Zasady korzystania ze źródeł:
 3. Jeśli źródła nie zawierają odpowiedzi, powiedz wprost, że nie masz tej informacji, i zaproponuj
    kontakt: pomoc@zorza-elektronika.example lub infolinia 17 000 00 00.
 4. Gdy źródła są sprzeczne, wybierz bardziej szczegółowe (dokument/regulamin) i zaznacz to.
-5. Nie powtarzaj pytania i nie dodawaj listy źródeł na końcu – system wyświetla ją sam.
+5. Nie powtarzaj pytania i nie dodawaj listy źródeł na końcu, system wyświetla ją sam.
 6. Jeśli jest sekcja TREŚĆ OBRAZU OD KLIENTA (np. paragon, faktura, e-mail), wykorzystaj zawarte w niej dane
-   klienta (daty, produkty, kwoty, miejsce zakupu), aby dopasować odpowiedź – np. policz, czy termin zwrotu
+   klienta (daty, produkty, kwoty, miejsce zakupu), aby dopasować odpowiedź, np. policz, czy termin zwrotu
    jeszcze trwa. Zasady sklepu nadal bierz wyłącznie ze ŹRÓDEŁ. Jeśli dokument pochodzi z innego sklepu niż
-   Zorza Elektronika, zaznacz to i wyjaśnij, że podajesz zasady obowiązujące w Zorza Elektronika."""
+   Zorza Elektronika, zaznacz to i wyjaśnij, że podajesz zasady obowiązujące w Zorza Elektronika.
+7. Nie używaj długich myślników (– ani —). Zamiast nich stosuj przecinek, dwukropek lub nowe zdanie.
+8. Gdy klient pyta o kilka spraw naraz, odpowiedz na każdą w osobnym, ponumerowanym punkcie. Wtedy limit
+   długości z początku instrukcji nie obowiązuje, ale każdy punkt ma być zwięzły."""
 
 QA_IMAGE_BLOCK = """TREŚĆ OBRAZU OD KLIENTA (odczyt automatyczny):
 {ocr}
@@ -114,8 +126,8 @@ PYTANIE KLIENTA: {question}"""
 
 OUT_OF_SCOPE_ANSWER = (
     f"Jestem asystentem obsługi klienta sklepu {SHOP} i mogę pomóc w sprawach zamówień, płatności, "
-    "dostawy, zwrotów i reklamacji, konta oraz gwarancji. Na to pytanie niestety nie odpowiem – "
-    "czy mogę pomóc w czymś związanym z zakupami?"
+    "dostawy, zwrotów i reklamacji, konta oraz gwarancji. Na to pytanie niestety nie odpowiem. "
+    "Czy mogę pomóc w czymś związanym z zakupami?"
 )
 
 CATEGORY_HINTS: dict[str, str] = {

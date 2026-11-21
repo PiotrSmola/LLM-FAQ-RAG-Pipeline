@@ -28,7 +28,7 @@ class Chunk:
 
     @property
     def citation(self) -> str:
-        return self.source if self.kind == "faq" else f"{self.source} – {self.title}"
+        return self.source if self.kind == "faq" else f"{self.source}: {self.title}"
 
 
 # ---------------------------------------------------------------------------------------------------- FAQ

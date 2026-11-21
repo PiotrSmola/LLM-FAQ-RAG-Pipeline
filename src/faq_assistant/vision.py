@@ -14,7 +14,7 @@ def image_to_question(llm, image: str | Path | bytes, user_text: str = "") -> di
     prompt = VISION_EXTRACT
     if user_text.strip():
         prompt += f"\n\nKlient dopisał do obrazu wiadomość: \"{user_text.strip()}\" – uwzględnij ją w pytaniu."
-    raw = llm.vision(prompt, image, params=GenerationParams(temperature=0.1, max_tokens=600, seed=0))
+    raw = llm.vision(prompt, image, params=GenerationParams(temperature=0.1, max_tokens=1500, seed=0))
     try:
         data = parse_json(raw)
         return {"ocr": str(data.get("ocr", "")).strip(), "question": str(data.get("question", "")).strip()}

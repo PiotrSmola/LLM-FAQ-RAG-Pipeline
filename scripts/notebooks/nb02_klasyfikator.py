@@ -44,9 +44,23 @@ err[err.model.str.contains("herbert")][["text", "true", "pred"]]"""),
 hard = err.groupby("text").model.nunique()
 err[err.text.isin(hard[hard >= 3].index)].drop_duplicates("text")[["text", "true", "pred"]]"""),
     ("md", """## Learning curve – ile danych potrzeba? (jak zad. 2.4 z Lab 2)
-Fine-tuning HerBERT na 48 / 96 / 198 / 396 przykładach (próbkowanie warstwowe, 3 seedy, średnia ± odchylenie)
+Fine-tuning HerBERT na ok. 50 / 100 / 200 / 400 / 800 przykładach (próbkowanie warstwowe, 3 seedy, średnia ± odchylenie)
 w porównaniu z TF-IDF na tych samych podzbiorach."""),
     ("code", """lc = pd.read_csv(f"{R}/learning_curve.csv")
 display(lc.groupby("size")[["f1_bert", "f1_tfidf"]].agg(["mean", "std"]).round(3))
 display(Image(f"{R}/learning_curve.png", width=560))"""),
+    ("md", """## Wnioski
+* **HerBERT (fine-tuning)** osiąga F1-macro ≈ 0.89 przy ~10 ms na zapytanie – wystarczająco dobrze i szybko,
+  by pełnić rolę routera. Polski model wyraźnie wygrywa z wielojęzycznym DistilBERT (≈ 0.77) – znaczenie ma
+  słownik i pre-trening na języku docelowym (porównaj Lab 2, gdzie angielski DistilBERT działał na angielskich danych).
+* **TF-IDF na n-gramach znakowych** (≈ 0.84) jest zaskakująco mocnym baselinem – n-gramy znakowe są odporne na
+  literówki, brak polskich znaków i fleksję. Klasyczny TF-IDF na słowach (jak w Lab 2) jest dużo słabszy (≈ 0.72).
+* **LLM zero-shot** klasyfikuje bezbłędnie, ale jest ~30× wolniejszy od HerBERT i wymaga działającego serwera LLM.
+  Warto pamiętać, że dane treningowe wygenerował ten sam LLM, a opisy kategorii w prompcie są bardzo precyzyjne.
+* **Learning curve:** przy małej liczbie przykładów (≤ 200) fine-tuning przegrywa z TF-IDF – za mało kroków
+  optymalizacji, by dostroić 124 mln parametrów. Od ~400 przykładów BERT wyprzedza baseline. Automatyczne
+  generowanie danych przez LLM (720 przykładów w ~3,5 min) rozwiązało problem braku danych.
+* **Kalibracja:** HerBERT myli się z wysoką pewnością (większość błędów > 0.85), więc próg pewności tylko częściowo
+  chroni przed złym routingiem – dlatego dokumenty firmowe są przeszukiwane zawsze, niezależnie od kategorii.
+* Większość błędów to pytania leżące na granicy kategorii (np. zwrot pieniędzy: *płatności* czy *zwroty*?)."""),
 ]

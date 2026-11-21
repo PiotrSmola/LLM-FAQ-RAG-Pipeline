@@ -109,13 +109,91 @@ def judge(llm, question: str, reference: str, answer: str, context: str) -> dict
     from faq_assistant.prompts import JUDGE_SYSTEM, JUDGE_USER
 
     raw = llm.complete(JUDGE_USER.format(context=context, question=question, reference=reference, answer=answer),
-                       system=JUDGE_SYSTEM, params=GenerationParams(temperature=0.0, max_tokens=200, seed=0))
+                       system=JUDGE_SYSTEM, params=GenerationParams(temperature=0.0, max_tokens=600, seed=0))
     try:
         d = parse_json(raw)
         return {"faithfulness": float(d["faithfulness"]), "correctness": float(d["correctness"]),
                 "judge_comment": d.get("comment", "")}
     except (ValueError, KeyError, TypeError):
         return {"faithfulness": None, "correctness": None, "judge_comment": raw[:200]}
+
+
+def summarize(df: pd.DataFrame, out) -> pd.DataFrame:
+    df.to_csv(out / "qa_details.csv", index=False, encoding="utf-8-sig")
+    metric_cols = [c for c in ("token_f1", "rougeL", "bertscore_f1", "faithfulness", "correctness",
+                               "trafienie_zrodla", "odmowa_poprawna") if c in df.columns]
+    summary = df.groupby("wariant")[metric_cols].mean().round(3)
+    order = [v for v in ("llm_bez_rag", "flan_t5", "extractive_xlmr", "rag_bez_klasyfikatora", "pelny_pipeline")
+             if v in summary.index]
+    summary = summary.loc[order].reset_index()
+    summary.to_csv(out / "qa_summary.csv", index=False)
+    print("\n", summary.to_string(index=False))
+
+    plot_cols = [c for c in ("token_f1", "rougeL", "bertscore_f1") if c in summary.columns]
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.8))
+    summary.set_index("wariant")[plot_cols].plot.bar(ax=axes[0], rot=20)
+    axes[0].set_title("Metryki automatyczne vs odpowiedź wzorcowa")
+    axes[0].set_ylim(0, 1)
+    axes[0].grid(axis="y", alpha=0.3)
+    jcols = [c for c in ("faithfulness", "correctness") if c in summary.columns]
+    if jcols:
+        summary.set_index("wariant")[jcols].dropna(how="all").plot.bar(ax=axes[1], rot=20, color=["#2e8b57", "#e07a1f"])
+        axes[1].set_ylim(1, 5)
+        axes[1].set_title("LLM-as-judge (1–5)")
+        axes[1].grid(axis="y", alpha=0.3)
+    fig.tight_layout()
+    for ext in ("png", "svg"):
+        fig.savefig(out / f"qa_ablacja.{ext}", dpi=150)
+    plt.close(fig)
+    return summary
+
+
+def bertscore_f1(cands: list[str], refs: list[str], model_name: str = "google-bert/bert-base-multilingual-cased",
+                 layer: int = 9, batch_size: int = 32) -> list[float]:
+    """BERTScore-F1 (Zhang i in., 2020) – własna implementacja, bo pakiet bert_score 0.3.13 nie działa z transformers 5.
+
+    Dla każdej pary: embeddingi tokenów z warstwy `layer` (9. warstwa mBERT – zalecenie autorów dla modeli
+    wielojęzycznych), macierz podobieństw cosinusowych, precision = średnie max po tokenach kandydata,
+    recall = średnie max po tokenach referencji, F1 = średnia harmoniczna. Bez wag IDF i bez przeskalowania.
+    """
+    import torch
+    from transformers import AutoModel, AutoTokenizer
+
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    tok = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModel.from_pretrained(model_name).to(dev).eval()
+
+    def embed(texts: list[str]) -> list[torch.Tensor]:
+        out = []
+        for i in range(0, len(texts), batch_size):
+            enc = tok(texts[i:i + batch_size], return_tensors="pt", padding=True, truncation=True,
+                      max_length=512).to(dev)
+            with torch.no_grad():
+                h = model(**enc, output_hidden_states=True).hidden_states[layer]
+            h = torch.nn.functional.normalize(h, dim=-1)
+            for j in range(h.shape[0]):
+                keep = enc["attention_mask"][j].bool() & ~torch.isin(
+                    enc["input_ids"][j], torch.tensor(tok.all_special_ids, device=dev))
+                out.append(h[j][keep])
+        return out
+
+    ec, er = embed(cands), embed(refs)
+    scores = []
+    for c, r in zip(ec, er):
+        if len(c) == 0 or len(r) == 0:
+            scores.append(0.0)
+            continue
+        sim = c @ r.T
+        prec, rec = sim.max(1).values.mean().item(), sim.max(0).values.mean().item()
+        scores.append(2 * prec * rec / (prec + rec) if prec + rec > 0 else 0.0)
+    return scores
+
+
+def add_bertscore(df: pd.DataFrame) -> None:
+    mask = df["kategoria"] != OUT_OF_SCOPE
+    cand = df.loc[mask, "odpowiedz"].fillna("").astype(str).replace("", "-").tolist()
+    refs = df.loc[mask, "referencja"].astype(str).tolist()
+    df.loc[mask, "bertscore_f1"] = bertscore_f1(cand, refs)
 
 
 def eval_qa(pipe: FAQPipeline, data: list[dict], skip: set[str]) -> pd.DataFrame:
@@ -170,56 +248,24 @@ def eval_qa(pipe: FAQPipeline, data: list[dict], skip: set[str]) -> pd.DataFrame
         print(f"[{i}/{len(data)}] {q[:60]}")
 
     df = pd.DataFrame(rows)
-    # BERTScore (Lab 4) – liczony hurtowo, model wielojęzyczny dla lang="pl"
-    try:
-        from bert_score import score as bert_score
-
-        mask = df["kategoria"] != OUT_OF_SCOPE
-        cand = df.loc[mask, "odpowiedz"].fillna("").replace("", "-").tolist()
-        refs = df.loc[mask, "referencja"].tolist()
-        # lang="pl" -> wielojęzyczny mBERT (9. warstwa wg zaleceń autorów BERTScore); nazwa kanoniczna z Hub
-        _, _, f1 = bert_score(cand, refs, model_type="google-bert/bert-base-multilingual-cased", num_layers=9,
-                              lang="pl", verbose=False)
-        df.loc[mask, "bertscore_f1"] = f1.numpy()
-    except Exception as e:  # noqa: BLE001
-        print("BERTScore pominięty:", e)
-
-    df.to_csv(out / "qa_details.csv", index=False, encoding="utf-8-sig")
-    metric_cols = [c for c in ("token_f1", "rougeL", "bertscore_f1", "faithfulness", "correctness",
-                               "trafienie_zrodla", "odmowa_poprawna") if c in df.columns]
-    summary = df.groupby("wariant")[metric_cols].mean().round(3)
-    order = [v for v in ("llm_bez_rag", "flan_t5", "extractive_xlmr", "rag_bez_klasyfikatora", "pelny_pipeline")
-             if v in summary.index]
-    summary = summary.loc[order].reset_index()
-    summary.to_csv(out / "qa_summary.csv", index=False)
-    print("\n", summary.to_string(index=False))
-
-    plot_cols = [c for c in ("token_f1", "rougeL", "bertscore_f1") if c in summary.columns]
-    fig, axes = plt.subplots(1, 2, figsize=(13, 4.8))
-    summary.set_index("wariant")[plot_cols].plot.bar(ax=axes[0], rot=20)
-    axes[0].set_title("Metryki automatyczne vs odpowiedź wzorcowa")
-    axes[0].set_ylim(0, 1)
-    axes[0].grid(axis="y", alpha=0.3)
-    jcols = [c for c in ("faithfulness", "correctness") if c in summary.columns]
-    if jcols:
-        summary.set_index("wariant")[jcols].dropna(how="all").plot.bar(ax=axes[1], rot=20, color=["#2e8b57", "#e07a1f"])
-        axes[1].set_ylim(1, 5)
-        axes[1].set_title("LLM-as-judge (1–5)")
-        axes[1].grid(axis="y", alpha=0.3)
-    fig.tight_layout()
-    for ext in ("png", "svg"):
-        fig.savefig(out / f"qa_ablacja.{ext}", dpi=150)
-    plt.close(fig)
-    return summary
+    add_bertscore(df)
+    return summarize(df, out)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--part", choices=["all", "retrieval", "qa"], default="all")
+    ap.add_argument("--part", choices=["all", "retrieval", "qa", "bertscore"], default="all",
+                    help="bertscore = przelicz tylko BERTScore i podsumowanie z zapisanego qa_details.csv")
     ap.add_argument("--skip", nargs="*", default=[], help="pomiń warianty QA, np. flan_t5 extractive_xlmr")
     ap.add_argument("--limit", type=int, default=None, help="tylko pierwsze N pytań (szybki test)")
     a = ap.parse_args()
 
+    if a.part == "bertscore":
+        out = RESULTS_DIR / "qa"
+        df = pd.read_csv(out / "qa_details.csv")
+        add_bertscore(df)
+        summarize(df, out)
+        return
     data = read_jsonl(DATA_DIR / "eval" / "qa_eval.jsonl")[: a.limit]
     pipe = FAQPipeline()
     print(f"Klasyfikator: {getattr(pipe.classifier, 'method', '-')}, baza: {len(pipe.kb)} fragmentów\n")

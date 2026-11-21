@@ -6,6 +6,7 @@ UI pokazuje „wizualizację etapów”, a moduł export tworzy pliki .txt i .sv
 
 from __future__ import annotations
 
+import re
 import time
 from collections.abc import Iterator
 from dataclasses import asdict, dataclass, field
@@ -13,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .config import OUT_OF_SCOPE, GenerationParams, settings
-from .prompts import CATEGORY_HINTS, OUT_OF_SCOPE_ANSWER, REWRITE_SYSTEM, category_label
+from .prompts import CATEGORY_HINTS, DECOMPOSE_SYSTEM, OUT_OF_SCOPE_ANSWER, REWRITE_SYSTEM, category_label
 from .retrieval import Hit, KnowledgeBase
 
 
@@ -31,6 +32,7 @@ class PipelineTrace:
     image_ocr: str | None = None
     question: str = ""                  # pytanie po ewentualnym odczycie z obrazu i przepisaniu
     rewritten: bool = False
+    sub_questions: list[dict] = field(default_factory=list)  # pytanie złożone -> podpytania z routingiem
     category: str | None = None
     confidence: float = 0.0
     probs: dict[str, float] = field(default_factory=dict)
@@ -61,6 +63,20 @@ class PipelineTrace:
         return d
 
 
+def is_compound(question: str) -> bool:
+    """Heurystyka: długie pytanie z kilkoma pytajnikami lub numerowaną listą spraw = pytanie złożone."""
+    numbered = len(re.findall(r"(?m)^\s*\d+[.)]\s", question))
+    return len(question) > 250 and (question.count("?") >= 3 or numbered >= 2)
+
+
+def strip_long_dashes(text: str) -> str:
+    """Usuwa długie myślniki (– —) z odpowiedzi: wtrącenie „ – ” zamienia na przecinek, zakres „5–6” na łącznik."""
+    text = re.sub(r"^([ \t]*)[–—][ \t]*", r"\1- ", text, flags=re.M)  # punktor na początku linii
+    text = re.sub(r"[ \t]+[–—][ \t]+", ", ", text)                      # wtrącenie w zdaniu
+    text = re.sub(r"(?<=\S)[–—](?=\S)", "-", text)                      # zakres, np. 9:00–16:00
+    return text.replace("–", "-").replace("—", "-")
+
+
 def load_default_classifier():
     """HerBERT (jeśli wytrenowany) -> TF-IDF (zapisany albo trenowany od razu z train.jsonl) -> LLM zero-shot.
 
@@ -82,7 +98,7 @@ def load_default_classifier():
         clf = TfidfClassifier("char_wb").fit([r["text"] for r in rows], [r["label"] for r in rows])
         MODELS_DIR.mkdir(exist_ok=True)
         clf.save(tfidf_path)
-        print(f"[setup] Brak HerBERT – wytrenowano klasyfikator zastępczy TF-IDF ({len(rows)} przykładów)")
+        print(f"[setup] Brak HerBERT, wytrenowano klasyfikator zastępczy TF-IDF ({len(rows)} przykładów)")
         return clf
     return LLMClassifier()
 
@@ -109,7 +125,7 @@ class FAQPipeline:
                           for t in history[-4:])
         prompt = f"Historia rozmowy:\n{convo}\n\nOstatnie pytanie klienta: {question}\n\nSamodzielne pytanie:"
         out = self.llm.complete(prompt, system=REWRITE_SYSTEM,
-                                params=GenerationParams(temperature=0.0, max_tokens=120, seed=0))
+                                params=GenerationParams(temperature=0.0, max_tokens=400, seed=0))
         return out.strip().strip('"') or question
 
     def prepare(self, user_input: str, history: list[dict] | None = None, image: str | Path | None = None,
@@ -140,27 +156,36 @@ class FAQPipeline:
             question = new_q
             tr.add_timing("Przepisanie pytania", t0)
         tr.question = question
+        clf = classifier or self.classifier
+
+        # 1b) pytanie złożone (kilka spraw naraz) -> podpytania z osobnym routingiem i wyszukiwaniem
+        if is_compound(question):
+            t0 = time.perf_counter()
+            subs = self.decompose(question)
+            tr.add_timing("Podział na podpytania", t0)
+            if len(subs) > 1:
+                self._prepare_compound(tr, subs, clf if use_classifier else None, user_kb, method, top_k)
+                return tr
 
         # 2) klasyfikacja = routing (opcjonalnie inny klasyfikator dla tego zapytania – porównania w UI)
-        clf = classifier or self.classifier
         if use_classifier and clf is not None:
             t0 = time.perf_counter()
             pred = clf.predict(question)
             tr.category, tr.confidence, tr.probs, tr.classifier = pred.label, pred.confidence, pred.probs, pred.method
             tr.add_timing("Klasyfikacja (routing)", t0)
             if pred.label == OUT_OF_SCOPE and pred.confidence >= self.threshold and not user_kb:
-                tr.route = f"Poza zakresem (pewność {pred.confidence:.0%}) – odmowa bez wywołania LLM"
+                tr.route = f"Poza zakresem (pewność {pred.confidence:.0%}), odmowa bez wywołania LLM"
                 tr.answer, tr.answered_by = OUT_OF_SCOPE_ANSWER, "out_of_scope"
                 return tr
             if pred.label != OUT_OF_SCOPE and pred.confidence >= self.threshold:
                 tr.search_category = pred.label
-                tr.route = (f"Kategoria „{category_label(pred.label)}” (pewność {pred.confidence:.0%}) – "
+                tr.route = (f"Kategoria „{category_label(pred.label)}” (pewność {pred.confidence:.0%}): "
                             "FAQ zawężone do kategorii + dokumenty firmowe")
             else:
-                tr.route = (f"Niska pewność ({pred.confidence:.0%} < {self.threshold:.0%}) – "
+                tr.route = (f"Niska pewność ({pred.confidence:.0%} < {self.threshold:.0%}): "
                             "wyszukiwanie w całej bazie wiedzy")
         else:
-            tr.route = "Klasyfikator wyłączony – wyszukiwanie w całej bazie wiedzy"
+            tr.route = "Klasyfikator wyłączony: wyszukiwanie w całej bazie wiedzy"
 
         # 3) retrieval
         t0 = time.perf_counter()
@@ -171,6 +196,72 @@ class FAQPipeline:
         tr.hits = hits
         tr.add_timing(f"Wyszukiwanie ({method})", t0)
         return tr
+
+    def decompose(self, question: str) -> list[str]:
+        """Dzieli pytanie złożone na samodzielne podpytania (LLM, wynik w JSON)."""
+        from .utils import parse_json
+
+        raw = self.llm.complete(question, system=DECOMPOSE_SYSTEM,
+                                params=GenerationParams(temperature=0.0, max_tokens=2048, seed=0))
+        try:
+            subs = [s.strip() for s in parse_json(raw) if isinstance(s, str) and s.strip()]
+        except (ValueError, TypeError):
+            return [question]
+        return subs[:12] or [question]
+
+    def _prepare_compound(self, tr: PipelineTrace, subs: list[str], clf, user_kb, method: str, top_k: int) -> None:
+        """Routing i wyszukiwanie osobno dla każdego podpytania; fragmenty łączone naprzemiennie, bez powtórzeń."""
+        per_sub = 3
+        lists, cats, probs_sum = [], [], {}
+        t_cls = t_ret = 0.0
+        for sq in subs:
+            entry = {"question": sq, "category": None, "confidence": 0.0}
+            cat = None
+            if clf is not None:
+                t0 = time.perf_counter()
+                pred = clf.predict(sq)
+                t_cls += time.perf_counter() - t0
+                entry.update(category=pred.label, confidence=pred.confidence)
+                for c, p in pred.probs.items():
+                    probs_sum[c] = probs_sum.get(c, 0.0) + p / len(subs)
+                tr.classifier = pred.method
+                if pred.label == OUT_OF_SCOPE and pred.confidence >= self.threshold:
+                    entry["route"] = "poza zakresem, pominięte"
+                    tr.sub_questions.append(entry)
+                    continue
+                if pred.confidence >= self.threshold:
+                    cat = pred.label
+                    cats.append(cat)
+            t0 = time.perf_counter()
+            hits = self.kb.search(sq, k=per_sub, method=method, category=cat)
+            if user_kb is not None and len(user_kb):
+                hits = user_kb.search(sq, k=2, method=method) + hits
+            t_ret += time.perf_counter() - t0
+            entry["route"] = f"kategoria {category_label(cat)}" if cat else "cała baza"
+            tr.sub_questions.append(entry)
+            lists.append(hits)
+        # łączenie naprzemienne: najpierw najlepsze trafienie każdego podpytania, potem kolejne
+        merged, seen = [], set()
+        for rank in range(max((len(h) for h in lists), default=0)):
+            for hits in lists:
+                if rank < len(hits) and hits[rank].chunk.id not in seen:
+                    seen.add(hits[rank].chunk.id)
+                    merged.append(hits[rank])
+        tr.hits = merged[:24]
+        tr.probs = probs_sum
+        if cats:
+            tr.category = max(set(cats), key=cats.count)
+            tr.confidence = cats.count(tr.category) / len(subs)
+        tr.timings.append(StageTiming("Klasyfikacja (routing)", t_cls))
+        tr.timings.append(StageTiming(f"Wyszukiwanie ({method})", t_ret))
+        if not lists:
+            tr.route = "Wszystkie podpytania poza zakresem, odmowa bez wywołania LLM"
+            tr.answer, tr.answered_by = OUT_OF_SCOPE_ANSWER, "out_of_scope"
+            return
+        tr.route = (f"Pytanie złożone: {len(subs)} podpytań, osobny routing i wyszukiwanie dla każdego "
+                    f"({len(tr.hits)} fragmentów łącznie)")
+        # dłuższa odpowiedź na wiele spraw: podnosimy limit, jeśli użytkownik zostawił mały
+        tr.params["max_tokens"] = max(tr.params.get("max_tokens", 2048), 500 * len(subs))
 
     def generate_stream(self, tr: PipelineTrace, history: list[dict] | None = None) -> Iterator[str]:
         """Etap 4: generowanie odpowiedzi RAG (strumieniowo). Uzupełnia tr.answer."""
@@ -185,9 +276,17 @@ class FAQPipeline:
         for token in answer_stream(self.llm, tr.question, tr.hits, history, params, tr.image_ocr):
             parts.append(token)
             yield token
-        text = "".join(parts).strip()
+        text = strip_long_dashes("".join(parts).strip())
+        if not text:
+            # model zużył cały limit tokenów (np. na ukryte rozumowanie) i nie zwrócił treści
+            text = ("Nie udało się wygenerować odpowiedzi: model wykorzystał cały limit tokenów, zanim zaczął "
+                    "odpowiadać. Zwiększ max_tokens albo ustaw reasoning_effort na „none” i zadaj pytanie ponownie.")
+            yield text
+            tr.answer, tr.answered_by = text, "empty"
+            tr.add_timing("Generowanie odpowiedzi (LLM)", t0)
+            return
         hint = CATEGORY_HINTS.get(tr.category or "")
-        if hint and hint not in text:
+        if hint and hint not in text and not tr.sub_questions:
             text += f"\n\nWskazówka: {hint}"
             yield f"\n\nWskazówka: {hint}"
         tr.answer, tr.answered_by = text, "rag"

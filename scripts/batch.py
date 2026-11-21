@@ -28,7 +28,16 @@ def read_questions(path: Path) -> list[str]:
         return [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
     if suffix == ".jsonl":
         return [json.loads(line)["question"] for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
-    df = pd.read_csv(path) if suffix == ".csv" else pd.read_excel(path)
+    if suffix == ".csv":
+        try:
+            df = pd.read_csv(path)
+        except pd.errors.ParserError:
+            # jednokolumnowy plik bez cudzysłowów (pytania z przecinkami) – czytamy linia po linii
+            lines = [ln.strip() for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+            header = lines[0].lower() in {"question", "pytanie", "pytania"}
+            return lines[1:] if header else lines
+    else:
+        df = pd.read_excel(path)
     col = next((c for c in df.columns if c.lower() in {"question", "pytanie", "pytania"}), df.columns[0])
     return [str(q).strip() for q in df[col].dropna() if str(q).strip()]
 

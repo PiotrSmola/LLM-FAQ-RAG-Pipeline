@@ -68,7 +68,7 @@ for name, kw in {"T=1.2, top_k=1": dict(top_k=1, top_p=1.0), "T=1.2, top_k=5": d
 pd.DataFrame(rows)"""),
     ("md", """## 5. max_tokens – ucinanie odpowiedzi
 Gdy limit zostanie osiągnięty, `finish_reason = "length"`, a odpowiedź jest niekompletna."""),
-    ("code", """for mt in [20, 80, 400]:
+    ("code", """for mt in [20, 80, 2000]:
     r = ask("Opisz krok po kroku, jak zwrócić towar kupiony w sklepie internetowym.", max_tokens=mt)
     print(f"max_tokens={mt:3d} -> finish={r['finish']:6s} tokeny={r['tokens']:3d} | {r['text'][:110]!r}")"""),
     ("md", """## 6. repeat_penalty – kara za powtórzenia"""),
@@ -123,4 +123,20 @@ r = client.chat.completions.create(model=LLM, max_tokens=300, temperature=0.1, e
         {"type": "text", "text": "Odczytaj z obrazu: gdzie kupiono produkty, co kupiono i jakie pytanie ma klient?"},
         {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}}]}])
 print(r.choices[0].message.content)"""),
+    ("md", """## Wnioski
+* **temperature** steruje różnorodnością: przy T=0 wszystkie próby dają tę samą odpowiedź, od T≈0.8 każda jest inna,
+  a bogactwo słownictwa (TTR) rośnie. W odpowiedziach RAG używamy T=0.2 (fakty, powtarzalność),
+  w generowaniu danych treningowych T=1.0 (różnorodność).
+* **seed** zapewnia powtarzalność nawet przy losowaniu – w ewaluacji ustawiamy seed=0.
+* **top_k / top_p** ograniczają pulę losowanych tokenów: `top_k=1` lub małe `top_p` dają wynik praktycznie
+  deterministyczny nawet przy wysokiej temperaturze.
+* **max_tokens** ucina odpowiedź (`finish_reason="length"`) – limit trzeba dobrać do zadania.
+* **reasoning_effort** – model rozumujący zużywa setki ukrytych tokenów i kilka razy więcej czasu; przy małym
+  `max_tokens` zwraca pustą treść. Poziomy `low` i `high` dały w LM Studio identyczny wynik (191 tokenów
+  rozumowania), a odpowiedź była taka sama jak bez rozumowania. W pipeline'ie FAQ rozumowanie jest wyłączone.
+* **repeat_penalty** w tym eksperymencie nie zmienił wyraźnie wyniku (liczba różnych początków linii ta sama) –
+  przy niskiej temperaturze i krótkiej liście model sam unika powtórzeń; kara ma znaczenie przy długich tekstach.
+* **embeddingi bge-m3** dobrze oddają znaczenie po polsku (parafrazy mają wyraźnie wyższe podobieństwo niż zdania
+  o innym temacie) – to podstawa wyszukiwania semantycznego w etapie 2.
+* **obraz** – model z projektorem `mmproj` poprawnie odczytuje paragon i pytanie klienta (wielomodalność, próg 3.5)."""),
 ]

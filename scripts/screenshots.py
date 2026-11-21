@@ -58,7 +58,7 @@ def main() -> None:
             page.screenshot(path=OUT / "02_asystent_dopytanie.png", full_page=True)
             page.get_by_role("button", name="Nowa rozmowa").click()
             page.wait_for_timeout(800)
-            ask(page, "", image="data/examples/mail_reklamacja.png")
+            ask(page, "Czy zdążę jeszcze zwrócić ten laptop?", image="data/examples/faktura_laptop.png")
             page.screenshot(path=OUT / "03_asystent_obraz.png", full_page=True)
             ask(page, "Napisz mi przepis na sernik")
             page.screenshot(path=OUT / "04_poza_zakresem.png", full_page=True)

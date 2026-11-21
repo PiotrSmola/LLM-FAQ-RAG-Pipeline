@@ -17,6 +17,7 @@ from openai import OpenAI
 from .config import GenerationParams, settings
 
 Message = dict[str, object]
+REASONING_BUDGET = {"none": 0, "low": 2048, "medium": 4096, "high": 8192}
 
 
 class LMStudioClient:
@@ -35,6 +36,9 @@ class LMStudioClient:
                  "reasoning_effort": p.pop("reasoning_effort")}
         if p["seed"] is None:
             p.pop("seed")
+        # Przy włączonym rozumowaniu ukryte tokeny myślenia wliczają się do max_tokens. Doliczamy budżet,
+        # aby max_tokens z UI oznaczał długość widocznej odpowiedzi (inaczej odpowiedź bywa pusta).
+        p["max_tokens"] += REASONING_BUDGET.get(extra["reasoning_effort"], 0)
         return {**p, "extra_body": extra}
 
     def list_models(self) -> list[str]:

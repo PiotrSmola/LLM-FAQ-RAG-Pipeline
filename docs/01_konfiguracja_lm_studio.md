@@ -34,7 +34,7 @@ To samo w CLI (tak robi się to w projekcie):
 
 ```bash
 lms server start                                                  # serwer API na porcie 1234
-lms load google/gemma-4-12b-qat --gpu max --context-length 16384 -y
+lms load google/gemma-4-12b-qat --gpu max --context-length 32768 -y
 lms load text-embedding-bge-m3 --gpu max -y
 lms ps                                                            # co jest załadowane
 ```
@@ -42,7 +42,7 @@ lms ps                                                            # co jest zał
 | Parametr ładowania | Wartość | Znaczenie |
 |---|---|---|
 | **GPU offload** (`--gpu max`) | wszystkie warstwy | ile warstw modelu trafia do VRAM; „max” = całość na GPU (najszybciej). Przy braku pamięci część warstw liczy CPU – generowanie zwalnia kilkukrotnie |
-| **Context length** (`--context-length`) | 16384 | maksymalna liczba tokenów w oknie (prompt + historia + źródła RAG + odpowiedź). Większy kontekst = więcej VRAM na KV-cache. 16k z zapasem mieści 4–8 fragmentów i historię rozmowy |
+| **Context length** (`--context-length`) | 32768 | maksymalna liczba tokenów w oknie (prompt + historia + źródła RAG + odpowiedź + ewentualne rozumowanie). Większy kontekst = więcej VRAM na KV-cache. 32k mieści do 16 fragmentów dla pytań złożonych, historię rozmowy i długą odpowiedź |
 | **Flash Attention** | włączone (domyślnie) | wydajniejsza implementacja mechanizmu uwagi, mniejsze zużycie pamięci przy długim kontekście |
 | **KV cache quantization** | F16 (domyślnie) | kwantyzacja pamięci kluczy/wartości uwagi; Q8 zmniejsza zużycie VRAM kosztem minimalnej jakości |
 | **Parallel** | 4 | liczba równoległych żądań obsługiwanych przez serwer (np. czat + ewaluacja jednocześnie) |
@@ -78,7 +78,7 @@ Identyfikatory modeli i adres serwera ustawia się w pliku `.env` (szablon: `.en
 | **top_p** (nucleus sampling) | Losowanie tylko z najmniejszego zbioru tokenów, których łączne prawdopodobieństwo ≥ p – odcina „długi ogon” mało prawdopodobnych tokenów | 0.9 (0.95 przy generowaniu danych) |
 | **top_k** | Losowanie tylko z k najbardziej prawdopodobnych tokenów. Nie należy do specyfikacji OpenAI – w LM Studio przekazywany w `extra_body` | 40 (60 przy generowaniu danych) |
 | **repeat_penalty** | Kara (dzielnik logitów) dla tokenów, które już wystąpiły – przeciwdziała pętlom i powtórzeniom | 1.1 |
-| **max_tokens** | Maksymalna długość odpowiedzi w tokenach. Po przekroczeniu `finish_reason = "length"` i tekst jest ucięty | 700 (odpowiedzi), 3000 (generowanie danych) |
+| **max_tokens** | Maksymalna długość odpowiedzi w tokenach. Po przekroczeniu `finish_reason = "length"` i tekst jest ucięty | 2048 (odpowiedzi; przy pytaniach złożonych min. 500 na podpytanie), 4096 (generowanie danych). Przy włączonym rozumowaniu aplikacja dolicza budżet: +2048 / +4096 / +8192 dla low / medium / high |
 | **seed** | Ziarno losowania – identyczne parametry + seed = identyczna odpowiedź (powtarzalność eksperymentów) | 42 (czat), 0 (ewaluacja) |
 | **reasoning_effort** | Gemma 4 jest modelem „rozumującym”: przed odpowiedzią generuje ukryty tok myślenia (`reasoning_content`). Zużywa on `max_tokens` i czas. `"none"` wyłącza rozumowanie | **none** (bez tego klasyfikacja z `max_tokens=30` zwracała pustą odpowiedź – patrz niżej) |
 | **stream** | Odpowiedź przesyłana token po tokenie (efekt „pisania” w czacie) | true w czacie |

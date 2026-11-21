@@ -26,7 +26,7 @@ def trace_to_text(tr: PipelineTrace) -> str:
     w = textwrap.TextWrapper(width=100, subsequent_indent="    ")
     lines = [
         "=" * 100,
-        f"ASYSTENT FAQ – Zorza Elektronika        {tr.timestamp}",
+        f"ASYSTENT FAQ: Zorza Elektronika        {tr.timestamp}",
         "=" * 100,
         f"Wejście użytkownika : {tr.user_input or '(brak tekstu)'}",
     ]
@@ -35,18 +35,22 @@ def trace_to_text(tr: PipelineTrace) -> str:
     lines += [
         f"Pytanie (końcowe)   : {tr.question}" + ("  [przepisane z kontekstu rozmowy]" if tr.rewritten else ""),
         "",
-        "ETAP 1 – KLASYFIKACJA / ROUTING",
+        *([f"PYTANIE ZŁOŻONE: {len(tr.sub_questions)} podpytań"] +
+          [w.fill(f"    {i}. {s['question']}  [{category_label(s['category']) if s['category'] else '-'}, "
+                  f"{s.get('route', '')}]") for i, s in enumerate(tr.sub_questions, 1)] + [""]
+          if tr.sub_questions else []),
+        "ETAP 1: KLASYFIKACJA / ROUTING",
         f"    Klasyfikator : {tr.classifier or '-'}",
         f"    Kategoria    : {category_label(tr.category) if tr.category else '-'} (pewność {tr.confidence:.1%})",
         f"    Decyzja      : {tr.route}",
     ]
     if tr.probs:
         lines += [f"        {category_label(c):24s} {tr.probs.get(c, 0):6.1%}" for c in CATEGORIES]
-    lines += ["", f"ETAP 2 – WYSZUKIWANIE ({tr.retrieval_method}), znalezione fragmenty: {len(tr.hits)}"]
+    lines += ["", f"ETAP 2: WYSZUKIWANIE ({tr.retrieval_method}), znalezione fragmenty: {len(tr.hits)}"]
     for s in tr.sources():
         lines.append(f"    [{s['n']}] {s['source']}  (wynik {s['score']:.4f})")
         lines.append(w.fill("        " + s["text"].replace("\n", " ")[:300] + "…"))
-    lines += ["", "ETAP 3 – ODPOWIEDŹ", *[w.fill("    " + p) for p in tr.answer.splitlines() if p.strip()], ""]
+    lines += ["", "ETAP 3: ODPOWIEDŹ", *[w.fill("    " + p) for p in tr.answer.splitlines() if p.strip()], ""]
     lines.append("CZASY ETAPÓW")
     lines += [f"    {t.name:38s} {t.seconds:6.2f} s" for t in tr.timings]
     lines.append(f"    {'RAZEM':38s} {tr.total_seconds:6.2f} s")
@@ -108,7 +112,7 @@ def trace_to_figure(tr: PipelineTrace) -> plt.Figure:
 
     def t_of(prefix: str) -> str:
         v = next((s for k, s in timing.items() if k.startswith(prefix)), None)
-        return f"{v:.2f} s" if v is not None else "—"
+        return f"{v:.2f} s" if v is not None else "-"
 
     q_body = textwrap.fill(_short(tr.question, 120), 30)
     if tr.image_name:
@@ -117,7 +121,7 @@ def trace_to_figure(tr: PipelineTrace) -> plt.Figure:
         q_body += "\n(przepisane z historii)"
     cls_body = (f"{category_label(tr.category) if tr.category else '-'}\npewność: {tr.confidence:.0%}\n"
                 f"{_short(tr.classifier, 28)}\nczas: {t_of('Klasyfikacja')}")
-    ret_body = "\n".join(f"[{i}] {short_citation(h.chunk, 30)}" for i, h in enumerate(tr.hits[:5], 1)) or "—"
+    ret_body = "\n".join(f"[{i}] {short_citation(h.chunk, 30)}" for i, h in enumerate(tr.hits[:5], 1)) or "-"
     ret_body += f"\nczas: {t_of('Wyszukiwanie')}"
     ans_body = textwrap.fill(_short(tr.answer, 230), 32) + f"\nczas: {t_of('Generowanie')}"
 

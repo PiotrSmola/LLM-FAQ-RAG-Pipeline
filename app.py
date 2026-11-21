@@ -24,7 +24,7 @@ from faq_assistant.config import CATEGORIES, RESULTS_DIR, GenerationParams, sett
 from faq_assistant.export import conversation_to_text, save_svg, save_text, trace_to_figure, trace_to_text
 from faq_assistant.ingest import chunk_document
 from faq_assistant.llm import LMStudioClient
-from faq_assistant.pipeline import FAQPipeline, PipelineTrace
+from faq_assistant.pipeline import FAQPipeline, PipelineTrace, strip_long_dashes
 from faq_assistant.prompts import category_label
 from faq_assistant.retrieval import KnowledgeBase
 
@@ -64,20 +64,28 @@ def stages_markdown(tr: PipelineTrace | None) -> str:
     if tr.image_name:
         md.append(f"**0. Obraz → pytanie** (`{tr.image_name}`)\n\n> {(tr.image_ocr or '')[:400]}")
     md.append(f"**Pytanie:** {tr.question}" + (" _(przepisane z kontekstu rozmowy)_" if tr.rewritten else ""))
-    if tr.category:
-        md.append(f"**1. Klasyfikacja** – `{tr.classifier}` → **{category_label(tr.category)}** "
+    if tr.sub_questions:
+        rows = "\n".join(
+            f"{i}. {s['question']}  \n<small>"
+            f"{category_label(s['category']) if s['category'] else 'bez klasyfikacji'} ({s['confidence']:.0%}), "
+            f"{s.get('route', '')}</small>" for i, s in enumerate(tr.sub_questions, 1))
+        md.append(f"**Pytanie złożone, podział na {len(tr.sub_questions)} podpytań:**\n\n{rows}")
+        md.append(f"**1-2. Routing i wyszukiwanie:** {tr.route}")
+    elif tr.category:
+        md.append(f"**1. Klasyfikacja:** `{tr.classifier}` → **{category_label(tr.category)}** "
                   f"({tr.confidence:.0%})\n\nDecyzja: {tr.route}")
     else:
-        md.append(f"**1. Klasyfikacja** – {tr.route}")
-    if tr.hits:
-        md.append(f"**2. Retrieval** (`{tr.retrieval_method}`): {len(tr.hits)} fragmentów – lista poniżej")
+        md.append(f"**1. Klasyfikacja:** {tr.route}")
+    if tr.hits and not tr.sub_questions:
+        md.append(f"**2. Retrieval** (`{tr.retrieval_method}`): {len(tr.hits)} fragmentów, lista poniżej")
     md.append("**3. Odpowiedź:** " + {"rag": "wygenerowana przez LLM na podstawie źródeł",
+                                      "empty": "pusta, model wyczerpał limit tokenów",
                                       "out_of_scope": "odmowa (pytanie poza zakresem, LLM nie był wywołany)"}
               .get(tr.answered_by, "w trakcie…"))
     if tr.timings:
         md.append("**Czasy:** " + " · ".join(f"{t.name}: {t.seconds:.2f}s" for t in tr.timings)
                   + f" · **razem {tr.total_seconds:.2f}s**")
-    return "\n\n".join(md)
+    return strip_long_dashes("\n\n".join(md))
 
 
 def sources_md(tr: PipelineTrace | None) -> str:
@@ -91,7 +99,7 @@ def sources_md(tr: PipelineTrace | None) -> str:
         body = body.split("] ", 1)[-1] if body.startswith("[") else body  # bez powtórzonego nagłówka sekcji
         items.append(f"**[{s['n']}] {s['source']}**  \n<small>{kind} · wynik {s['score']:.3f}</small>  \n"
                      f"{body[:260]}{'…' if len(body) > 260 else ''}")
-    return "\n\n".join(items)
+    return strip_long_dashes("\n\n".join(items))
 
 
 _CLASSIFIERS: dict = {}
@@ -140,6 +148,7 @@ def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, 
         chat[-1]["content"] = answer
         yield chat, history, traces, gr.update(), gr.update(), gr.update(), gr.update(value=None)
 
+    chat[-1]["content"] = tr.answer  # wersja po oczyszczeniu (bez długich myślników)
     history = history + [{"role": "user", "content": tr.question}, {"role": "assistant", "content": tr.answer}]
     traces = traces + [tr]
     fig = trace_to_figure(tr)
@@ -148,7 +157,7 @@ def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, 
 
 def export_last(traces, fmt: str):
     if not traces:
-        gr.Warning("Brak odpowiedzi w tej sesji – zadaj pytanie (po restarcie aplikacji odśwież stronę).")
+        gr.Warning("Brak odpowiedzi w tej sesji. Zadaj pytanie (po restarcie aplikacji odśwież stronę).")
         return gr.update(value=None, visible=False)
     stamp = time.strftime("%Y%m%d_%H%M%S")
     if fmt == "svg":
@@ -193,7 +202,7 @@ def ask_docs(question, user_kb, method, top_k, temperature, reasoning):
     hits = user_kb.search(question, k=int(top_k), method=method)
     params = GenerationParams(temperature=float(temperature), reasoning_effort=reasoning)
     tr = PipelineTrace(user_input=question, question=question, retrieval_method=method, hits=hits,
-                       route="Pytanie do przesłanych plików – bez klasyfikacji", params=params.__dict__)
+                       route="Pytanie do przesłanych plików, bez klasyfikacji", params=params.__dict__)
     tr.add_timing(f"Wyszukiwanie ({method})", t0)
     t0 = time.perf_counter()
     tr.answer, tr.answered_by = qa_answer(llm, question, hits, params=params), "rag"
@@ -226,12 +235,12 @@ def batch_run(file, method, top_k, make_svg, progress=gr.Progress()):
 PARAM_HELP = """
 | Parametr | Znaczenie | Typowe wartości |
 |---|---|---|
-| **temperature** | „Ostrość” rozkładu prawdopodobieństwa tokenów: logity dzielone przez T. Niska → deterministycznie, wysoka → kreatywnie i ryzykownie. | 0–0.3 fakty/RAG, 0.7–1.0 kreatywne |
-| **top_p** (nucleus) | Losujemy tylko z najmniejszego zbioru tokenów o łącznym prawdopodobieństwie ≥ p. | 0.9–0.95 |
-| **top_k** | Losujemy tylko spośród k najbardziej prawdopodobnych tokenów (LM Studio, `extra_body`). | 20–64 |
-| **repeat_penalty** | Kara za powtarzanie tokenów już użytych (ogranicza degenerację i pętle). | 1.0–1.2 |
-| **max_tokens** | Limit długości odpowiedzi (w tokenach); po jego osiągnięciu tekst jest ucinany (`finish_reason=length`). | 256–1024 |
-| **seed** | Ziarno generatora losowego – ten sam seed + te same parametry = powtarzalny wynik. -1 = losowo. | dowolna liczba |
+| **temperature** | „Ostrość” rozkładu prawdopodobieństwa tokenów: logity dzielone przez T. Niska → deterministycznie, wysoka → kreatywnie i ryzykownie. | 0-0.3 fakty/RAG, 0.7-1.0 kreatywne |
+| **top_p** (nucleus) | Losujemy tylko z najmniejszego zbioru tokenów o łącznym prawdopodobieństwie ≥ p. | 0.9-0.95 |
+| **top_k** | Losujemy tylko spośród k najbardziej prawdopodobnych tokenów (LM Studio, `extra_body`). | 20-64 |
+| **repeat_penalty** | Kara za powtarzanie tokenów już użytych (ogranicza degenerację i pętle). | 1.0-1.2 |
+| **max_tokens** | Limit długości odpowiedzi (w tokenach); po jego osiągnięciu tekst jest ucinany (`finish_reason=length`). | 256-1024 |
+| **seed** | Ziarno generatora losowego: ten sam seed + te same parametry = powtarzalny wynik. -1 = losowo. | dowolna liczba |
 | **reasoning_effort** | Gemma 4 potrafi „myśleć” przed odpowiedzią (ukryty tok rozumowania). `none` = szybko, `low/medium/high` = dokładniej, ale wolniej. | `none` w czacie |
 """
 
@@ -251,14 +260,14 @@ def param_playground(prompt, n, temperature, top_p, top_k, repeat_penalty, max_t
                      "finish_reason": r.choices[0].finish_reason, "czas_s": round(time.perf_counter() - t0, 2)})
     df = pd.DataFrame(rows)
     uniq = df["odpowiedź"].nunique()
-    return df, f"Unikalnych odpowiedzi: **{uniq} / {len(df)}**" + (" – wynik deterministyczny." if uniq == 1 else "")
+    return df, f"Unikalnych odpowiedzi: **{uniq} / {len(df)}**" + (", wynik deterministyczny." if uniq == 1 else "")
 
 
 # ========================================================================================== 5. Ewaluacja
 def load_eval():
     def csv(p):
         p = RESULTS_DIR / p
-        return pd.read_csv(p) if p.exists() else pd.DataFrame({"info": [f"Brak pliku {p.name} – uruchom ewaluację"]})
+        return pd.read_csv(p) if p.exists() else pd.DataFrame({"info": [f"Brak pliku {p.name}, uruchom ewaluację"]})
 
     imgs = [str(p) for p in sorted(RESULTS_DIR.rglob("*.png")) if "examples" not in p.parts]
     return (csv("classifier/comparison.csv"), csv("retrieval/retrieval_metrics.csv"),
@@ -269,20 +278,20 @@ def load_eval():
 HELP_MD = """
 Asystent obsługuje klientów **fikcyjnego sklepu internetowego Zorza Elektronika**. Odpowiada na podstawie bazy FAQ
 (74 wpisy) i dokumentów firmowych: regulaminu, polityki zwrotów i reklamacji, cennika dostaw oraz warunków usługi
-Zorza Ochrona+. Każda odpowiedź ma numery źródeł [n] – lista źródeł jest w prawym panelu.
+Zorza Ochrona+. Każda odpowiedź ma numery źródeł [n], a lista źródeł jest w prawym panelu.
 
-**O co pytać** – płatności (BLIK, raty, faktury, „Zapłać później”), dostawa (ceny, terminy, paczkomaty, wniesienie),
+**O co pytać:** płatności (BLIK, raty, faktury, „Zapłać później”), dostawa (ceny, terminy, paczkomaty, wniesienie),
 zwroty i reklamacje (terminy, procedura, wyjątki), konto (hasło, punkty lojalnościowe, usuwanie danych),
-gwarancja i Zorza Ochrona+ (ceny, udział własny, wyłączenia). Można dopytywać („a w sobotę?”) – asystent
+gwarancja i Zorza Ochrona+ (ceny, udział własny, wyłączenia). Można dopytywać („a w sobotę?”), asystent
 uzupełni pytanie z kontekstu rozmowy. Pytania niezwiązane ze sklepem (np. pogoda, przepisy) dostają odmowę.
 
-**Obrazy** (spinacz w polu pytania) – zrzut e-maila od klienta, zdjęcie paragonu lub faktury, zdjęcie notatki z pytaniem.
+**Obrazy** (spinacz w polu pytania): zrzut e-maila od klienta, zdjęcie paragonu lub faktury, zdjęcie notatki z pytaniem.
 Model odczytuje tekst z obrazu, formułuje pytanie i wykorzystuje dane z dokumentu (np. datę zakupu do policzenia
 terminu zwrotu). Do obrazu można dopisać własne pytanie. Dokument z innego sklepu zostanie odczytany, ale
 odpowiedź będzie dotyczyć zasad Zorza Elektronika.
 
-**Eksport** – przyciski pod listą źródeł zapisują ostatnią odpowiedź (.txt), wizualizację jej etapów (.svg)
-lub całą rozmowę (.txt). Po restarcie aplikacji odśwież stronę – historia sesji jest wtedy czyszczona.
+**Eksport:** przyciski pod listą źródeł zapisują ostatnią odpowiedź (.txt), wizualizację jej etapów (.svg)
+lub całą rozmowę (.txt). Po restarcie aplikacji odśwież stronę, bo historia sesji jest wtedy czyszczona.
 """
 
 # Font systemowy (Arial/Helvetica) zamiast fontu Google z motywu – bez ozdobnych glifów, działa offline.
@@ -328,8 +337,8 @@ CSS = """
 .dark #sources small, .dark #doc-sources small { color: #8a96a6; }
 """
 
-with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
-    gr.Markdown("# Asystent FAQ – Zorza Elektronika\n"
+with gr.Blocks(title="Asystent FAQ Zorza Elektronika") as demo:
+    gr.Markdown("# Asystent FAQ: Zorza Elektronika\n"
                 "Klasyfikacja zapytania (HerBERT) → wyszukiwanie w bazie wiedzy (BM25 + bge-m3) → "
                 "odpowiedź RAG ze źródłami (Gemma 4, LM Studio)", elem_id="app-header")
     status = gr.Markdown(server_status(), elem_id="status")
@@ -350,7 +359,7 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                 gr.Examples([
                     {"text": "Ile kosztuje dostawa kurierem i od jakiej kwoty jest darmowa?"},
                     {"text": "Czy Ochrona+ pokryje zbity ekran i ile wtedy dopłacę?"},
-                    {"text": "Laptop nie włącza się zaraz po rozpakowaniu – co robić?"},
+                    {"text": "Laptop nie włącza się zaraz po rozpakowaniu, co robić?"},
                     {"text": "", "files": ["data/examples/paragon_pytanie.png"]},
                     {"text": "Czy zdążę jeszcze zwrócić ten laptop?", "files": ["data/examples/faktura_laptop.png"]},
                     {"text": "Napisz mi wiersz o kotach"},
@@ -363,11 +372,11 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                     method = gr.Radio(["hybrid", "dense", "bm25", "tfidf"], value="hybrid", label="Metoda wyszukiwania")
                     top_k = gr.Slider(1, 8, value=settings.top_k, step=1, label="Liczba fragmentów (top-k)")
                     use_cls = gr.Radio(["HerBERT (fine-tuning)", "LLM zero-shot", "TF-IDF + LR", "wyłączony"],
-                                       value="HerBERT (fine-tuning)", label="Klasyfikator (etap 1 – routing)")
+                                       value="HerBERT (fine-tuning)", label="Klasyfikator (etap 1, routing)")
                     temperature = gr.Slider(0, 1.5, value=0.2, step=0.05, label="temperature")
                     top_p = gr.Slider(0.1, 1, value=0.9, step=0.05, label="top_p")
                     tk = gr.Slider(1, 100, value=40, step=1, label="top_k (sampling)")
-                    max_tokens = gr.Slider(64, 2048, value=700, step=32, label="max_tokens")
+                    max_tokens = gr.Slider(128, 8192, value=2048, step=64, label="max_tokens")
                     seed = gr.Number(value=42, label="seed (-1 = losowy)", precision=0)
                     reasoning = gr.Dropdown(["none", "low", "medium", "high"], value="none", label="reasoning_effort")
                 gr.Markdown("### Etapy pipeline'u", elem_classes="section-title")
@@ -390,7 +399,7 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
         clear_btn.click(clear_chat, None, [chat, history_st, traces_st, stages, sources, plot])
 
     with gr.Tab("Twoje dokumenty"):
-        gr.Markdown("Prześlij pliki **.txt / .md / .pdf** – zostaną podzielone na fragmenty, zindeksowane "
+        gr.Markdown("Prześlij pliki **.txt / .md / .pdf**. Zostaną podzielone na fragmenty, zindeksowane "
                     "(embeddingi bge-m3 + BM25) w bazie tej sesji. Pytaj tutaj albo w zakładce *Asystent* "
                     "(zaznacz „Uwzględnij moje przesłane dokumenty”).")
         with gr.Row():
@@ -433,7 +442,7 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
 
     with gr.Tab("Parametry modelu"):
         gr.Markdown("Eksperymenty z parametrami generowania (wywołania API LM Studio). "
-                    "Ustaw np. temperature=1.2 i seed=-1, a potem temperature=0 – i porównaj różnorodność.")
+                    "Ustaw np. temperature=1.2 i seed=-1, a potem temperature=0 i porównaj różnorodność.")
         gr.Markdown(PARAM_HELP)
         with gr.Row():
             with gr.Column(scale=2):
@@ -447,7 +456,7 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                     p_k = gr.Slider(1, 100, value=40, step=1, label="top_k")
                 with gr.Row():
                     p_r = gr.Slider(1.0, 1.5, value=1.1, step=0.05, label="repeat_penalty")
-                    p_m = gr.Slider(16, 1024, value=128, step=16, label="max_tokens")
+                    p_m = gr.Slider(16, 4096, value=256, step=16, label="max_tokens")
                     p_s = gr.Number(value=-1, precision=0, label="seed (-1 = losowy)")
                     p_re = gr.Dropdown(["none", "low", "medium", "high"], value="none", label="reasoning_effort")
         p_btn = gr.Button("Generuj", variant="primary")
@@ -458,9 +467,9 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
     with gr.Tab("Ewaluacja"):
         gr.Markdown("Wyniki z `scripts/train_classifier.py compare` i `scripts/evaluate.py` (katalog `results/`).")
         e_btn = gr.Button("Odśwież")
-        e_cls = gr.Dataframe(label="Klasyfikacja – porównanie modeli")
-        e_ret = gr.Dataframe(label="Retrieval – Recall@k / MRR")
-        e_qa = gr.Dataframe(label="QA – jakość odpowiedzi i ablacja")
+        e_cls = gr.Dataframe(label="Klasyfikacja: porównanie modeli")
+        e_ret = gr.Dataframe(label="Retrieval: Recall@k / MRR")
+        e_qa = gr.Dataframe(label="QA: jakość odpowiedzi i ablacja")
         e_gal = gr.Gallery(label="Wykresy", columns=3, height=420)
         e_btn.click(load_eval, None, [e_cls, e_ret, e_qa, e_gal])
         demo.load(load_eval, None, [e_cls, e_ret, e_qa, e_gal])

@@ -119,7 +119,7 @@ class LLMClassifier:
 
         t = time.perf_counter()
         raw = self.llm.complete(f'Pytanie: "{text}"', system=CLASSIFY_SYSTEM,
-                                params=GenerationParams(temperature=0.0, max_tokens=30, seed=0))
+                                params=GenerationParams(temperature=0.0, max_tokens=64, seed=0))
         try:
             label = parse_json(raw).get("category", "")
         except (ValueError, AttributeError):

@@ -1,0 +1,6 @@
+wariant,token_f1,rougeL,bertscore_f1,faithfulness,correctness,trafienie_zrodla,odmowa_poprawna
+llm_bez_rag,0.262,0.21,0.712,1.892,2.0,,0.0
+flan_t5,0.071,0.067,0.495,,,,0.0
+extractive_xlmr,0.194,0.187,0.647,3.892,2.459,,0.0
+rag_bez_klasyfikatora,0.365,0.324,0.741,4.595,4.73,1.0,1.0
+pelny_pipeline,0.366,0.33,0.739,4.892,4.73,0.973,1.0
