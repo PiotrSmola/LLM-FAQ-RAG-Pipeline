@@ -89,6 +89,9 @@ def finetune(model_name: str, train_rows: list[dict], out_dir: Path | None, epoc
                       eval_dataset=to_ds(val_rows) if n_val else None,
                       processing_class=tokenizer, compute_metrics=metrics)
     trainer.train()
+    import shutil
+
+    shutil.rmtree(tmp_dir, ignore_errors=True)  # checkpointy pośrednie nie są potrzebne (najlepszy model jest w pamięci)
     if out_dir is not None:
         out_dir.mkdir(parents=True, exist_ok=True)
         trainer.save_model(str(out_dir))

@@ -62,14 +62,28 @@ class PipelineTrace:
 
 
 def load_default_classifier():
-    """HerBERT (jeśli wytrenowany) -> TF-IDF (jeśli zapisany) -> LLM zero-shot."""
+    """HerBERT (jeśli wytrenowany) -> TF-IDF (zapisany albo trenowany od razu z train.jsonl) -> LLM zero-shot.
+
+    Dzięki temu aplikacja działa także na komputerze bez folderu models/ (np. po sklonowaniu repozytorium):
+    TF-IDF uczy się w ułamku sekundy, a HerBERT można odtworzyć: python scripts/train_classifier.py train
+    """
     from .classifier import BertClassifier, LLMClassifier, TfidfClassifier
-    from .config import MODELS_DIR
+    from .config import DATA_DIR, MODELS_DIR
+    from .utils import read_jsonl
 
     if (settings.classifier_path / "config.json").exists():
         return BertClassifier(settings.classifier_path)
-    if (MODELS_DIR / "tfidf_lr.joblib").exists():
-        return TfidfClassifier.load(MODELS_DIR / "tfidf_lr.joblib")
+    tfidf_path = MODELS_DIR / "tfidf_lr.joblib"
+    if tfidf_path.exists():
+        return TfidfClassifier.load(tfidf_path)
+    train_file = DATA_DIR / "classifier" / "train.jsonl"
+    if train_file.exists():
+        rows = read_jsonl(train_file)
+        clf = TfidfClassifier("char_wb").fit([r["text"] for r in rows], [r["label"] for r in rows])
+        MODELS_DIR.mkdir(exist_ok=True)
+        clf.save(tfidf_path)
+        print(f"[setup] Brak HerBERT – wytrenowano klasyfikator zastępczy TF-IDF ({len(rows)} przykładów)")
+        return clf
     return LLMClassifier()
 
 
@@ -80,6 +94,12 @@ class FAQPipeline:
 
         self.llm = llm or LMStudioClient()
         self.kb = kb or KnowledgeBase(llm=self.llm)
+        if kb is None and len(self.kb) == 0:
+            # pierwsze uruchomienie (brak folderu chroma_db/) – budujemy indeks bazy wiedzy automatycznie
+            from .ingest import load_knowledge_base
+
+            n = self.kb.add(load_knowledge_base())
+            print(f"[setup] Zbudowano indeks bazy wiedzy: {n} fragmentów")
         self.classifier = classifier if classifier is not None else load_default_classifier()
         self.threshold = settings.classifier_threshold if threshold is None else threshold
 
