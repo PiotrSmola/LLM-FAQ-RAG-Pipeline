@@ -1,0 +1,794 @@
+{"text": "nie moze mi wejsc blik", "label": "platnosci", "source": "llm"}
+{"text": "dlaczego niebo jest niebieskie", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy montaz jest darmowy do telewizorów powyzej 65 cali", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Ile kosztuje dostawa do paczkomatu?", "label": "dostawa", "source": "llm"}
+{"text": "produkt nie wlasnicze dziala po dostawie chcę zwrotu kasy", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jakie są najlepsze techniki do nauki programowania od zera?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy akceptujecie przelewy natychmiastowe", "label": "platnosci", "source": "llm"}
+{"text": "Zaszyfrowany kod nie przychodzi na maila mimo kilku prob", "label": "konto", "source": "llm"}
+{"text": "Czy mogę zamówić towar i odebrać go osobiście jutro rano w waszym punkcie?", "label": "dostawa", "source": "llm"}
+{"text": "Logowanie nie dziala", "label": "konto", "source": "llm"}
+{"text": "Czy mogę odebrać towar dzisiaj osobiście w Waszym punkcie?", "label": "dostawa", "source": "llm"}
+{"text": "Pytanie o zwrot za anulowane zamówienie", "label": "platnosci", "source": "llm"}
+{"text": "Jak użyć kodu rabatowego?", "label": "platnosci", "source": "faq"}
+{"text": "Chce kupic produkt z przedsprzedazy, czy dostane go przed premierą?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy paczkomat w mojej okolicy jest aktywny wieczorami?", "label": "dostawa", "source": "llm"}
+{"text": "proszę o info kiedy naprawia bedzie gotowy", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Mój tablet nagle przestał się ładować po tygodniu użytkowania. Jak mam to zgłosić?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "chcem oddac stary laptop do utylizacji", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jakie raty oferujecie na laptopy?", "label": "platnosci", "source": "llm"}
+{"text": "jak naprawic zepsuty ekran w telefonie bez oddawania do serwisu", "label": "poza_zakresem", "source": "llm"}
+{"text": "Możesz napisać kod w Pythonie, który generuje losowe hasla?", "label": "poza_zakresem", "source": "llm"}
+{"text": "gdzie sprawdzic regulamin ochrony rozszerzonej", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy te punkty Zorza Punkty wiersze na koncie sa ważne zawsze czy wylapuja", "label": "konto", "source": "llm"}
+{"text": "Jak długo czekam na odpowiedz z reklamacji", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "paczka dotarla uszkodzona co robic", "label": "dostawa", "source": "llm"}
+{"text": "Nie dostaje kodu weryfikacyjnego na telefon co robić", "label": "konto", "source": "llm"}
+{"text": "czy mam paczke otwarta mozna jeszcze zwrot", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jakie są różnice między procesorem Intela a AMD?", "label": "poza_zakresem", "source": "llm"}
+{"text": "moge odebrać to w waszym punkcie stacjonarnym?", "label": "dostawa", "source": "llm"}
+{"text": "Jak działa przedsprzedaż?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "czy mozna płacić przy odbiorze kurierowi gotówką", "label": "platnosci", "source": "llm"}
+{"text": "Jaka jest różnica między systemem Android a iOS?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Ile dni macie na rozpatrzenie zgłoszenia", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "mozna zmienić punkt odbioru na inny paczkomat", "label": "dostawa", "source": "llm"}
+{"text": "Jakie są opinie o nowym iPhone 15 w porównaniu do Samsunga S23?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Gdzie wpisac NIP przy zamawianiu elektroniki", "label": "platnosci", "source": "llm"}
+{"text": "Zmieniam maila w profilu i chce wiedziec czy stare zamowienia zostana przypisane do nowego konta", "label": "konto", "source": "llm"}
+{"text": "Co jest przyczyną odrzucenia mojego zgłoszenia", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Zlecilem transport ale kurier nie dzwoni i czekam na korytarzu już godzinę. Co mam zrobić?", "label": "dostawa", "source": "llm"}
+{"text": "Jak sprawdzic status przesyłki?", "label": "dostawa", "source": "llm"}
+{"text": "można zmiesnic adres dostawczy", "label": "dostawa", "source": "llm"}
+{"text": "przepisz to zdanie na angielski: Gdzie znajduje się najbliższy dworzec?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Cześć, jak dzisiaj będzie pogoda w Warszawie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałem kupic coś w przedsprzedazy ale nie widze przycisku wyboru daty dostawy. Czy to normalne?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "chciałbym oddać stary telewizor do utylizacji przy zakupie nowego czy da sie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Chce kupic konsole w przedsprzedazi ale nie wiem czy dostanę kod na grke", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy karty podarunkowe sa ważne przez cały rok czy tylko do końca miesieca?", "label": "platnosci", "source": "llm"}
+{"text": "Zaloguj mnie prosze", "label": "konto", "source": "llm"}
+{"text": "Moje konto jest zablokowane pomocy", "label": "konto", "source": "llm"}
+{"text": "Jak długo trwa przelew do waszego konta?", "label": "platnosci", "source": "llm"}
+{"text": "Chcę zgłosić reklamację z tytułu rękojmi bo głośnik trzeszczy.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Kiedy dostane zwrot na konto po odeslaniu laptopa?", "label": "platnosci", "source": "llm"}
+{"text": "Dzień dobry, otrzymałem uszkodzony laptop i chciałbym zgłosić to niezwłocznie. Jakie dokumenty muszę dołączyć?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Produkt przyszedł rozbite, co mam teraz dzialać", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Szukam sklepu blisko mnie bo chcę obejrzec ten ekspres na żywo", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jakie są koszty odesłania towaru do waszego magazynu.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy produkt otwarty jest jeszcze pod gwarancja", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy jest możliwa dostawa w sobotę?", "label": "dostawa", "source": "faq"}
+{"text": "Czy wysylacie meble za granice do niemiec?", "label": "dostawa", "source": "llm"}
+{"text": "Chce odpipisac sie od waszych reklam", "label": "konto", "source": "llm"}
+{"text": "Ile trwa rozpatrzenie reklamacji?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Pieniądze pobrane z konta a zamówienie wciąż status 'oczekujące'", "label": "platnosci", "source": "llm"}
+{"text": "Co teraz otworzyla ta nowa wystawa w muzeum narodowym?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy moga zmienić adres dostawy w zamówieniu ktory juz zlozylem?", "label": "konto", "source": "llm"}
+{"text": "W jakiej walucie mogę płacić?", "label": "platnosci", "source": "faq"}
+{"text": "Jakie są zalety języka programowania Java?", "label": "poza_zakresem", "source": "llm"}
+{"text": "szukam numeru do firmy kurierskiej bo nic nie widze na stronie", "label": "dostawa", "source": "llm"}
+{"text": "Jakie metody płatności akceptujecie?", "label": "platnosci", "source": "llm"}
+{"text": "Czesc, jak odsuniec newslettera bo przychodzi mi za wiele maili?", "label": "konto", "source": "llm"}
+{"text": "Cześć, dostałem telefon ale ekran ma martwe piksele. Co robię?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy warto kupować gry na konsolę czy na komputer?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Zlozylem prośba o usuniecie konta ale nic nie dostalem", "label": "konto", "source": "llm"}
+{"text": "czy montaz jest w cenie telewizora", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Kiedy dostane hajs na konto po zwrocie towaru", "label": "platnosci", "source": "llm"}
+{"text": "Jakie dokumenty potrzebne do zwrotu towaru", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Dlaczego płatność odrzucona?", "label": "platnosci", "source": "llm"}
+{"text": "Chciałbym dokupić ubezpieczenie Zorza Ochrona+, ile to będzie kosztować za laptopa?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy szczury boją się psów?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Nie udało mi sie przejsc do płatności i czesc kwoty została pobrana", "label": "platnosci", "source": "llm"}
+{"text": "Dostawa darmowa od ile zł?", "label": "dostawa", "source": "llm"}
+{"text": "Chciałbym usunąć wszystkie swoje dane z waszej bazy", "label": "konto", "source": "llm"}
+{"text": "Ile kosztuje wysylka do Poznania?", "label": "dostawa", "source": "llm"}
+{"text": "faktura proforma czy faktura vat", "label": "platnosci", "source": "llm"}
+{"text": "Hej, czy mozna podpiac kilka adresow dostawy naraz?", "label": "konto", "source": "llm"}
+{"text": "Płacę przez PayPo i chcę wiedzieć kiedy mam termin spłaty", "label": "platnosci", "source": "llm"}
+{"text": "Płatność się nie powiodła, a pieniądze zniknęły z konta. Co robić?", "label": "platnosci", "source": "faq"}
+{"text": "Bardzo pilne - czy Wasza gwarancja pokrywa rozlanie wody na klawiaturę?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Dlaczego moje zamówienie jeszcze nie zostało wysłane?", "label": "dostawa", "source": "faq"}
+{"text": "czy mozesz napisac esej o sztucznej inteligencji?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Ile kosztuje darmowa dostawa", "label": "dostawa", "source": "llm"}
+{"text": "Jakie towary nie podlegaja zwrotowi?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy warto kupować samochody marki Skoda czy lepiej brać Volkswagena?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Gdzie znajde wasz najblizszy salon?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Nie chce mi sie przejesc płatnoscia karta błąd", "label": "platnosci", "source": "llm"}
+{"text": "Czy oferta Zorza Ochrona+ obejmuje wypadek podczas transportu przez kuriera?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Mój tablet nie włącza się ani razu. Czy dostane pełny zwrot pieniegdzi?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Chciałbym umówić kogoś do podłączenia telewizora pod ścianę. Czy to robicie?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy po usunieciu konta wszystkie moje dotychjalne zamówienia zostana trwale skasowane?", "label": "konto", "source": "llm"}
+{"text": "Dajcie kod na darmowa dostawa bo nic nie mam", "label": "platnosci", "source": "llm"}
+{"text": "Jak sprawdzic ile punktow mam w programie?", "label": "konto", "source": "llm"}
+{"text": "kurier nie dzwoni i nic nie przyjechało", "label": "dostawa", "source": "llm"}
+{"text": "Czy mogę dokupic dodatkowe ubezpieczenie do karty graficznej podczas składania zamówienia?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jak pobrać kopię moich danych osobowych?", "label": "konto", "source": "faq"}
+{"text": "czy darmowa dostawa obejmuje telewizory?", "label": "dostawa", "source": "llm"}
+{"text": "Czy polska waluta jest silna w stosunku do euro?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Moja myszka przestała klikać po tygodniu. Jak mam zgłosić usterkę?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Których produktów nie można zwrócić?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "kurier przyjechal pod blok ale nie ma jak wejsc", "label": "dostawa", "source": "llm"}
+{"text": "Jak szybko dojedzie kurier pod dom", "label": "dostawa", "source": "llm"}
+{"text": "Zepsuł mi sie ekran po tygodniu i chce wiedziałec jak ruszyc reklamacje producenta.", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Kiedy zamówienie zostanie wysłane?", "label": "dostawa", "source": "faq"}
+{"text": "przesylka zniszczona przy dostawie co teraz robic", "label": "dostawa", "source": "llm"}
+{"text": "Can you translate 'I am looking for a good laptop' into Polish?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jak działają karty podarunkowe?", "label": "platnosci", "source": "faq"}
+{"text": "Jak sprawdzic czy dany kabel pasuje do mojego laptopa", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy kable mozna zwracać jak sa uzyte", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Gdzie mam oddac stary telefon", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mogę zwrócić produkt otwarty", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Gdzie wyslac paczke z reklamacja", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy mozesz napisac wiersz o jesieni?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Co tak naprawde jest z tymi produktami z outletu dlaczego sa tanie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Chce anulowac reklamacje ktora byla wyslana wczoraj bo naprawili mi to zdalnie", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Gdzie mam sprawdzic status mojej zamówienia", "label": "dostawa", "source": "llm"}
+{"text": "reklamacja telefon", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czesc, jak naprawic rozbite szkło w telefonie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Ile trwa wysyłka do Warszawy?", "label": "dostawa", "source": "llm"}
+{"text": "reklamacja status", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Co jeśli reklamacja zostanie odrzucona?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Co najlepsze ogladam dzisiaj w kinie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jak odzyskać dostęp do profilu?", "label": "konto", "source": "llm"}
+{"text": "Moje dane osobowe są nieaktualne. Jak je poprawie w systemie?", "label": "konto", "source": "llm"}
+{"text": "czy produkty z outletu sa sprawdzone pod kątem sprawnosci", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "mozesz stworzyc plan treningowy na 3 dni w tygodniu?", "label": "poza_zakresem", "source": "llm"}
+{"text": "nie mam dostepu do maila pod kazdym czem", "label": "konto", "source": "llm"}
+{"text": "pomocy, nie wiem jak pogodzić sie z koleganem po kłótni", "label": "poza_zakresem", "source": "llm"}
+{"text": "Potrzebuje info o kosztach rozszerzonej ochrony", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Co najlepszego zjesz na obiad, jak masz mało czasu?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy przymierzke w salonie jest możliwe przed zakupem laptopa", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Co z moimi pieniędzmi jak płatność została odrzucona??", "label": "platnosci", "source": "llm"}
+{"text": "czy faktura vat jest darmowa", "label": "platnosci", "source": "llm"}
+{"text": "Czy warto ogladac seriale na netflixie czy lepiej kupic blu-raya?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Kto wygrał wczorajszy mecz piłkarski?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Moje konto jest zablokowane. Musiecie to odblokowac natychmiast bo mam pilne zamowienie!", "label": "konto", "source": "llm"}
+{"text": "chce wiedziałec czy wasze ceny sa identyczne jak w sklepach stacjonarnych", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Zmieniamy dane do faktury bo zmienila sie firma", "label": "konto", "source": "llm"}
+{"text": "nie pamiętam hasła do sklepu co teraz zrobić", "label": "konto", "source": "llm"}
+{"text": "Jak otrzymam fakturę VAT?", "label": "platnosci", "source": "faq"}
+{"text": "Czy jak kupie z outletu to bedzie na gwarancji producenta", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "zamowienie do jeszcze nie wyslane a minel 3 dni", "label": "dostawa", "source": "llm"}
+{"text": "Jakie jest wyłuczenie ze zwrotu w waszym sklepie.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Mam problem z reklamacją, co mam teraz zrobić", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy mam kod do blika?", "label": "platnosci", "source": "llm"}
+{"text": "Czy karta podarunkowa jest ważna do konca roku?", "label": "platnosci", "source": "llm"}
+{"text": "czy cena jest taka sama jak na stronie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Platność nie przeszla i chcę kupic ponownie", "label": "platnosci", "source": "llm"}
+{"text": "zwrot bez podania przyczyny terminy", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Paczka przyszla rozwalona czy mam zglfwiactwo", "label": "dostawa", "source": "llm"}
+{"text": "Od jakiej kwoty dostawa jest darmowa?", "label": "dostawa", "source": "faq"}
+{"text": "Czy przy zamówieniu w przedsprzedazi dostane jakąś zniżkę na akcesoria", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mogę wymienić produkt na inny model?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Chciałbym zmienić nazwisko na koncie bo wslubilam sie.", "label": "konto", "source": "llm"}
+{"text": "Chce usuniec moje dane osobowe ze waszej bazy", "label": "konto", "source": "llm"}
+{"text": "Czy warto ogl dadac seriale na Netflixie czy lepiej przeczytac ksiazke?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jak scedlowac dane do innego profilu", "label": "konto", "source": "llm"}
+{"text": "odbiór kurierski przy reklamacji", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy da sie zaplacic karta blisza", "label": "platnosci", "source": "llm"}
+{"text": "Nie dostaje kodu weryfikacyjnego na telefon", "label": "konto", "source": "llm"}
+{"text": "Czy odholuje ten towar bez reklamacji jak po prostu go oddam", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy montujecie konsole", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Mam pytanie co do gwarancji producenta na ten konkretny model", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jak szybko naucze sie angielskiego do poziomu C1?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Przesylka uszkodzona przy odbiorze", "label": "dostawa", "source": "llm"}
+{"text": "ktory telefon jest lepszy: iPhone czy Samsunga?", "label": "poza_zakresem", "source": "llm"}
+{"text": "ile kosztuje wysylka do zagranicy", "label": "dostawa", "source": "llm"}
+{"text": "Jak sprawdzic ile punktow mam w programie lojalnosciowym?", "label": "konto", "source": "llm"}
+{"text": "Moze napiszesz mi wypracowanie na temat rewolucji przemysłowej?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Nie mam karti kredytowej, czes jest inna opcja szybka", "label": "platnosci", "source": "llm"}
+{"text": "czy kurier wniesie lodowarkę do kuchni bo nie dam rady sama", "label": "dostawa", "source": "llm"}
+{"text": "Jak szybko naucie sie języka niemieckiego?", "label": "poza_zakresem", "source": "llm"}
+{"text": "ktora marka telewizorow jest najlepsza do ogladania meczów?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy mozna odebrac towar dzisiaj w salonie na ul. Marszałkowskiej?", "label": "dostawa", "source": "llm"}
+{"text": "przeslkałem towar do naprawy kiedy dostane info", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Płaciłem przelewem 2 godziny temu i wciąż status nieaktualny. Sprawdźcie to pilnie!", "label": "platnosci", "source": "llm"}
+{"text": "Czy musze podac numer telefonu przy rejestracji w sklepie?", "label": "konto", "source": "llm"}
+{"text": "Czy firma może zwrócić towar kupiony na fakturę z NIP?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Ile trwa montaz telewizora w mieszkaniu?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jak aktywuje ten kod rabatowy", "label": "platnosci", "source": "llm"}
+{"text": "Co dzisiaj na obiad? Mam tylko kurczaka i pomidory.", "label": "poza_zakresem", "source": "llm"}
+{"text": "Dajcie znać kiedy kasa wpadnie na konto bo czekam na ten przedmiot", "label": "platnosci", "source": "llm"}
+{"text": "czy promocja obejmuje też karty podarunkowe", "label": "platnosci", "source": "llm"}
+{"text": "chca kupic telewizor i potrzebuje kogoś kto go zamontuje w salonie jak najszybciej", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy kava pobudza lepiej niz czarna herbata", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy mozna wymienic kolor", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy mogę płacić metodą BLIK?", "label": "platnosci", "source": "llm"}
+{"text": "Moje dane osobowe byly zmienione przez kogoś innego", "label": "konto", "source": "llm"}
+{"text": "Czy dacie mi info gdy towar wyjedzie z magazynu", "label": "dostawa", "source": "llm"}
+{"text": "Ile trwa zwrot kasy na kontegor?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy mozna odszlakowanie towaru", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak pobrac moje dane osobowe?", "label": "konto", "source": "llm"}
+{"text": "Czy produkty z outletu posiadaja oryginalne opakowanie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Gdzie sprawdzic punkty Zorza Punkty?", "label": "konto", "source": "llm"}
+{"text": "Jak oddać stary telefon do utylizacji", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Możesz napisać wiersz o jesiennym lesie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jestem wściekły bo paczka przyszła z rozbitem ekranem, natychmiast żądam wymiany!", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Blik nie przechodzi", "label": "platnosci", "source": "llm"}
+{"text": "Błąd przy płatnosci kartą, sprudowałem 3 razy i nie dziala", "label": "platnosci", "source": "llm"}
+{"text": "Czy mam możliwość anulowania wysyłki przed jej nadaniem?", "label": "dostawa", "source": "llm"}
+{"text": "Chce kupić coś przed premierą, kiedy dokładnie rusza przedsprzedaż laptopa Asus?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy muszę zakładać konto, żeby zrobić zakupy?", "label": "konto", "source": "faq"}
+{"text": "Jak zmienić dane do faktury lub adres dostawy zapisany w koncie?", "label": "konto", "source": "faq"}
+{"text": "czy mam musiec oddawac stary komputer do was żeby kupic nowy", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "paczka przyszla rozwalona", "label": "dostawa", "source": "llm"}
+{"text": "Jaki przepis na najlepsze ciasto czekoladowe polecasz?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałbym oddać ten telewizor bo mi nie pasuje kolor", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy w salonie mozna pogladac modele z outletu?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy iPhone 15 jest lepszy od Samsunga S23?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy paczkomat w mojej okolicy przyjmuje duże pudełka", "label": "dostawa", "source": "llm"}
+{"text": "reklamacja przesyłka zglaszam usterke", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Paczka do mnie nie doszla a status pokazuje doręczona. Chce reklamacji", "label": "dostawa", "source": "llm"}
+{"text": "Dostawa ma byc darmowa powyżej jakiej kwoty?", "label": "dostawa", "source": "llm"}
+{"text": "Co za syf jest z wasza gwarancja bo nic nie dziala", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Moje konto jest zablokowane", "label": "konto", "source": "llm"}
+{"text": "Co teraz robic bo konsola nie wchodzi na system?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy produkty z outletu mają pełną gwarancje producenta?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jakie dokumenty potrzebne do odesłania towaru", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak włączyć weryfikację dwuetapową?", "label": "konto", "source": "faq"}
+{"text": "gdzie wklejic kod podarunkowy", "label": "platnosci", "source": "llm"}
+{"text": "Usunijcie moje dane z bazy sprzedawcy", "label": "konto", "source": "llm"}
+{"text": "Czy produkty z ekspozycji tez podlegaja zwrotowi", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Chce kupic na fakture firme", "label": "platnosci", "source": "llm"}
+{"text": "czy mam musiec zostawic oryginalne pudełko przy oddawaniu towaru?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "ile dni czekam na decyzje", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak zmienić adres dostawy w moim profilu?", "label": "konto", "source": "llm"}
+{"text": "czy szczupy jedza ryby", "label": "poza_zakresem", "source": "llm"}
+{"text": "Moze mi pan powiedac ile dni czekam na odpowiedz z biura reklamacji.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy sztuczna inteligencja zastąpi lekarzy w przyszłości?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jak pobrac kopię moich danych osobowych zgodnie z RODO", "label": "konto", "source": "llm"}
+{"text": "Zorza Ochrona+ czy to jest dodatkowe uerplacenie za naprawy", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy warto kupować konsolę PlayStation 5 czy lepiej zostac przy PC?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Gdzie zmieniam dane do faktury pod adresem firmowym", "label": "konto", "source": "llm"}
+{"text": "Jak zmienić adres e-mail przypisany do konta?", "label": "konto", "source": "faq"}
+{"text": "Chcę zmienić haslo ale nie dostaje maila z linkiem do zmiany", "label": "konto", "source": "llm"}
+{"text": "gdzie sprawdzic status reklamacji", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy ten adapter pasuje do mojego telefonu samsung", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mozna zaplacic zbiorczo za kilka osobnych koszykow jednym przelewem", "label": "platnosci", "source": "llm"}
+{"text": "Jak zmienić nazwisko w profilu klienta", "label": "konto", "source": "llm"}
+{"text": "Czy mogę zapłacić za telefon na raty bez żadnych dodatkowych opłat?", "label": "platnosci", "source": "llm"}
+{"text": "Czy w salonie mozna pogladac nowosci przed kupnem", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Co lepsze: buty Nike czy Adidas do biegania po lesie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Ile czasu mam na odbiór paczki z paczkomatu?", "label": "dostawa", "source": "faq"}
+{"text": "Czy mozna zaplacic karta podarunkowa za calosc", "label": "platnosci", "source": "llm"}
+{"text": "ile dni czekam na towar", "label": "dostawa", "source": "llm"}
+{"text": "Czy mogę zaplacic kartą debetową czy tylko kredytowa?", "label": "platnosci", "source": "llm"}
+{"text": "Czy musze podawac numer telefonu przy rejestracji?", "label": "konto", "source": "llm"}
+{"text": "Chcialem zapytac o montaz telewizora w zabudowie meblowej. Czy to jest w cenie produktu?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Chciałbym zwrócić ten telewizor, bo mi nie pasuje kolor.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy dostanę zwrot kosztów dostawy przy zwrocie towaru?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Jak działa ten system Zaplac pozniej", "label": "platnosci", "source": "llm"}
+{"text": "Czy moga sie zapisać do programu lojalnosciowego przez telefon?", "label": "konto", "source": "llm"}
+{"text": "Chciałbym dodać nowy adres do dostawy w profilu, bo przeprowadzam się.", "label": "konto", "source": "llm"}
+{"text": "Czy produkty z przedsprzedazy przychodza w oryginalnych opakowaniach?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Ile dni mam na zwrot towaru bez podania przyczyny", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "jakie sa zalety pracy zdalnej nad pracen na biurze", "label": "poza_zakresem", "source": "llm"}
+{"text": "Kiedy kasa wróci na moje konto po zwrocie towaru", "label": "platnosci", "source": "llm"}
+{"text": "Jak zabezpieczyć moje dane przed hakerami", "label": "konto", "source": "llm"}
+{"text": "Paczka rozdarta a telefon w środku ma pękniętą szybkę", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy polska reprezentacja wygra jutrzejszy mecz?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Karty podarunkowe - jak je kupić", "label": "platnosci", "source": "llm"}
+{"text": "Czy musze podawac PESEL przy zakładaniu konta", "label": "konto", "source": "llm"}
+{"text": "Chce poddac towar odbiorowi osobistemu ale czy musze czec na niego", "label": "dostawa", "source": "llm"}
+{"text": "czy odzesc kase za dostecze przy zwrocie paczki", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Ktora marka laptopa najlepiej trzyma baterię w podróży?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Cena w necie jest niża niz w salonie czemu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mozna zmienić kuriera na inny?", "label": "dostawa", "source": "llm"}
+{"text": "czy faktura nip blokuje mozliwosc odeslania towaru", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "mozesz przetlumzyc zdanie 'I am looking forward to meeting you' na polski?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jakie dane osobowe przechowujecie w systemie?", "label": "konto", "source": "llm"}
+{"text": "Proszę o usuniec mnie z listy mailingowej natychmiast", "label": "konto", "source": "llm"}
+{"text": "napisz wiersz o jesieni w lesie", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy dostawa kurierem jest wliczona w cene produktu?", "label": "dostawa", "source": "llm"}
+{"text": "Ile trwa przelew do was?", "label": "platnosci", "source": "llm"}
+{"text": "Chciałbym zapytac o warunki Zorza Ochrona+ bo nie rozumiem czy to pokrywa również przypadkowe uszkodzenia przez użytkownika.", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Zorza Punkty jak to działa", "label": "konto", "source": "llm"}
+{"text": "Produkt jest niedostępny. Kiedy wróci?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Czy dostawa pod drzwi jest możliwa dla dużego sprzętu AGD?", "label": "dostawa", "source": "llm"}
+{"text": "co zrobić ze starym komputerem", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy przysleszcie mi nowej sztuki zamiast naprawiac tej starej", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Kupilem to u was wczoraj i chce oddac bo zmienila mi sie zdanja. Co mam dalej?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy mogę wymienić niedziałający głośnik na inny model tej samej serii?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy te wiadomosci o wygranej 1000 zł to nie jest phishing?", "label": "konto", "source": "llm"}
+{"text": "Jak sprawdzic ile mam punktow Zorza na koncie?", "label": "konto", "source": "llm"}
+{"text": "czy dostawa pod drzwi jest płatna dodatkowo", "label": "dostawa", "source": "llm"}
+{"text": "Dostepnosc telewizora 65 cali", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Dostawa na jutro", "label": "dostawa", "source": "llm"}
+{"text": "Nie dostaje kodu weryfikacyjnego na telefon przy logowaniu", "label": "konto", "source": "llm"}
+{"text": "Jak zaktualizujecie status dostawy po potwierdzeniu przelewu?", "label": "platnosci", "source": "llm"}
+{"text": "Chciałbym wiedzieć czy program lojalnosciowy jest platny", "label": "konto", "source": "llm"}
+{"text": "Paczka uderzyła w coś i ekran jest pęknięty. Proszę o info jak reklamować.", "label": "dostawa", "source": "llm"}
+{"text": "Chcialem zmienic adres ale juz zrobilemzamowienie co teraz", "label": "dostawa", "source": "llm"}
+{"text": "chca zapisac adres dostawy pod inne nazwisko", "label": "dostawa", "source": "llm"}
+{"text": "czy mozna odebrać towar dzisiaj w salonie", "label": "dostawa", "source": "llm"}
+{"text": "Jakie są najzdrowsze owoce na zimę?", "label": "poza_zakresem", "source": "llm"}
+{"text": "jak wypisac sie z promocji", "label": "konto", "source": "llm"}
+{"text": "Ile trwa proces księgowania zwrotu środków na konto klienta", "label": "platnosci", "source": "llm"}
+{"text": "Dostawa do biura a fakturowy adres jest domowy czy to przejdzie", "label": "dostawa", "source": "llm"}
+{"text": "Zorza Ochrona+ to dobra opcja czy lepiej zostac przy zwykloj gwarancji producenta?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jak dodać drugi numer telefonu do profilu?", "label": "konto", "source": "llm"}
+{"text": "nie działa mi ekspres", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy zwrot jest darmowy jesli produkt jest wadliwy", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Chcę sprawdzić status mojej przesyłki podajcie numer śledzenia", "label": "dostawa", "source": "llm"}
+{"text": "Czy po usuniescie konta zostane nadal zapisany w programie Zorza Punkty?", "label": "konto", "source": "llm"}
+{"text": "czy ten kabel pasuje do mojego modelu konsoli", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mogę zwrócić telefon jak jest rozpakowany?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy można zapłacić punktami lojalnościowymi?", "label": "platnosci", "source": "faq"}
+{"text": "Czy produkty z outletu mozna zwracać tak samo jak zwykłe towary?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "jak szybko naprawic rozbite lusterko w aucie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "jakie sa zalety i wady nauki języka niemieckiego?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chce wyłączyć weryfikacje bo mi to tylko przeszkadza przy kupowaniu", "label": "konto", "source": "llm"}
+{"text": "Produkt wadliwy - co robic", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak szybko dostane kase za zwrot?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "nie mam dostepu do konta", "label": "konto", "source": "llm"}
+{"text": "Cześć, możesz mi podpowiedzieć jak zrobić najlepszy sernik z kremem?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałem bym wiedział czy sprzedajecie tylko polskie wersje sprzętu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Moja przesyłka jest uszkodzona i pudełko jest całe rozdarte. Co mam napisac w reklamacji?", "label": "dostawa", "source": "llm"}
+{"text": "Ile trwa czekanie na zwrotu pieniezh?", "label": "platnosci", "source": "llm"}
+{"text": "Chce usunac konto i wszystkie powiazane z nim dane osobowe.", "label": "konto", "source": "llm"}
+{"text": "Czy ten kabel pasuje do mojego laptopa marki Asus? Bo mam kilka modeli i nie jestem pewien.", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy akceptujecie karty firmowe", "label": "platnosci", "source": "llm"}
+{"text": "Jakie masz terminy dostawy na nowe modele telefonów", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Płacę kartą i chce wiedzieć czy to jest bezpieczne", "label": "platnosci", "source": "llm"}
+{"text": "Jak aktywnowac ochronę dodatkową na zakupionym telewizorze", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Można zapłacić gotówką przy odbiorze?", "label": "platnosci", "source": "llm"}
+{"text": "Szukam opcji płatności odlożonej na koncie", "label": "platnosci", "source": "llm"}
+{"text": "czy wniesie Pan telewizor do mieszkania czy tylko pod drzwi", "label": "dostawa", "source": "llm"}
+{"text": "Chce oddac telefon na utylizacje", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Dostawa do pracy", "label": "dostawa", "source": "llm"}
+{"text": "Chce dokupic ubezpieczenie sprzętu. Czy to jest obowiązkowe przed zakupem czy tylko opcjonalny dodatek?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jakie sa najzdrowsze owoce na zime?", "label": "poza_zakresem", "source": "llm"}
+{"text": "PayLater", "label": "platnosci", "source": "llm"}
+{"text": "Chcę zgłosić usterke w gniazde usb. Czy musze przesyłać produkt do was.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "gdzie znajde numer do kuriera", "label": "dostawa", "source": "llm"}
+{"text": "szukam formularza reklamacyjnego na stronie", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy akceptujecie przelewy szybkie", "label": "platnosci", "source": "llm"}
+{"text": "Czy mogę zmienić formę płatności po złożeniu zamówienia?", "label": "platnosci", "source": "faq"}
+{"text": "Mam problem z wyborem punktu odbioru. Czy mozna dodac nowy adres po oplaceniu?", "label": "dostawa", "source": "llm"}
+{"text": "Chce wystawic fakture na firme ale zapomnialem wpisac NIP przy zamówieniu", "label": "platnosci", "source": "llm"}
+{"text": "Zlecam przelew teraz a dostane potwierdzenie mailowo czy mam czekać na telefon?", "label": "platnosci", "source": "llm"}
+{"text": "czy mozna zmienic metode zaplaty na przekaz pocztowy", "label": "platnosci", "source": "llm"}
+{"text": "Dostałem zepsuty laptop. Chce wymienić na nowy jak najszybciej bo pilnie potrzebuje go do pracy.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Nie mogę sie zalogowac", "label": "konto", "source": "llm"}
+{"text": "paczkomat blisko domu", "label": "dostawa", "source": "llm"}
+{"text": "czy kurier przyjedzie jutro rano", "label": "dostawa", "source": "llm"}
+{"text": "kiedy otrzymam potwierdzenie przelewu", "label": "platnosci", "source": "llm"}
+{"text": "Jak działa program lojalnościowy Zorza Punkty?", "label": "konto", "source": "faq"}
+{"text": "Chciałem zapytać o czas rozpatrywania zgłoszenia", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Translate this sentence into English: 'Gdzie znajdę najbliższy sklep?'", "label": "poza_zakresem", "source": "llm"}
+{"text": "można wymienic na inny kolor", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jakie są terminy na zgłoszenie usterki?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak odzyskać pieniądze jak płatność została odrzucona przez bank?", "label": "platnosci", "source": "llm"}
+{"text": "Dostałem smsa ze strona podobna do waszej i pytaja o haslo. Czy to bezpieczne?", "label": "konto", "source": "llm"}
+{"text": "nie dostalem koda do zaplaty w aplikacji", "label": "platnosci", "source": "llm"}
+{"text": "nie udalo sie zaplacic kartą", "label": "platnosci", "source": "llm"}
+{"text": "Dajcie info o cenniku montazu telewizora w warszawie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "szukam info o montazu telewizora w domu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Co myślisz o nowym serialu na Netfliksie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Nie udalo mi sie zaplacic kartą", "label": "platnosci", "source": "llm"}
+{"text": "Chciałem kupić słuchawki ale zmienilem zdanie i chce je oddać.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Chcę usunac swoje dane z systemu.", "label": "konto", "source": "llm"}
+{"text": "Jak włączyć 2FA żeby bylo bezpieczniej", "label": "konto", "source": "llm"}
+{"text": "Jak długo trwa dostawa kurierem?", "label": "dostawa", "source": "faq"}
+{"text": "Nie mam czasu odebrać paczki z punktu, czy mozna ją zostawic u sąsiada", "label": "dostawa", "source": "llm"}
+{"text": "Czy mozna dodac dane do faktury proforma?", "label": "platnosci", "source": "llm"}
+{"text": "nie funziona", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak długo mogę reklamować wadliwy produkt?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Co najlepsze zjeść na kolacje, żeby schudli?", "label": "poza_zakresem", "source": "llm"}
+{"text": "co myślisz o obecnej sytuacji politycznej w Europie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Dostawa pod drzwi czy tylko do punktu?", "label": "dostawa", "source": "llm"}
+{"text": "Jak odblokowac moje konto?", "label": "konto", "source": "llm"}
+{"text": "Produkt dotarl uszkodzony, prosze o natychiawym kontaktem.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy darmowa dostawa obejmuje też lodówkę?", "label": "dostawa", "source": "llm"}
+{"text": "Chciałbym zmienić adres dostawy bo przeprowadziłem sie", "label": "dostawa", "source": "llm"}
+{"text": "Dlaczego niebo jest niebieskie? Wyjasnij mi to prosto.", "label": "poza_zakresem", "source": "llm"}
+{"text": "Moze dodacie proczu do faktury podatek", "label": "platnosci", "source": "llm"}
+{"text": "blik nie przechodzi co chwilę", "label": "platnosci", "source": "llm"}
+{"text": "Procedura reklamacyjna", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy oferujecie montaż telewizora?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "czy ten kabel pasuje do laptopa marki x", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy można zapłacić przy odbiorze?", "label": "platnosci", "source": "faq"}
+{"text": "Paczka dotarła uszkodzona. Co mam zrobić?", "label": "dostawa", "source": "faq"}
+{"text": "Czy lepiej kupic iPhonea czy Samsunga pod względem aparatu?", "label": "poza_zakresem", "source": "llm"}
+{"text": "montaz telewizora", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "odpowiedzcie na moje zgłoszenie numer 456789", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Nie pamiętam hasła. Jak je zresetować?", "label": "konto", "source": "faq"}
+{"text": "Czy kurier wniesie telewizor lub pralkę do mieszkania?", "label": "dostawa", "source": "faq"}
+{"text": "gdzie mam zglaszac usterke", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "ktory kolor ścianek najlepiej pasuje do salonu?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałbym zmienić adres dostawy bo przeprowadzka jest jutro. Czy da sie to jeszcze zrobić?", "label": "dostawa", "source": "llm"}
+{"text": "jak szybko nauczys sie francuskiego?", "label": "poza_zakresem", "source": "llm"}
+{"text": "nie dziala czolka", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Przesyłka przyszła dzis i telefon jest wbity w straszne miejsce. Chce go oddac bez żadnych komplikacji.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Chciałbym sprawdzić historie moich poprzednich zakupow", "label": "konto", "source": "llm"}
+{"text": "Cześć, jak dzis jest pogoda w Warszawie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy mozesz mi podpowiedzedz jak naprawic rower?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Moze zaplacic blikiem w apce czy tylko przez strone?", "label": "platnosci", "source": "llm"}
+{"text": "Dostawa na inny adres po zakupie", "label": "dostawa", "source": "llm"}
+{"text": "kod rabatowy nie dziala", "label": "platnosci", "source": "llm"}
+{"text": "Kiedy przyjdzie zwrot na konto?", "label": "platnosci", "source": "llm"}
+{"text": "Nie udaje mi sie zweryfikowac dwuetapowej autoryzacji", "label": "konto", "source": "llm"}
+{"text": "Moja konsola ma martwe piksele na ekranie. Czy da sie to wymienic na sprawny egzemplarz?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy moge odeslac towar bez pudełka", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy mogę połączyć zamówienie złożone jako gość z kontem?", "label": "konto", "source": "faq"}
+{"text": "Gwarancja producenta vs Zorza Ochrona+ co bardziej się opaca?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mozna zmienic nazwe użytkownika?", "label": "konto", "source": "llm"}
+{"text": "Jak sprawdzić, czy akcesorium pasuje do mojego urządzenia?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Jak wypisać się z newslettera?", "label": "konto", "source": "faq"}
+{"text": "Chciałem zapytać czy zwroty są płatne dla klienta.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "nie umiem zalogic sie do panelu klienta", "label": "konto", "source": "llm"}
+{"text": "Przesylka przyszla rozwalona i karton jest dziurawy. Co teraz?", "label": "dostawa", "source": "llm"}
+{"text": "Czy produkty higieniczne podlegaja zwrotowi", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "nie dziala kabel do monitora prosię o pomoc", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak stworzyc nowe konto na telefon komorkowy?", "label": "konto", "source": "llm"}
+{"text": "Jaki jest najszybszy sposób na pozbycie się kataru?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy w przypadku zwrotu mogę liczyć na pełny przelew środków?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy koszty wysylki przy zwrocie pokrywacie wy", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "ile trwa wysylka do szczecina", "label": "dostawa", "source": "llm"}
+{"text": "Termin zwrotu środków za reklamację", "label": "platnosci", "source": "llm"}
+{"text": "Czy moga mi oddac pieniadze za dostawke?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy wniesiecie telewizor?", "label": "dostawa", "source": "llm"}
+{"text": "Chcem oddac ten zegarek bo nie pasuje na reka. Czy musza byc oryginalne papiery", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Dajcie znać czy ten adapter zadziala z moim telefonem samsunga", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Nie umiem sie zarejestrowac strona nie laduje formularza", "label": "konto", "source": "llm"}
+{"text": "Płatność kartą czy przelewem lepsza ?", "label": "platnosci", "source": "llm"}
+{"text": "czy mozna wpisac dwa różne nipy na jedna fakture", "label": "platnosci", "source": "llm"}
+{"text": "Ile trwa zwrot kasy na konto po reklamacji", "label": "platnosci", "source": "llm"}
+{"text": "Mam stary monitor i nie wiem co z nim zrobic", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "mam kod rabatowy ale nie wiem jak go wpisać w aplikacji mobilnej. Czy możecie mi go aktywować ręcznie?", "label": "platnosci", "source": "llm"}
+{"text": "Dostałem maila o zmianie hasla mimo ze nic nie zmienialem. Czy ktoś włamał sie na moje konto?", "label": "konto", "source": "llm"}
+{"text": "Czy mozna dodac kilka adresow dostawy do jednego konta klienta?", "label": "konto", "source": "llm"}
+{"text": "ile trwa transport do szczecina", "label": "dostawa", "source": "llm"}
+{"text": "Kiedy dostanę zwrot za ten telefon", "label": "platnosci", "source": "llm"}
+{"text": "paczka mokra i rozdarta prosze o szybka pomoc", "label": "dostawa", "source": "llm"}
+{"text": "Co robic jesli nie dostaję kodu weryfikacyjnego na maila do logowania", "label": "konto", "source": "llm"}
+{"text": "Jak zmieniam e-mail w profilu", "label": "konto", "source": "llm"}
+{"text": "Paczkomat nie otwiera, co mam zrobić??", "label": "dostawa", "source": "llm"}
+{"text": "Produkt uszkodzony", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak sprawdzic czy moje konto jest zabezpieczone dwuetapowo?", "label": "konto", "source": "llm"}
+{"text": "Jak działa usługa Zapłać później?", "label": "platnosci", "source": "faq"}
+{"text": "Produkt nie działa zaraz po rozpakowaniu. Co robić?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "czy mam odzyskać koszty dostawy przy reklamacji", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Nie udaje mi sie zalogic do panelu.", "label": "konto", "source": "llm"}
+{"text": "Chciałbym wiedzieć czy mam mozliwosc przetestowania słuchawek w salonie zanim je kupie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Chciałem zaplacic ale cena się zmieniła w trakcie koszyka.", "label": "platnosci", "source": "llm"}
+{"text": "Czy mogę dokonać zwrotu towaru zakupionego w promocji wyprzedażowej bez podawania powodu?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "potrzebuje szybko oddac ten tablet", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jakie są najlepsze buty do biegania po asfalcie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Kurier nie odbiera telefonu a paczka ma być dzis", "label": "dostawa", "source": "llm"}
+{"text": "Utylizacja sprzętu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Gdzie wpisac numer vouchera?", "label": "platnosci", "source": "llm"}
+{"text": "Zablokowaliście mi konto bez żadnego ostrzeżenia. Co mam z tym zrobić?", "label": "konto", "source": "llm"}
+{"text": "czy dacie mi kod do opłacenia wysylki", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy mogę zwrócić produkt jeśli został już rozpakowany i używany przez godzinę?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jakie są najlepsze rośliny doniczkowe do ciemnego pokoju?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy mozna zaplacic za towar podczas odbioru w punkcie?", "label": "platnosci", "source": "llm"}
+{"text": "czy macie jakąś opcje na wywiezienie starego pralki", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "paczka została zgubiona przez kuriera chcę zwrotu pieniędzy natychmiast", "label": "dostawa", "source": "llm"}
+{"text": "ile dni trwa wysylka do szczecina", "label": "dostawa", "source": "llm"}
+{"text": "Ile kosztuje wysłanie telefonu do kuriera?", "label": "dostawa", "source": "llm"}
+{"text": "odwolanie decyzji o odrzuceniu", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy sztuczna inteligencja zastapi ludzi w pracy w przyszłości?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czolam, jak odzyskać dostep do mojego profilu?", "label": "konto", "source": "llm"}
+{"text": "Termin na zwrot minął o jeden dzień czy dalej dam sie przyjąć?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy mogę zmienić adres dostawy po złożeniu zamówienia?", "label": "dostawa", "source": "faq"}
+{"text": "Czy mozna usunac konto bez usuwania historii zakupow", "label": "konto", "source": "llm"}
+{"text": "usuwanie konta", "label": "konto", "source": "llm"}
+{"text": "Płacę zaplacac pozniej - jak to ustawic", "label": "platnosci", "source": "llm"}
+{"text": "Chciałbym wiedzieć czy koszt dostawy jest stały dla wszystkich produktów.", "label": "dostawa", "source": "llm"}
+{"text": "Jak odzyskac dostep do profilu jak zginel telefon z kodami", "label": "konto", "source": "llm"}
+{"text": "Ile kosztuje rozszerzona gwarancja Zorza Ochrona+?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "przesylka nie dotarla na czas", "label": "dostawa", "source": "llm"}
+{"text": "Mam problem z kodem promocyjnym, pisze ze sprawnoscią. Pomoc!", "label": "platnosci", "source": "llm"}
+{"text": "Gdzie mam zgłosić awarie?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy dostawa do paczkomatu jest darmowa przy reklamacji?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy mogę zwrócić produkt bez oryginalnego opakowania?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Chciałbym wiedzieć czy mogę odebrać zamówienie bezpośrednio z magazynu.", "label": "dostawa", "source": "llm"}
+{"text": "Jak złożyć reklamację?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Nie chce dostawac waszych reklam na maila", "label": "konto", "source": "llm"}
+{"text": "Jak mogę odblokować moje konto? Próbowałem kilka razy wpisać haslo i teraz wyskakuje blad, ze zablokowano mnie.", "label": "konto", "source": "llm"}
+{"text": "Jak sprawdzić status reklamacji?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "paczka przyszla rozwalona prosto z pudełka co teraz", "label": "dostawa", "source": "llm"}
+{"text": "jak skutecznie odchudzić się przed wakacjami bez diety?", "label": "poza_zakresem", "source": "llm"}
+{"text": "jak sprawdzic kompatbilnosc akcesoriów na stronie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Moje konto jest zablokowane. Odblokujcie je prosze bo mam pilne zlecenie.", "label": "konto", "source": "llm"}
+{"text": "chca wypisac sie z newslettera", "label": "konto", "source": "llm"}
+{"text": "Jakie są korzyści z medytacji rano?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Co jeśli produkt z outletu nie zadziala od razu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Chciałbym wiedzieć czy istnieje mozliwosc podania innego adresu dostawy niz ten na rachunku", "label": "dostawa", "source": "llm"}
+{"text": "czy doliczacie dodatkowo za wniesienie telewizora do mieszkania", "label": "dostawa", "source": "llm"}
+{"text": "Czy jutro w Warszawie będzie padać?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Cena za rozszerzoną ochronę to przesada", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "kod promo nie działa w koszyku", "label": "platnosci", "source": "llm"}
+{"text": "Czy te produkty z outletu są sprawne i mają jakieś rysy?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jak zwrócić produkt?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "chcialem zapytać o koszty wysyłki do poznania", "label": "dostawa", "source": "llm"}
+{"text": "czy zwrot jest mozliwy bez podania przyczyny", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Ile kalorii ma jedna porcja pizzy wegetarianskiej?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy mogę podzielić zamówienie na kilka przesyłek?", "label": "dostawa", "source": "faq"}
+{"text": "Moje konto jest zablokowane i nie wiem dlaczego. Potrzebuję pilnie dokonać zakupu jeszcze dzisiaj!", "label": "konto", "source": "llm"}
+{"text": "Czy czescie zmianę hasla jest wymagana przez wasz system?", "label": "konto", "source": "llm"}
+{"text": "blik nie dziala na stronie", "label": "platnosci", "source": "llm"}
+{"text": "Gdzie wpisac kod zniżkowy?", "label": "platnosci", "source": "llm"}
+{"text": "Jak odzyskac kody rabatowe", "label": "platnosci", "source": "llm"}
+{"text": "Jak odpiąć newsletter?", "label": "konto", "source": "llm"}
+{"text": "czy ta myszka pasuje do mojego tabletu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "kurier nie dzwoni i czekam na niego od godziny", "label": "dostawa", "source": "llm"}
+{"text": "Moje konto jest zablokowane. Próbowałem wpisać haslo kilka razy i teraz nic nie dziala. Co mam teraz zrobic żeby kupic produkt?", "label": "konto", "source": "llm"}
+{"text": "czy te słuchawki pasuja do pada playstation 5", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Chciałem zapytać czy przy reklamacji dostane towar naprawiony czy nowy. Bardzo pilne.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Ile mam czasu na opłacenie zamówienia przelewem tradycyjnym?", "label": "platnosci", "source": "faq"}
+{"text": "jak przygotować idealną kolace z ryby?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Płacę przelewem i nie wiem gdzie wpisać numer zamówienia.", "label": "platnosci", "source": "llm"}
+{"text": "czy zorza ochrona+ to jest dodatkowo płatne?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "co ogladac dzis wieczorem na netflixie", "label": "poza_zakresem", "source": "llm"}
+{"text": "Moja przesyłka utknęła w sortowni od trzech dni i nic sie nie zmienia. Proszę o szybką pomoc.", "label": "dostawa", "source": "llm"}
+{"text": "Chce usunec swoje dane osobowe ze sklepu", "label": "konto", "source": "llm"}
+{"text": "Jak gotować idealny risotto?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy ta maszyna do prania zjada dużo prądu?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jakie są warunki korzystania z PayPo?", "label": "platnosci", "source": "llm"}
+{"text": "Czy mogę dopisać numer telefonu do kuriera w trakcie realizacji zamówienia?", "label": "dostawa", "source": "llm"}
+{"text": "Pomóż mi napisać list do mojego szefa o podwyżce.", "label": "poza_zakresem", "source": "llm"}
+{"text": "Ile kosztuje dostawa?", "label": "dostawa", "source": "faq"}
+{"text": "Jak usunąć konto?", "label": "konto", "source": "faq"}
+{"text": "moje konto jest zamkniete dlaczego", "label": "konto", "source": "llm"}
+{"text": "Chce zrezygnowac z programu lojalnosciowego i usunac wszystkie swoje punkty.", "label": "konto", "source": "llm"}
+{"text": "Chcialem zaplacic ratami ale nie widze tej opcji przy koszyku", "label": "platnosci", "source": "llm"}
+{"text": "mam problem z kodem do paczkomatu", "label": "dostawa", "source": "llm"}
+{"text": "hej, daj mi przepis na domowe ciasto czekoladowe", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałbym zamówić montaz telewizora w domu. Czy oferujecie taką usługę i ile to kosztuje?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mogę dodać kilka kart płatniczych do mojego profila klienta żeby wybierać je przy zakupach?", "label": "platnosci", "source": "llm"}
+{"text": "Co lepsze: iPhone czy Samsung? Który trzyma baterię dłużej?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy mozna zaplacic przy kurierze", "label": "platnosci", "source": "llm"}
+{"text": "Hej, czy potrafisz napisać kod w Pythonie do przeliczenia walut?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jak działa ta wasza Zorza Ochrona+", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy ryby sa zdrowe dla dzieci?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Dostawa w sobotę to wykluczone?", "label": "dostawa", "source": "llm"}
+{"text": "Nie dziala kod rabatowy przy koszyku", "label": "platnosci", "source": "llm"}
+{"text": "Gdzie sprawdzic status mojej zgłoszenia", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Chcem zgłosić wadliwy towar procz napiscie mi co mam zrobic dalej", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak skorzystać z gwarancji producenta?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Chciałbym wiedzieć czy przy płatności ratowej są jakieś dodatkowe opłaty ukryte w cenie", "label": "platnosci", "source": "llm"}
+{"text": "Gdzie znajdę historię moich zamówień?", "label": "konto", "source": "faq"}
+{"text": "Chce wypisac sie z reklam", "label": "konto", "source": "llm"}
+{"text": "Dostałem do paczki cos innego niz zamawialem i chce oddac to natychmast", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy mogę obejrzeć ten ekspres w salonie przed zakupem?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy odz_e_c_ie _pien_iz_y _za_ zwrot_ jest _mo_liwe", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "nie potefe jak zrobic weryfikacji dwuetapowej", "label": "konto", "source": "llm"}
+{"text": "Co najlepiej jeść na kolacje, żeby schudnac?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy te punkty lojalnosciowe mozna wymienic na gotówke w sklepie", "label": "platnosci", "source": "llm"}
+{"text": "Gdzie jest moja paczka?", "label": "dostawa", "source": "llm"}
+{"text": "zwrot towaru bez powodu", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "montaz telewizora cena", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy darmowa dostawa obejmuje wszystkie produkty", "label": "dostawa", "source": "llm"}
+{"text": "Nie dziala przycisk zapom_pasla", "label": "konto", "source": "llm"}
+{"text": "Czy dostane fakture na firme? Potrzebuje jej do rozliczenia w biurze.", "label": "platnosci", "source": "llm"}
+{"text": "co z gwarancja jak producent odmawia naprawy", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy mozna odebrac paczke u kolegi", "label": "dostawa", "source": "llm"}
+{"text": "czy ten adapter bede mogl podlaczyc do starego komputera", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Możecie mi ją wnieść do pokoju na czwarte piętro?", "label": "dostawa", "source": "llm"}
+{"text": "Dostawa za darmo do paczkomatu", "label": "dostawa", "source": "llm"}
+{"text": "Próbuje zalogic się do panelu ale wyskakuje blad podlozenia hasla", "label": "konto", "source": "llm"}
+{"text": "Czy gwarancja obejmuje tylko usterki techniczne czy też uszkodzenia mechaniczne?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Towar niekompletny w paczce co dalej", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy weganizm jest dobrym wyborem dla zdrowia?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy ceny w sklepie internetowym i w salonie są takie same?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "przepisz ten tekst na styl bardziej formalny: Hej, nie dam rady przyjdziec.", "label": "poza_zakresem", "source": "llm"}
+{"text": "Co to jest Zorza Ochrona+?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Jak długo trwa naprawa gwarancyjna?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Kiedy otrzymam zwrot pieniędzy?", "label": "platnosci", "source": "faq"}
+{"text": "Co najlepszego na obiad, mam tylko kurczaka i baklawa?", "label": "poza_zakresem", "source": "llm"}
+{"text": "nie umiem odblokowac paczkomatu prosza o pomoc", "label": "dostawa", "source": "llm"}
+{"text": "Ile kosztuje utylizacja starego lodówki", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy wysyłacie za granicę?", "label": "dostawa", "source": "faq"}
+{"text": "produkt nie włącza sie w ogole", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "mam problem z gwarancja. Co mam teraz zrobic bo ekran nie sie zapala", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "podajcie numer śledzenia", "label": "dostawa", "source": "llm"}
+{"text": "Czy dostawa do Warszawy jest darmowa jak podano na stronie?", "label": "dostawa", "source": "llm"}
+{"text": "Czy płatność za telefon zostanie obciążona od razu czy po wysklepce?", "label": "platnosci", "source": "llm"}
+{"text": "moje konto jest zablokowane co robic", "label": "konto", "source": "llm"}
+{"text": "Moje konto jest zablokowane i potrzebuje pilnej pomocy bo mam zamówienie w toku!", "label": "konto", "source": "llm"}
+{"text": "Chciałbym połączyć kilka zakupow goczych pod jedno konto profilowe.", "label": "konto", "source": "llm"}
+{"text": "czy ten zasilacz zadziala z obca marką laptopa", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy cena promocji z internetu obowiązuje tez przy zakupie stacjonarnym", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Chyba mam wadę fabryczną, bo ekran miga co chwila. Jak wygląda proces reklamacyjny?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy wysylacie do niemiec", "label": "dostawa", "source": "llm"}
+{"text": "Czy Zorza Ochrona+ obejmuje też przypadkowe zalanie kawą na klawiaturę?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "mozesz napisac wypracowanie o historii bitwy pod Grunwaldem?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Produkt przyszedł z pękniętym ekranem. Co teraz robic?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Nie chce uwzgladavac moich danych do newslettera przy zakupach", "label": "konto", "source": "llm"}
+{"text": "jaka dzisiaj pogoda w Warszawie", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy dam sie rozplatac na raty 0%", "label": "platnosci", "source": "llm"}
+{"text": "Moja klawiatura przestała działać po tygodniu. Czy naprawicie ją ramach ochrony rozszerzonej?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jak dostać zniżke za bycie stałym klientem?", "label": "konto", "source": "llm"}
+{"text": "czy akceptuje panie karty debetowe", "label": "platnosci", "source": "llm"}
+{"text": "Czy mozna dodac kilka kodow rabatowych naraz?", "label": "platnosci", "source": "llm"}
+{"text": "nie mam dostępu do maila powiazanego z kontem", "label": "konto", "source": "llm"}
+{"text": "Czy produkty są nowe i z polskiej dystrybucji?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Czy przy rejestracji koniecznie musze podawac numer telefonu?", "label": "konto", "source": "llm"}
+{"text": "Mam problem z kodem rabatowym on nie dziala", "label": "platnosci", "source": "llm"}
+{"text": "Co sądzisz o obecnej sytuacji politycznej w Europie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "jakie sa najlepsze gry planszowe dla czteroosobowej grupy?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy wysylacie meble zestawami w jednej przesyłce?", "label": "dostawa", "source": "llm"}
+{"text": "Jaką gwarancję mają produkty?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Paczka jest uszkodzona w środku", "label": "dostawa", "source": "llm"}
+{"text": "Chciałbym zwrócić ten telefon bo po prostu zmienilem zdanie.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Produkt przyszl do mnie rozbite, chce odszkodowania.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Ile trwa naprawa w ramach gwarancji producenta zazwyczaj", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jak mogę śledzić przesyłkę?", "label": "dostawa", "source": "faq"}
+{"text": "Czy jak kupue jako gość to te produkty beda widoczne w moim panelu", "label": "konto", "source": "llm"}
+{"text": "Nie chce tego telewizora, chce oddac", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Gdzie znajde wasz punkt stacjonarny?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jakie formy płatności są dostępne w sklepie?", "label": "platnosci", "source": "faq"}
+{"text": "Blokada konta", "label": "konto", "source": "llm"}
+{"text": "Nie mogę sie zalogic do panelu", "label": "konto", "source": "llm"}
+{"text": "czy przyjmujecie blik", "label": "platnosci", "source": "llm"}
+{"text": "odpowiedzcie szybko bo kabel nie laduje telefonu!", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "gdzie znajde najblizsy salon", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy polityka zagraniczna UE jest obecnie skuteczna?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Możesz napisać dla mnie krótkie wypracowanie o rewolucji przemysłowej?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy montaz jest w cenie produktu czy dodatkowo płacie za robocizne?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "kurier przyjechał ale nie ma mnie w domu. Czy moze zostawic pod drzwiami?", "label": "dostawa", "source": "llm"}
+{"text": "Płacę kartą i wyskoczył mi błąd 'brak środków', ale kasa znikla z banku. Co teraz robicie?", "label": "platnosci", "source": "llm"}
+{"text": "Chce usuniec konto i wszystkie moje dane z waszej strony", "label": "konto", "source": "llm"}
+{"text": "Chciałbym kupić telefon na raty, ale nie mam zdolności kredytowej. Jakie macie inne opcje?", "label": "platnosci", "source": "llm"}
+{"text": "Jak sprawdzic status mojej rejestracji?", "label": "konto", "source": "llm"}
+{"text": "kiedy dostanec produkty preorderowe", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Na jakich warunkach można kupić na raty?", "label": "platnosci", "source": "faq"}
+{"text": "Jaki jest najszybszy procesor na rynku obecnie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy mozna dziesiec procent zniżki na fakture", "label": "platnosci", "source": "llm"}
+{"text": "czy te punkty zorza przepadna jak zamykam konto", "label": "konto", "source": "llm"}
+{"text": "jaka jest najlepsza dieta na osłabienie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Mozesz napisać dla mnie przemówienie na ślub koleżanki?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Napisz mi wiersz o jesiennym liściu.", "label": "poza_zakresem", "source": "llm"}
+{"text": "Co myslisz o dzisiejszych wynikach meczu reprezentacji?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Hej, potrzebuję pomocy z treningiem siłowym na początkujący.", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałbym wiedzieć jakie są warunki odroczonej płatności u was", "label": "platnosci", "source": "llm"}
+{"text": "Czy płatność kartą w sklepie jest bezpieczna?", "label": "platnosci", "source": "faq"}
+{"text": "Czy mogę zwrócić sprzęt z outletu jeśli mi nie pasuje", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy wniesiecie mi lodówkę do kuchni na czwarte piętro bez windy", "label": "dostawa", "source": "llm"}
+{"text": "Zorza Punkty jak wymienic na zniżke", "label": "konto", "source": "llm"}
+{"text": "Nie umiem ustawic dwuetapowej autoryzacji bo nie rozumiem instrukcji", "label": "konto", "source": "llm"}
+{"text": "Dostępność laptopa Asus - kiedy konkretnie przyjedzie towar?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "reklamacja", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "nie działa router wlasnicze podlaczony do pradu", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czym są produkty z outletu?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "czy cena za tv jest taka sama jak u was w sklepie stacjonarnym", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy pies może jeść jabłka?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy mozesz przetlumzyc tekst z niemieckiego na polski?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Gdzie mogę oddać stary laptop do utylizacji?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy dacie mi fakture na nip", "label": "platnosci", "source": "llm"}
+{"text": "czy mozna zaplacic od razu po klikniecie kup teraz", "label": "platnosci", "source": "llm"}
+{"text": "Moje konto zostało zablokowane. Dlaczego?", "label": "konto", "source": "faq"}
+{"text": "Czy mozna podzielic kosztem na raty bez procentow", "label": "platnosci", "source": "llm"}
+{"text": "Dostałem SMSa z dziwnym linkiem i prosze o pomoc bo boje sie ze to phishing", "label": "konto", "source": "llm"}
+{"text": "podslonili mi haslo do konta co robic", "label": "konto", "source": "llm"}
+{"text": "Chciałem kupić to na raty ale nie widze opcji w koszyku. Co mam zrobić?", "label": "platnosci", "source": "llm"}
+{"text": "jakie sa najnowsze odkrycia w dziedzinie sztucznej inteligencji?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jakie są najpopularniejsze gry mobilne w tym roku?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy te słuchawki mozna oddac bez pudełka?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy te słuchawki beda pasowac do mojego telefonu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Dostałem SMSa z linkiem do zmiany hasla ale nie zamawiałem niczego. Czy to bezpieczne?", "label": "konto", "source": "llm"}
+{"text": "Jestem bardzo zdenerwowany bo towar nie przyszedł a chce wiedziec czy w ogóle macie go na stanie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Ile kosztuje wysklepanie do domu?", "label": "dostawa", "source": "llm"}
+{"text": "nie udaje mi sie stworzyc nowego konta wyskakuje cos czegos", "label": "konto", "source": "llm"}
+{"text": "Jak szybko najdzie szybciej z Warszawy do Krakowa?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy wniesienie pralki do mieszkania jest płatne dodatkowo", "label": "dostawa", "source": "llm"}
+{"text": "Jakie sa zalety diety keto dla początkujących?", "label": "poza_zakresem", "source": "llm"}
+{"text": "potrzebue zmiany adresu dostawy pilne", "label": "dostawa", "source": "llm"}
+{"text": "Moja karta została odrzucona przez wasz system. Czy moje dane są bezpieczne?", "label": "platnosci", "source": "llm"}
+{"text": "Zlozcie moje konto trvale", "label": "konto", "source": "llm"}
+{"text": "Czy produkty z outletu nadal podlegaja standardowej gwarancji producenta?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Produkt przestał działać po 2 dniach od zakupu co robic", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Moje konto nie istnieje. Próbowałem wpisac maila ale wyskakuje blad.", "label": "konto", "source": "llm"}
+{"text": "czy mam musiec zaplaty za utylizacje starego komputera", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Ile trwa wysyłka do innych miast?", "label": "dostawa", "source": "llm"}
+{"text": "mam problem z praca laptopa prosię o info jak zgłosić usterke", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy ten adapter jest kompatybilny z moim telefonem", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "chca bramki kody do paczkomatu a ja nie mam dostepu", "label": "dostawa", "source": "llm"}
+{"text": "Co zrobić ze zużytym sprzętem elektronicznym?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "Dostawa do paczkomatu jest wolniejsza niz kurierem?", "label": "dostawa", "source": "llm"}
+{"text": "Dostawa była spozniona a teraz myszka nie klika. Chce oddac i odziesc kase", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy słuchawki kupione na promocji też można oddać?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jaki sport jest najbardziej ekscytujacy do oglandania?", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy przy odbiorze osobistym muszę mieć fakture papierowa", "label": "dostawa", "source": "llm"}
+{"text": "Dostałem podejrzany e-mail podszywający się pod sklep. Co zrobić?", "label": "konto", "source": "faq"}
+{"text": "Chyba mam problem z gwarancją producenta czy mam do was uderzac", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy kurier może dostarczyć lodówkę do kuchni na drugim piętrze?", "label": "dostawa", "source": "llm"}
+{"text": "Jak sprawdzic czy produkt jest nowy w paczce", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy mozna oddac stare telefony w sklepie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy dostawy pod drzwi wykonuje firma inpost czy kurier", "label": "dostawa", "source": "llm"}
+{"text": "Czy mogę wymienić ten zepsuty odkurzacz na nowy model za doplate?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Jak zrobic zapisane metody płatnosci?", "label": "konto", "source": "llm"}
+{"text": "faktura vat na firmę podaję w koszyku czy teraz", "label": "platnosci", "source": "llm"}
+{"text": "Jaki jest najszybszy procesor do grania w gry teraz?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chce wyjsc z programu lojalnosciowego bo juz nie chcem zbierac punktow", "label": "konto", "source": "llm"}
+{"text": "Płacę kartą i co chwilę wywala mnie z systemu.", "label": "platnosci", "source": "llm"}
+{"text": "Podpowiedz prosze jak naprawic zepsuty kran w kuchni", "label": "poza_zakresem", "source": "llm"}
+{"text": "Potrzebuje pomoc przy podlaczeniu soundbara do tv", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mogę przetestować produkt w salonie?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "chcem oddac stary tablet do utylizaji gdzie mam sie udac", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy warto kupic rower elektryczny dojazdem do pracy?", "label": "poza_zakresem", "source": "llm"}
+{"text": "brak numeru przesyłki na mailu", "label": "dostawa", "source": "llm"}
+{"text": "czy woda z kranu jest zdrowa do picia?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Wniesienie dużego sprzętu do mieszkania jest w cenie czy trzeba doplacic kierowcy?", "label": "dostawa", "source": "llm"}
+{"text": "Zasady odwołania", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Ile czekam na kasa za zwrot?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy przy zakupie na raty są jakieś dodatkowe prowizje ukryte w umowie?", "label": "platnosci", "source": "llm"}
+{"text": "Chcę oddać ten telewizor bo mi nie pasuje kolor", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy produkty z preorderu dostane od razu po premierze", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czolam, jak odpiąć się od waszego newslettera?", "label": "konto", "source": "llm"}
+{"text": "Czy kofeina wpływa na jakość snu?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Opisz mi krótko teorię względności Einsteina.", "label": "poza_zakresem", "source": "llm"}
+{"text": "czy faktura zostanie wyslana na maila automatycznie", "label": "platnosci", "source": "llm"}
+{"text": "Czesc, co ogladasz dzisiaj w tv?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Dajcie mi znać kiedy przyjdzie kasa za zwrot", "label": "platnosci", "source": "llm"}
+{"text": "Czy dostawa do biura jest możliwa w godzinach 16-18?", "label": "dostawa", "source": "llm"}
+{"text": "koszt dostawy do biura", "label": "dostawa", "source": "llm"}
+{"text": "napisz mi kod w Pythonie do sortowania listy obiektów", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jak założyć konto?", "label": "konto", "source": "faq"}
+{"text": "Czy Zorza Ochrona+ obejmuje kradzież?", "label": "produkty_gwarancja", "source": "faq"}
+{"text": "czy ta firma X jest wiarygodna i czy warto tam robic zakupy?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy dostawca wniesie lodówkę na trzecie piętro bez windy?", "label": "dostawa", "source": "llm"}
+{"text": "czy cena w internecie jest taka sama jak na miejscu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy moga mi oddac pien_iz_e za dostawke?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy mam mozliwosc obejrzec towar w salonie przed zakupem online", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy przy preorderze cena moze sie zmienic?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Przesylka zalega w punkcie od tygodnia i nikt jej nie odbiera", "label": "dostawa", "source": "llm"}
+{"text": "zabezpieczanie przed kradziezciaa - czy to jest w pakiecie", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy płatność BLIKiem jest natychmiastowa?", "label": "platnosci", "source": "llm"}
+{"text": "nie wlasnicze opakowanie czy przyjmiecie zwrot", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "czy fakture mowia w koszyku czy musza dzdzwonic do biura", "label": "platnosci", "source": "llm"}
+{"text": "Czy przy zakupach bez logowania moje dane zostaja w systemie?", "label": "konto", "source": "llm"}
+{"text": "Czy program Zorza Punkty jest darmowy dla kazdego klienta?", "label": "konto", "source": "llm"}
+{"text": "Kupiłem produkt w salonie stacjonarnym. Czy mogę go zwrócić?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "czy wniesienie pralki jest w cenie czy trzeba doplacac za pomoc technika", "label": "dostawa", "source": "llm"}
+{"text": "Czy produkty w outletcie są sprawdzane przed wysyłką?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy słuchawki mogą być reklamowane jakiś czas po zakupie?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "nie dziala", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy moja karta jest bezpieczna u was", "label": "platnosci", "source": "llm"}
+{"text": "jestem bardzo niezadowolony bo produkt nie wlasnicze dziala po wyjęciu z kartonu. Chcę natychmiastowego zwrotu pieniędzy.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Pieniądze znikły z karty a nie mam potwierdzenia zakupu prosze o pomoc jak najszybsza!", "label": "platnosci", "source": "llm"}
+{"text": "Czesc, jak dobra jest obecnie pogoda w Londynie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałbym oddać ten telewizor bo mi nie pasuje kolor.", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "paczka przyszla mokra", "label": "dostawa", "source": "llm"}
+{"text": "Moja karta nie jest akceptowana przez bramke płatniczą. Czy możecie sprawdzić co jest nie tak?", "label": "platnosci", "source": "llm"}
+{"text": "Jakie buty do biegania najlepiej wybrać dla początkujących?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Dostałem zepsuty laptop, co teraz mam robic?", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Czy koniczne jest picie 2 litrów wody dziennie?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jakie są zalety diety ketogenicznej?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Chciałem użyć kodu z newslettera ale pokazuje, że jest już wykorzystany. Co mam zrobić?", "label": "platnosci", "source": "llm"}
+{"text": "Czy mogę dodać NIP do faktury po złożeniu zamówienia?", "label": "platnosci", "source": "faq"}
+{"text": "Chce zmienić adres na inny", "label": "dostawa", "source": "llm"}
+{"text": "Czy mogę przynieść stary monitor do wyrzucenia?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "nie mam hasla i nie mam dostepu do starego maila", "label": "konto", "source": "llm"}
+{"text": "Dostawa za granicę kosztuje", "label": "dostawa", "source": "llm"}
+{"text": "Ile trwa zwrot pieniedzi po odesłaniu towaru", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Dlaczego niebo jest niebieskie? Tłumacz na chłopski rozum.", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jakie są aktualne przepisy drogowe w Polsce?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Ile trwa naprawa w serwisie i czy dostane pożyczkę na czas?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "czy mozesz mi napisać kod w pythonie do sortowania listy?", "label": "poza_zakresem", "source": "llm"}
+{"text": "dostawa darmowa od ilu zl", "label": "dostawa", "source": "llm"}
+{"text": "przedsprzedaz - kiedy dostane towar", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mogę zamówić dostawę do pracy lub na inny adres niż adres na fakturze?", "label": "dostawa", "source": "faq"}
+{"text": "Ile kosztuje montaż konsoli na ścianie w domu", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy punkty lojalnosciowe wygasaja?", "label": "konto", "source": "llm"}
+{"text": "Czy możecie podać orientacyjny termin przyjazdu kuriera na dzis?", "label": "dostawa", "source": "llm"}
+{"text": "gdzie jest moja paczka", "label": "dostawa", "source": "llm"}
+{"text": "mozna zaplacic blikiem", "label": "platnosci", "source": "llm"}
+{"text": "Ile mam czasu na zwrot towaru?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "Czy zwrot jest darmowy?", "label": "zwroty_reklamacje", "source": "faq"}
+{"text": "gdzie mam wyslac paczke ze zwrotem", "label": "zwroty_reklamacje", "source": "llm"}
+{"text": "Ile kosztuje dokupienie dodatkowej ochrony przy zakupie smartfona?", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Czy mozna zmienić metodę zaplaty jak juz kliknalem kupuj", "label": "platnosci", "source": "llm"}
+{"text": "czy produkty z polskiej dystrybucji to te z faktura", "label": "produkty_gwarancja", "source": "llm"}
+{"text": "Jakie są najlepsze techniki nauki języków obcych?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jakie buty do biegania wybrać dla początkujących?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Czy czesolow skonto jest aktualne?", "label": "platnosci", "source": "llm"}
+{"text": "jak przygotowac domowe ciasto czekoladowe?", "label": "poza_zakresem", "source": "llm"}
+{"text": "nie dostalem faktury do maila", "label": "platnosci", "source": "llm"}
+{"text": "czy darmowa dostawa obejmuje telewizory", "label": "dostawa", "source": "llm"}
+{"text": "Chce zmienić punkt odbioru na inny paczkomat bo ten jest zajety", "label": "dostawa", "source": "llm"}
+{"text": "czy dostawy pod drzwi jest za darmo powyzej 200zl", "label": "dostawa", "source": "llm"}
+{"text": "Co sprawia, że kawa smakuje najlepiej?", "label": "poza_zakresem", "source": "llm"}
+{"text": "Jak działa odbiór osobisty w salonie?", "label": "dostawa", "source": "faq"}
+{"text": "Czy mam mozmoz podac NIP za fakture proforma?", "label": "platnosci", "source": "llm"}
+{"text": "Jakie akcesoria kupić do tego modelu konsoli żeby były kompatybilne", "label": "produkty_gwarancja", "source": "llm"}

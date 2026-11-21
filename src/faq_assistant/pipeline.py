@@ -94,7 +94,8 @@ class FAQPipeline:
 
     def prepare(self, user_input: str, history: list[dict] | None = None, image: str | Path | None = None,
                 user_kb: KnowledgeBase | None = None, use_classifier: bool = True, method: str = "hybrid",
-                top_k: int | None = None, params: GenerationParams | None = None) -> PipelineTrace:
+                top_k: int | None = None, params: GenerationParams | None = None,
+                classifier=None) -> PipelineTrace:
         """Etapy przed generowaniem odpowiedzi. Gdy pytanie jest poza zakresem, od razu ustawia odpowiedź."""
         top_k = top_k or settings.top_k
         params = params or GenerationParams()
@@ -120,10 +121,11 @@ class FAQPipeline:
             tr.add_timing("Przepisanie pytania", t0)
         tr.question = question
 
-        # 2) klasyfikacja = routing
-        if use_classifier and self.classifier is not None:
+        # 2) klasyfikacja = routing (opcjonalnie inny klasyfikator dla tego zapytania – porównania w UI)
+        clf = classifier or self.classifier
+        if use_classifier and clf is not None:
             t0 = time.perf_counter()
-            pred = self.classifier.predict(question)
+            pred = clf.predict(question)
             tr.category, tr.confidence, tr.probs, tr.classifier = pred.label, pred.confidence, pred.probs, pred.method
             tr.add_timing("Klasyfikacja (routing)", t0)
             if pred.label == OUT_OF_SCOPE and pred.confidence >= self.threshold and not user_kb:
@@ -166,8 +168,8 @@ class FAQPipeline:
         text = "".join(parts).strip()
         hint = CATEGORY_HINTS.get(tr.category or "")
         if hint and hint not in text:
-            text += f"\n\n💡 {hint}"
-            yield f"\n\n💡 {hint}"
+            text += f"\n\nWskazówka: {hint}"
+            yield f"\n\nWskazówka: {hint}"
         tr.answer, tr.answered_by = text, "rag"
         tr.add_timing("Generowanie odpowiedzi (LLM)", t0)
 

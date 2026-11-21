@@ -35,3 +35,7 @@ nltk
 # Testy / notebooki
 pytest
 ipykernel
+
+# Notebooki (wykonywanie z linii polecen)
+nbformat
+nbclient

@@ -177,7 +177,9 @@ def eval_qa(pipe: FAQPipeline, data: list[dict], skip: set[str]) -> pd.DataFrame
         mask = df["kategoria"] != OUT_OF_SCOPE
         cand = df.loc[mask, "odpowiedz"].fillna("").replace("", "-").tolist()
         refs = df.loc[mask, "referencja"].tolist()
-        _, _, f1 = bert_score(cand, refs, lang="pl", verbose=False)
+        # lang="pl" -> wielojęzyczny mBERT (9. warstwa wg zaleceń autorów BERTScore); nazwa kanoniczna z Hub
+        _, _, f1 = bert_score(cand, refs, model_type="google-bert/bert-base-multilingual-cased", num_layers=9,
+                              lang="pl", verbose=False)
         df.loc[mask, "bertscore_f1"] = f1.numpy()
     except Exception as e:  # noqa: BLE001
         print("BERTScore pominięty:", e)

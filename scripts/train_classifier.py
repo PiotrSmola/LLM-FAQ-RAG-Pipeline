@@ -7,7 +7,7 @@ Tryby:
 
 Przykłady:
     python scripts/train_classifier.py train
-    python scripts/train_classifier.py train --model distilbert-base-multilingual-cased --out models/distilbert-faq
+    python scripts/train_classifier.py train --model distilbert/distilbert-base-multilingual-cased --out models/distilbert-faq
     python scripts/train_classifier.py compare --bert models/herbert-faq models/distilbert-faq
     python scripts/train_classifier.py curve --sizes 50 100 200 400 --seeds 0 1 2
 """
@@ -33,7 +33,7 @@ def load_split() -> tuple[list[dict], list[dict]]:
 
 
 # ------------------------------------------------------------------------------------------------ train
-def finetune(model_name: str, train_rows: list[dict], out_dir: Path | None, epochs: int = 4, lr: float = 3e-5,
+def finetune(model_name: str, train_rows: list[dict], out_dir: Path | None, epochs: int = 8, lr: float = 3e-5,
              batch_size: int = 16, seed: int = 42, val_frac: float = 0.1, quiet: bool = False):
     """Fine-tuning AutoModelForSequenceClassification (schemat z Lab 2, przykład 2). Zwraca (model, tokenizer)."""
     import torch
@@ -65,13 +65,14 @@ def finetune(model_name: str, train_rows: list[dict], out_dir: Path | None, epoc
                 "f1_macro": f1_score(ev.label_ids, preds, average="macro")}
 
     tmp_dir = MODELS_DIR / "_trainer_tmp"
+    total_steps = -(-len(tr_rows) // batch_size) * epochs
     args = TrainingArguments(
         output_dir=str(tmp_dir),
         num_train_epochs=epochs,
         learning_rate=lr,
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=64,
-        warmup_ratio=0.1,
+        warmup_steps=max(1, int(0.1 * total_steps)),  # 10% kroków na rozgrzewkę LR
         weight_decay=0.01,
         eval_strategy="epoch" if n_val else "no",
         save_strategy="epoch" if n_val else "no",
@@ -242,7 +243,7 @@ def main() -> None:
     t = sub.add_parser("train")
     t.add_argument("--model", default="allegro/herbert-base-cased")
     t.add_argument("--out", default=None)
-    t.add_argument("--epochs", type=int, default=4)
+    t.add_argument("--epochs", type=int, default=8)
     t.add_argument("--lr", type=float, default=3e-5)
     t.add_argument("--batch-size", type=int, default=16)
     t.set_defaults(fn=cmd_train)

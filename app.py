@@ -40,11 +40,14 @@ def server_status() -> str:
         models = llm.list_models()
         ok_llm = settings.llm_model in models
         ok_emb = settings.embedding_model in models
-        return (f"🟢 LM Studio: `{settings.base_url}` · LLM `{settings.llm_model}` {'✅' if ok_llm else '❌'} · "
-                f"embeddingi `{settings.embedding_model}` {'✅' if ok_emb else '❌'} · "
-                f"klasyfikator `{getattr(pipe.classifier, 'method', '-')}` · baza wiedzy: {len(pipe.kb)} fragmentów")
+        def state(ok: bool) -> str:
+            return "" if ok else " (niezaładowany)"
+
+        return (f"LM Studio: połączono z {settings.base_url} · LLM: {settings.llm_model}{state(ok_llm)} · "
+                f"embeddingi: {settings.embedding_model}{state(ok_emb)} · "
+                f"klasyfikator: {getattr(pipe.classifier, 'method', '-')} · baza wiedzy: {len(pipe.kb)} fragmentów")
     except Exception as e:  # noqa: BLE001
-        return f"🔴 Brak połączenia z LM Studio ({settings.base_url}): {e}"
+        return f"Brak połączenia z LM Studio ({settings.base_url}): {e}"
 
 
 def params_from(temperature, top_p, top_k, max_tokens, seed, reasoning) -> GenerationParams:
@@ -63,7 +66,7 @@ def stages_markdown(tr: PipelineTrace | None) -> str:
     md.append(f"**Pytanie:** {tr.question}" + (" _(przepisane z kontekstu rozmowy)_" if tr.rewritten else ""))
     if tr.category:
         md.append(f"**1. Klasyfikacja** – `{tr.classifier}` → **{category_label(tr.category)}** "
-                  f"({tr.confidence:.0%})\n\n↳ {tr.route}")
+                  f"({tr.confidence:.0%})\n\nDecyzja: {tr.route}")
     else:
         md.append(f"**1. Klasyfikacja** – {tr.route}")
     if tr.hits:
@@ -72,19 +75,46 @@ def stages_markdown(tr: PipelineTrace | None) -> str:
                                       "out_of_scope": "odmowa (pytanie poza zakresem, LLM nie był wywołany)"}
               .get(tr.answered_by, "w trakcie…"))
     if tr.timings:
-        md.append("⏱️ " + " · ".join(f"{t.name}: {t.seconds:.2f}s" for t in tr.timings)
+        md.append("**Czasy:** " + " · ".join(f"{t.name}: {t.seconds:.2f}s" for t in tr.timings)
                   + f" · **razem {tr.total_seconds:.2f}s**")
     return "\n\n".join(md)
 
 
-def sources_df(tr: PipelineTrace | None) -> pd.DataFrame:
+def sources_md(tr: PipelineTrace | None) -> str:
+    """Lista źródeł jako zwykły tekst: numer jak w cytowaniu [n], źródło, wynik i początek fragmentu."""
     if tr is None or not tr.hits:
-        return pd.DataFrame(columns=["#", "źródło", "typ", "wynik", "fragment"])
-    return pd.DataFrame([{"#": s["n"], "źródło": s["source"], "typ": s["kind"], "wynik": s["score"],
-                          "fragment": s["text"][:220].replace("\n", " ")} for s in tr.sources()])
+        return "_Brak źródeł._" if tr is not None else ""
+    items = []
+    for s in tr.sources():
+        kind = "FAQ" if s["kind"] == "faq" else "dokument"
+        body = s["text"].replace("\n", " ")
+        body = body.split("] ", 1)[-1] if body.startswith("[") else body  # bez powtórzonego nagłówka sekcji
+        items.append(f"**[{s['n']}] {s['source']}**  \n<small>{kind} · wynik {s['score']:.3f}</small>  \n"
+                     f"{body[:260]}{'…' if len(body) > 260 else ''}")
+    return "\n\n".join(items)
 
 
-def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, top_k, use_classifier,
+_CLASSIFIERS: dict = {}
+
+
+def get_classifier(name: str):
+    """Klasyfikator wybrany w UI (ładowany leniwie i zapamiętywany)."""
+    from faq_assistant.classifier import LLMClassifier, TfidfClassifier
+    from faq_assistant.config import MODELS_DIR
+
+    if name == "wyłączony":
+        return None
+    if name not in _CLASSIFIERS:
+        if name.startswith("HerBERT"):
+            _CLASSIFIERS[name] = pipe.classifier
+        elif name.startswith("LLM"):
+            _CLASSIFIERS[name] = LLMClassifier(llm)
+        else:
+            _CLASSIFIERS[name] = TfidfClassifier.load(MODELS_DIR / "tfidf_lr.joblib")
+    return _CLASSIFIERS[name]
+
+
+def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, top_k, classifier_name,
                 temperature, top_p, tk, max_tokens, seed, reasoning):
     text = (message or {}).get("text", "") or ""
     files = (message or {}).get("files", []) or []
@@ -94,14 +124,15 @@ def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, 
         return
     chat = chat + ([{"role": "user", "content": {"path": image}}] if image else [])
     chat = chat + [{"role": "user", "content": text or "(pytanie na obrazie)"},
-                   {"role": "assistant", "content": "⏳ Analizuję pytanie…"}]
+                   {"role": "assistant", "content": "Analizuję pytanie…"}]
     yield chat, history, traces, gr.update(), gr.update(), gr.update(), gr.update(value=None)
 
     params = params_from(temperature, top_p, tk, max_tokens, seed, reasoning)
+    clf = get_classifier(classifier_name)
     tr = pipe.prepare(text, history=history, image=image, user_kb=user_kb if use_user_docs else None,
-                      use_classifier=use_classifier, method=method, top_k=int(top_k), params=params)
-    chat[-1]["content"] = "✍️ Generuję odpowiedź…"
-    yield chat, history, traces, stages_markdown(tr), sources_df(tr), gr.update(), gr.update(value=None)
+                      use_classifier=clf is not None, classifier=clf, method=method, top_k=int(top_k), params=params)
+    chat[-1]["content"] = "Generuję odpowiedź…"
+    yield chat, history, traces, stages_markdown(tr), sources_md(tr), gr.update(), gr.update(value=None)
 
     answer = ""
     for token in pipe.generate_stream(tr, history):
@@ -112,7 +143,7 @@ def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, 
     history = history + [{"role": "user", "content": tr.question}, {"role": "assistant", "content": tr.answer}]
     traces = traces + [tr]
     fig = trace_to_figure(tr)
-    yield chat, history, traces, stages_markdown(tr), sources_df(tr), fig, gr.update(value=None)
+    yield chat, history, traces, stages_markdown(tr), sources_md(tr), fig, gr.update(value=None)
 
 
 def export_last(traces, fmt: str):
@@ -128,7 +159,7 @@ def export_last(traces, fmt: str):
 
 
 def clear_chat():
-    return [], [], [], stages_markdown(None), sources_df(None), None
+    return [], [], [], stages_markdown(None), sources_md(None), None
 
 
 # ====================================================================================== 2. Twoje dokumenty
@@ -151,9 +182,9 @@ def upload_docs(files, user_kb, chunk_size, overlap):
 
 def ask_docs(question, user_kb, method, top_k, temperature, reasoning):
     if user_kb is None or not len(user_kb):
-        return "Najpierw prześlij przynajmniej jeden plik.", sources_df(None), None
+        return "Najpierw prześlij przynajmniej jeden plik.", sources_md(None), None
     if not question.strip():
-        return "Wpisz pytanie.", sources_df(None), None
+        return "Wpisz pytanie.", sources_md(None), None
     from faq_assistant.qa import answer as qa_answer
 
     t0 = time.perf_counter()
@@ -166,7 +197,7 @@ def ask_docs(question, user_kb, method, top_k, temperature, reasoning):
     tr.answer, tr.answered_by = qa_answer(llm, question, hits, params=params), "rag"
     tr.add_timing("Generowanie odpowiedzi (LLM)", t0)
     txt = save_text(trace_to_text(tr), TMP / f"dokumenty_{time.strftime('%H%M%S')}.txt")
-    return tr.answer, sources_df(tr), str(txt)
+    return tr.answer, sources_md(tr), str(txt)
 
 
 # ============================================================================================ 3. Wsadowo
@@ -233,20 +264,53 @@ def load_eval():
 
 
 # ================================================================================================== UI
+# Font systemowy (Arial/Helvetica) zamiast fontu Google z motywu – bez ozdobnych glifów, działa offline.
+SYSTEM_FONT = [gr.themes.Font("Arial"), gr.themes.Font("Helvetica"), gr.themes.Font("sans-serif")]
+THEME = gr.themes.Base(
+    primary_hue=gr.themes.colors.blue,
+    neutral_hue=gr.themes.colors.slate,
+    font=SYSTEM_FONT,
+    font_mono=[gr.themes.Font("Consolas"), gr.themes.Font("Courier New"), gr.themes.Font("monospace")],
+    radius_size=gr.themes.sizes.radius_sm,
+).set(
+    body_background_fill="#f6f7f9",
+    block_background_fill="#ffffff",
+    block_border_width="1px",
+    block_shadow="none",
+    button_primary_background_fill="#2b4c7e",
+    button_primary_background_fill_hover="#223d66",
+    button_primary_text_color="#ffffff",
+)
+CSS = """
+.gradio-container { max-width: 1400px !important; margin: 0 auto; }
+#app-header { padding: 18px 22px 12px; margin-bottom: 4px; border-bottom: 3px solid #2b4c7e;
+              background: #ffffff; border-radius: 4px; }
+#app-header h1 { font-size: 22px; font-weight: 700; margin: 0 0 4px; color: #1d2b3a; }
+#app-header p { margin: 0; color: #556270; font-size: 14px; }
+#status { font-size: 12.5px; color: #667085; padding: 2px 4px 8px; }
+#status p { margin: 0; }
+.section-title h3 { font-size: 15px; margin: 6px 0 2px; color: #1d2b3a; }
+#sources, #doc-sources { max-height: 330px; overflow-y: auto; font-size: 13px; line-height: 1.45;
+                         padding: 8px 12px; background: #ffffff; border: 1px solid #e3e7ec; border-radius: 4px; }
+#sources p, #doc-sources p { margin: 0 0 10px; }
+#sources small, #doc-sources small { color: #6b7685; }
+"""
+
 with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
-    gr.Markdown("# 🛒 Asystent FAQ – Zorza Elektronika\n"
-                "Pipeline: **klasyfikacja (HerBERT) → wyszukiwanie (BM25 + bge-m3) → odpowiedź RAG (Gemma 4 w LM Studio)**")
-    status = gr.Markdown(server_status())
+    gr.Markdown("# Asystent FAQ – Zorza Elektronika\n"
+                "Klasyfikacja zapytania (HerBERT) → wyszukiwanie w bazie wiedzy (BM25 + bge-m3) → "
+                "odpowiedź RAG ze źródłami (Gemma 4, LM Studio)", elem_id="app-header")
+    status = gr.Markdown(server_status(), elem_id="status")
 
     history_st = gr.State([])
     traces_st = gr.State([])
     user_kb_st = gr.State(None)
 
-    with gr.Tab("💬 Asystent"):
+    with gr.Tab("Asystent"):
         with gr.Row():
             with gr.Column(scale=3):
                 chat = gr.Chatbot(label="Rozmowa", height=520, layout="bubble")
-                msg = gr.MultimodalTextbox(placeholder="Zadaj pytanie lub dołącz zrzut ekranu / zdjęcie (📎)…",
+                msg = gr.MultimodalTextbox(placeholder="Zadaj pytanie lub dołącz zrzut ekranu / zdjęcie…",
                                            file_types=["image"], file_count="single", sources=["upload"],
                                            show_label=False)
                 gr.Examples([
@@ -258,26 +322,28 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                 ], inputs=msg, label="Przykłady")
                 with gr.Row():
                     use_user_docs = gr.Checkbox(label="Uwzględnij moje przesłane dokumenty", value=False)
-                    clear_btn = gr.Button("🗑️ Nowa rozmowa", size="sm")
+                    clear_btn = gr.Button("Nowa rozmowa", size="sm")
             with gr.Column(scale=2):
-                with gr.Accordion("⚙️ Ustawienia pipeline'u", open=False):
+                with gr.Accordion("Ustawienia pipeline'u", open=False):
                     method = gr.Radio(["hybrid", "dense", "bm25", "tfidf"], value="hybrid", label="Metoda wyszukiwania")
                     top_k = gr.Slider(1, 8, value=settings.top_k, step=1, label="Liczba fragmentów (top-k)")
-                    use_cls = gr.Checkbox(value=True, label="Routing klasyfikatorem (etap 1)")
+                    use_cls = gr.Radio(["HerBERT (fine-tuning)", "LLM zero-shot", "TF-IDF + LR", "wyłączony"],
+                                       value="HerBERT (fine-tuning)", label="Klasyfikator (etap 1 – routing)")
                     temperature = gr.Slider(0, 1.5, value=0.2, step=0.05, label="temperature")
                     top_p = gr.Slider(0.1, 1, value=0.9, step=0.05, label="top_p")
                     tk = gr.Slider(1, 100, value=40, step=1, label="top_k (sampling)")
                     max_tokens = gr.Slider(64, 2048, value=700, step=32, label="max_tokens")
                     seed = gr.Number(value=42, label="seed (-1 = losowy)", precision=0)
                     reasoning = gr.Dropdown(["none", "low", "medium", "high"], value="none", label="reasoning_effort")
-                gr.Markdown("### 🔎 Etapy pipeline'u")
+                gr.Markdown("### Etapy pipeline'u", elem_classes="section-title")
                 stages = gr.Markdown(stages_markdown(None))
-                sources = gr.Dataframe(sources_df(None), label="Źródła (etap 2)", wrap=True, max_height=260)
+                gr.Markdown("### Źródła", elem_classes="section-title")
+                sources = gr.Markdown(sources_md(None), elem_id="sources")
                 with gr.Row():
-                    b_txt = gr.Button("📄 Odpowiedź .txt", size="sm")
-                    b_svg = gr.Button("🖼️ Etapy .svg", size="sm")
-                    b_conv = gr.Button("🗂️ Cała rozmowa .txt", size="sm")
-                export_file = gr.File(label="Plik do pobrania", interactive=False)
+                    b_txt = gr.Button("Odpowiedź .txt", size="sm")
+                    b_svg = gr.Button("Etapy .svg", size="sm")
+                    b_conv = gr.Button("Cała rozmowa .txt", size="sm")
+                export_file = gr.File(label="Plik do pobrania", interactive=False, height=70)
         plot = gr.Plot(label="Wizualizacja etapów (ostatnie pytanie)")
 
         inputs = [msg, chat, history_st, traces_st, user_kb_st, use_user_docs, method, top_k, use_cls,
@@ -288,7 +354,7 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
         b_conv.click(lambda t: export_last(t, "conv"), traces_st, export_file)
         clear_btn.click(clear_chat, None, [chat, history_st, traces_st, stages, sources, plot])
 
-    with gr.Tab("📁 Twoje dokumenty"):
+    with gr.Tab("Twoje dokumenty"):
         gr.Markdown("Prześlij pliki **.txt / .md / .pdf** – zostaną podzielone na fragmenty, zindeksowane "
                     "(embeddingi bge-m3 + BM25) w bazie tej sesji. Pytaj tutaj albo w zakładce *Asystent* "
                     "(zaznacz „Uwzględnij moje przesłane dokumenty”).")
@@ -298,7 +364,7 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                 with gr.Row():
                     csize = gr.Slider(300, 2000, value=1000, step=100, label="Rozmiar fragmentu (znaki)")
                     cover = gr.Slider(0, 400, value=150, step=50, label="Nakładka (znaki)")
-                up_btn = gr.Button("📥 Indeksuj pliki", variant="primary")
+                up_btn = gr.Button("Indeksuj pliki", variant="primary")
                 up_info = gr.Markdown()
                 up_table = gr.Dataframe(label="Zindeksowane pliki")
             with gr.Column():
@@ -308,14 +374,14 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                     d_k = gr.Slider(1, 8, value=4, step=1, label="top-k")
                     d_temp = gr.Slider(0, 1, value=0.2, step=0.05, label="temperature")
                     d_reason = gr.Dropdown(["none", "low", "medium", "high"], value="none", label="reasoning")
-                d_btn = gr.Button("❓ Zapytaj", variant="primary")
+                d_btn = gr.Button("Zapytaj", variant="primary")
                 d_ans = gr.Markdown()
-                d_src = gr.Dataframe(label="Źródła", wrap=True)
+                d_src = gr.Markdown(elem_id="doc-sources")
                 d_file = gr.File(label="Raport .txt", interactive=False)
         up_btn.click(upload_docs, [up, user_kb_st, csize, cover], [user_kb_st, up_table, up_info, use_user_docs])
         d_btn.click(ask_docs, [dq, user_kb_st, d_method, d_k, d_temp, d_reason], [d_ans, d_src, d_file])
 
-    with gr.Tab("📦 Wsadowo"):
+    with gr.Tab("Wsadowo"):
         gr.Markdown("Automatyczne przetwarzanie listy pytań: plik **.csv** (kolumna `pytanie`), **.txt** "
                     "(pytanie w linii) lub **.xlsx**. Wynik: CSV, XLSX, raport TXT (+ SVG dla każdego pytania).")
         with gr.Row():
@@ -325,12 +391,12 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                 b_method = gr.Radio(["hybrid", "dense", "bm25", "tfidf"], value="hybrid", label="Wyszukiwanie")
                 b_k = gr.Slider(1, 8, value=4, step=1, label="top-k")
                 b_svg_cb = gr.Checkbox(value=False, label="Generuj SVG dla każdego pytania")
-                b_run = gr.Button("▶️ Uruchom", variant="primary")
+                b_run = gr.Button("Uruchom", variant="primary")
         b_df = gr.Dataframe(label="Wyniki", wrap=True)
         b_files = gr.File(label="Pliki wynikowe", file_count="multiple", interactive=False)
         b_run.click(batch_run, [bfile, b_method, b_k, b_svg_cb], [b_df, b_files])
 
-    with gr.Tab("🎛️ Parametry modelu"):
+    with gr.Tab("Parametry modelu"):
         gr.Markdown("Eksperymenty z parametrami generowania (wywołania API LM Studio). "
                     "Ustaw np. temperature=1.2 i seed=-1, a potem temperature=0 – i porównaj różnorodność.")
         gr.Markdown(PARAM_HELP)
@@ -349,14 +415,14 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                     p_m = gr.Slider(16, 1024, value=128, step=16, label="max_tokens")
                     p_s = gr.Number(value=-1, precision=0, label="seed (-1 = losowy)")
                     p_re = gr.Dropdown(["none", "low", "medium", "high"], value="none", label="reasoning_effort")
-        p_btn = gr.Button("🎲 Generuj", variant="primary")
+        p_btn = gr.Button("Generuj", variant="primary")
         p_info = gr.Markdown()
         p_df = gr.Dataframe(wrap=True, label="Wyniki")
         p_btn.click(param_playground, [pp, pn, p_t, p_p, p_k, p_r, p_m, p_s, p_re], [p_df, p_info])
 
-    with gr.Tab("📊 Ewaluacja"):
+    with gr.Tab("Ewaluacja"):
         gr.Markdown("Wyniki z `scripts/train_classifier.py compare` i `scripts/evaluate.py` (katalog `results/`).")
-        e_btn = gr.Button("🔄 Odśwież")
+        e_btn = gr.Button("Odśwież")
         e_cls = gr.Dataframe(label="Klasyfikacja – porównanie modeli")
         e_ret = gr.Dataframe(label="Retrieval – Recall@k / MRR")
         e_qa = gr.Dataframe(label="QA – jakość odpowiedzi i ablacja")
@@ -368,4 +434,4 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
 
 
 if __name__ == "__main__":
-    demo.queue().launch(theme=gr.themes.Soft(), inbrowser=False, allowed_paths=[str(TMP), "data/examples"])
+    demo.queue().launch(theme=THEME, css=CSS, inbrowser=False, footer_links=[], allowed_paths=[str(TMP), "data/examples"])

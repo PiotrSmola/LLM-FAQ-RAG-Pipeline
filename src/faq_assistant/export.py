@@ -9,6 +9,9 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+
+plt.rcParams["font.family"] = ["Arial", "DejaVu Sans"]  # prosty font systemowy, spójny z UI
+plt.rcParams["svg.fonttype"] = "none"                   # tekst w SVG jako tekst (da się zaznaczyć/kopiować)
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch  # noqa: E402
 
 from .config import CATEGORIES  # noqa: E402
