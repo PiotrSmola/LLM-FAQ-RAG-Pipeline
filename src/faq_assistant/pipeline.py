@@ -1,6 +1,6 @@
 """Orkiestracja pipeline'u: (obraz ->) przepisanie pytania -> klasyfikacja -> retrieval -> odpowiedź RAG.
 
-Każde wywołanie zwraca obiekt `PipelineTrace` z wynikami i czasami wszystkich etapów – na jego podstawie
+Każde wywołanie zwraca obiekt `PipelineTrace` z wynikami i czasami wszystkich etapów, na jego podstawie
 UI pokazuje „wizualizację etapów”, a moduł export tworzy pliki .txt i .svg.
 """
 
@@ -42,7 +42,7 @@ class PipelineTrace:
     retrieval_method: str = ""
     hits: list[Hit] = field(default_factory=list)
     answer: str = ""
-    answered_by: str = ""               # "rag" | "out_of_scope" | "no_rag"
+    answered_by: str = ""               # "rag" | "out_of_scope" | "empty"
     params: dict = field(default_factory=dict)
     timings: list[StageTiming] = field(default_factory=list)
 
@@ -111,7 +111,7 @@ class FAQPipeline:
         self.llm = llm or LMStudioClient()
         self.kb = kb or KnowledgeBase(llm=self.llm)
         if kb is None and len(self.kb) == 0:
-            # pierwsze uruchomienie (brak folderu chroma_db/) – budujemy indeks bazy wiedzy automatycznie
+            # pierwsze uruchomienie (brak folderu chroma_db/), budujemy indeks bazy wiedzy automatycznie
             from .ingest import load_knowledge_base
 
             n = self.kb.add(load_knowledge_base())
@@ -119,7 +119,6 @@ class FAQPipeline:
         self.classifier = classifier if classifier is not None else load_default_classifier()
         self.threshold = settings.classifier_threshold if threshold is None else threshold
 
-    # ---------------------------------------------------------------------------------------------- etapy
     def rewrite(self, question: str, history: list[dict]) -> str:
         convo = "\n".join(f"{'Klient' if t['role'] == 'user' else 'Konsultant'}: {t['content'][:400]}"
                           for t in history[-4:])
@@ -138,7 +137,6 @@ class FAQPipeline:
         tr = PipelineTrace(user_input=user_input, retrieval_method=method, params=asdict(params))
         question = user_input.strip()
 
-        # 0) obraz -> pytanie (wielomodalność)
         if image:
             from .vision import image_to_question
 
@@ -148,7 +146,7 @@ class FAQPipeline:
             question = res["question"] or question
             tr.add_timing("Obraz → pytanie (vision)", t0)
 
-        # 1) przepisanie pytania uzupełniającego na samodzielne (tylko gdy jest historia)
+        # pytanie uzupełniające (np. „a w sobotę?”) -> samodzielne
         if history:
             t0 = time.perf_counter()
             new_q = self.rewrite(question, history)
@@ -158,7 +156,7 @@ class FAQPipeline:
         tr.question = question
         clf = classifier or self.classifier
 
-        # 1b) pytanie złożone (kilka spraw naraz) -> podpytania z osobnym routingiem i wyszukiwaniem
+        # kilka spraw w jednej wiadomości -> podpytania, każde z własnym routingiem i wyszukiwaniem
         if is_compound(question):
             t0 = time.perf_counter()
             subs = self.decompose(question)
@@ -167,7 +165,6 @@ class FAQPipeline:
                 self._prepare_compound(tr, subs, clf if use_classifier else None, user_kb, method, top_k)
                 return tr
 
-        # 2) klasyfikacja = routing (opcjonalnie inny klasyfikator dla tego zapytania – porównania w UI)
         if use_classifier and clf is not None:
             t0 = time.perf_counter()
             pred = clf.predict(question)
@@ -187,7 +184,6 @@ class FAQPipeline:
         else:
             tr.route = "Klasyfikator wyłączony: wyszukiwanie w całej bazie wiedzy"
 
-        # 3) retrieval
         t0 = time.perf_counter()
         hits = self.kb.search(question, k=top_k, method=method, category=tr.search_category)
         if user_kb is not None and len(user_kb):

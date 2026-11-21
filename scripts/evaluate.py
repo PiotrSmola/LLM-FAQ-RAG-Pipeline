@@ -1,13 +1,13 @@
 """Ewaluacja pipeline'u na zbiorze data/eval/qa_eval.jsonl (40 pytań, w tym 3 poza zakresem).
 
 Części:
-  retrieval – Recall@1/@3/@k i MRR dla TF-IDF, BM25, dense, hybrid; bez filtra i z filtrem kategorii (routing)
-  qa        – ablacja „synergii komponentów” + porównanie z modelami z laboratoriów:
-                llm_bez_rag            – sam LLM, bez dokumentów (Lab 5: halucynacje)
-                rag_bez_klasyfikatora  – retrieval w całej bazie, bez routingu
-                pelny_pipeline         – klasyfikacja -> retrieval z filtrem -> LLM
-                extractive_xlmr        – extractive QA (span) na tych samych fragmentach (Lab 3)
-                flan_t5                – FLAN-T5-base z Lab 3 na tych samych fragmentach
+  retrieval: Recall@1/@3/@k i MRR dla TF-IDF, BM25, dense, hybrid; bez filtra i z filtrem kategorii (routing)
+  qa: ablacja „synergii komponentów” + porównanie z modelami z laboratoriów:
+                llm_bez_rag: sam LLM, bez dokumentów (Lab 5: halucynacje)
+                rag_bez_klasyfikatora: retrieval w całej bazie, bez routingu
+                pelny_pipeline: klasyfikacja -> retrieval z filtrem -> LLM
+                extractive_xlmr: extractive QA (span) na tych samych fragmentach (Lab 3)
+                flan_t5: FLAN-T5-base z Lab 3 na tych samych fragmentach
               metryki: Token-F1 (Lab 3), ROUGE-L, BERTScore-F1 (Lab 4), LLM-as-judge: faithfulness/correctness,
               poprawność odmowy dla pytań poza zakresem.
 
@@ -26,13 +26,13 @@ from collections import Counter
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-import pandas as pd  # noqa: E402
+import matplotlib.pyplot as plt
+import pandas as pd
 
-from faq_assistant.config import DATA_DIR, OUT_OF_SCOPE, RESULTS_DIR, GenerationParams  # noqa: E402
-from faq_assistant.pipeline import FAQPipeline  # noqa: E402
-from faq_assistant.retrieval import METHODS, tokenize_pl  # noqa: E402
-from faq_assistant.utils import parse_json, read_jsonl  # noqa: E402
+from faq_assistant.config import DATA_DIR, OUT_OF_SCOPE, RESULTS_DIR, GenerationParams
+from faq_assistant.pipeline import FAQPipeline
+from faq_assistant.retrieval import METHODS, tokenize_pl
+from faq_assistant.utils import parse_json, read_jsonl
 
 REFUSAL_MARKERS = ("nie odpowiem", "nie mam tej informacji", "nie posiadam", "nie mogę pomóc", "poza zakresem",
                    "nie dotyczy", "mogę pomóc w sprawach", "nie jestem w stanie")
@@ -42,7 +42,6 @@ def is_hit(chunk, gold: set[str]) -> bool:
     return chunk.source in gold
 
 
-# ============================================================================================ retrieval
 def eval_retrieval(pipe: FAQPipeline, data: list[dict], k: int = 4) -> pd.DataFrame:
     out = RESULTS_DIR / "retrieval"
     out.mkdir(parents=True, exist_ok=True)
@@ -78,7 +77,7 @@ def eval_retrieval(pipe: FAQPipeline, data: list[dict], k: int = 4) -> pd.DataFr
     piv.plot.bar(ax=ax, rot=0, color=["#8a94a6", "#2b4c7e"])
     ax.set_ylabel("MRR")
     ax.set_ylim(0, 1)
-    ax.set_title(f"Jakość wyszukiwania (MRR, {len(items)} pytań) – wpływ metody i routingu klasyfikatorem")
+    ax.set_title(f"Jakość wyszukiwania (MRR, {len(items)} pytań), wpływ metody i routingu klasyfikatorem")
     ax.grid(axis="y", alpha=0.3)
     for c in ax.containers:
         ax.bar_label(c, fmt="%.2f", fontsize=8)
@@ -89,7 +88,6 @@ def eval_retrieval(pipe: FAQPipeline, data: list[dict], k: int = 4) -> pd.DataFr
     return df
 
 
-# ================================================================================================== QA
 def token_f1(pred: str, gold: str) -> float:
     """Token-F1 jak w Lab 3, ale z tokenizacją dla polskiego (bez diakrytyków, stemming prefiksowy)."""
     p, g = Counter(tokenize_pl(pred, stem=5)), Counter(tokenize_pl(gold, stem=5))
@@ -139,7 +137,7 @@ def summarize(df: pd.DataFrame, out) -> pd.DataFrame:
     if jcols:
         summary.set_index("wariant")[jcols].dropna(how="all").plot.bar(ax=axes[1], rot=20, color=["#2e8b57", "#e07a1f"])
         axes[1].set_ylim(1, 5)
-        axes[1].set_title("LLM-as-judge (1–5)")
+        axes[1].set_title("LLM-as-judge (1-5)")
         axes[1].grid(axis="y", alpha=0.3)
     fig.tight_layout()
     for ext in ("png", "svg"):
@@ -150,9 +148,9 @@ def summarize(df: pd.DataFrame, out) -> pd.DataFrame:
 
 def bertscore_f1(cands: list[str], refs: list[str], model_name: str = "google-bert/bert-base-multilingual-cased",
                  layer: int = 9, batch_size: int = 32) -> list[float]:
-    """BERTScore-F1 (Zhang i in., 2020) – własna implementacja, bo pakiet bert_score 0.3.13 nie działa z transformers 5.
+    """BERTScore-F1 (Zhang i in., 2020), własna implementacja, bo pakiet bert_score 0.3.13 nie działa z transformers 5.
 
-    Dla każdej pary: embeddingi tokenów z warstwy `layer` (9. warstwa mBERT – zalecenie autorów dla modeli
+    Dla każdej pary: embeddingi tokenów z warstwy `layer` (9. warstwa mBERT, zalecenie autorów dla modeli
     wielojęzycznych), macierz podobieństw cosinusowych, precision = średnie max po tokenach kandydata,
     recall = średnie max po tokenach referencji, F1 = średnia harmoniczna. Bez wag IDF i bez przeskalowania.
     """

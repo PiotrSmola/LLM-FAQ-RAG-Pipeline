@@ -1,10 +1,10 @@
 """Etap 2 pipeline'u: indeksowanie i wyszukiwanie fragmentów bazy wiedzy.
 
 Metody wyszukiwania:
-- "tfidf"  – TF-IDF + podobieństwo cosinusowe (punkt odniesienia z Lab 3, przykład 4),
-- "bm25"   – Okapi BM25 (rank-bm25, Lab 3 zad. 3.3) z prostym stemmingiem prefiksowym dla polskiego,
-- "dense"  – wyszukiwanie semantyczne: embeddingi bge-m3 (LM Studio) w bazie wektorowej ChromaDB,
-- "hybrid" – połączenie BM25 i dense metodą Reciprocal Rank Fusion (RRF).
+- "tfidf": TF-IDF + podobieństwo cosinusowe (punkt odniesienia z Lab 3, przykład 4),
+- "bm25": Okapi BM25 (rank-bm25, Lab 3 zad. 3.3) z prostym stemmingiem prefiksowym dla polskiego,
+- "dense": wyszukiwanie semantyczne: embeddingi bge-m3 (LM Studio) w bazie wektorowej ChromaDB,
+- "hybrid": połączenie BM25 i dense metodą Reciprocal Rank Fusion (RRF).
 
 Filtr kategorii (routing z etapu 1): wpisy FAQ są zawężane do rozpoznanej kategorii, dokumenty firmowe
 (regulaminy itp.) przeszukiwane są zawsze, bo dotyczą wielu kategorii naraz.
@@ -57,8 +57,8 @@ def tokenize_pl(text: str, stem: int = 6) -> list[str]:
 class KnowledgeBase:
     """Indeks bazy wiedzy z czterema metodami wyszukiwania.
 
-    persist=True  – kolekcja ChromaDB zapisana na dysku (baza firmowa, budowana raz: scripts/build_index.py),
-    persist=False – kolekcja w pamięci (pliki przesłane przez użytkownika w trakcie sesji).
+    persist=True: kolekcja ChromaDB zapisana na dysku (baza firmowa, budowana raz: scripts/build_index.py),
+    persist=False: kolekcja w pamięci (pliki przesłane przez użytkownika w trakcie sesji).
     """
 
     def __init__(self, name: str = "faq_kb", llm=None, persist: bool = True,
@@ -82,7 +82,6 @@ class KnowledgeBase:
         if persist:
             self._load_chunks()
 
-    # ---------------------------------------------------------------------------------------- budowa
     @property
     def _chunks_file(self) -> Path:
         return self.path / f"{self.name}_chunks.jsonl"
@@ -138,7 +137,6 @@ class KnowledgeBase:
     def __len__(self) -> int:
         return len(self.chunks)
 
-    # ------------------------------------------------------------------------------------- wyszukiwanie
     def _allowed_mask(self, category: str | None) -> np.ndarray:
         if category is None:
             return np.ones(len(self.chunks), dtype=bool)

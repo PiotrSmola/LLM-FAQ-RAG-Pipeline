@@ -1,4 +1,4 @@
-"""Przetwarzanie wsadowe (automatyzacja – próg 4.0): lista pytań z pliku -> odpowiedzi ze źródłami.
+"""Przetwarzanie wsadowe: lista pytań z pliku -> odpowiedzi ze źródłami.
 
 Wejście: plik .txt (jedno pytanie w linii), .csv (kolumna "question"/"pytanie") lub .jsonl (pole "question").
 Wyjście (katalog --out): wyniki.csv, wyniki.xlsx, wyniki.jsonl, raport.txt oraz opcjonalnie SVG dla każdego pytania.
@@ -32,7 +32,7 @@ def read_questions(path: Path) -> list[str]:
         try:
             df = pd.read_csv(path)
         except pd.errors.ParserError:
-            # jednokolumnowy plik bez cudzysłowów (pytania z przecinkami) – czytamy linia po linii
+            # jednokolumnowy plik bez cudzysłowów (pytania z przecinkami), czytamy linia po linii
             lines = [ln.strip() for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
             header = lines[0].lower() in {"question", "pytanie", "pytania"}
             return lines[1:] if header else lines

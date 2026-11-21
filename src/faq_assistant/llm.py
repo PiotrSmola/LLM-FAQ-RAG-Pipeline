@@ -27,7 +27,6 @@ class LMStudioClient:
         self.model = model or settings.llm_model
         self.embedding_model = embedding_model or settings.embedding_model
 
-    # ------------------------------------------------------------------ helpers
     @staticmethod
     def _kwargs(params: GenerationParams | None) -> dict:
         p = asdict(params or GenerationParams())
@@ -44,7 +43,6 @@ class LMStudioClient:
     def list_models(self) -> list[str]:
         return [m.id for m in self.client.models.list().data]
 
-    # --------------------------------------------------------------------- chat
     def chat(self, messages: list[Message], params: GenerationParams | None = None) -> str:
         resp = self.client.chat.completions.create(model=self.model, messages=messages, **self._kwargs(params))
         return resp.choices[0].message.content or ""
@@ -64,7 +62,6 @@ class LMStudioClient:
         messages.append({"role": "user", "content": prompt})
         return self.chat(messages, params)
 
-    # ------------------------------------------------------------------- vision
     @staticmethod
     def image_part(image: str | Path | bytes, mime: str = "image/png") -> dict:
         """Zamienia obraz (ścieżka lub bajty) na fragment wiadomości w formacie data-URL."""
@@ -85,7 +82,6 @@ class LMStudioClient:
         messages.append({"role": "user", "content": [{"type": "text", "text": prompt}, self.image_part(image)]})
         return self.chat(messages, params)
 
-    # --------------------------------------------------------------- embeddings
     def embed(self, texts: list[str], batch_size: int = 32) -> list[list[float]]:
         out: list[list[float]] = []
         for i in range(0, len(texts), batch_size):

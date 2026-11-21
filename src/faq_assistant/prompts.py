@@ -1,11 +1,7 @@
-"""Szablony promptów (inżynieria promptów – próg 4.5).
+"""Prompty systemowe i szablony zapytań do LLM.
 
-Zastosowane techniki:
-- rola i reguły w prompcie systemowym (persona konsultanta, zakaz zmyślania, format odpowiedzi),
-- few-shot (przykłady w klasyfikacji zero-shot i w przepisywaniu pytań),
-- wymuszony format wyjścia (JSON) tam, gdzie wynik jest dalej przetwarzany programowo,
-- numerowany kontekst + obowiązek cytowania [n] (grounding odpowiedzi RAG),
-- jawne rozdzielenie wiedzy z dokumentów od wiedzy ogólnej modelu.
+Tam, gdzie wynik jest dalej przetwarzany w kodzie, model zwraca JSON. Odpowiedź RAG dostaje numerowane
+źródła i musi je cytować jako [n].
 """
 
 from __future__ import annotations
@@ -29,7 +25,6 @@ CATEGORY_DESCRIPTIONS: dict[str, str] = {
                      "prośby o napisanie tekstu lub kodu, porównania marek)",
 }
 
-# --------------------------------------------------------------------------- klasyfikacja LLM (zero/few-shot)
 CLASSIFY_SYSTEM = f"""Jesteś modułem routingu w systemie obsługi klienta sklepu internetowego {SHOP}.
 Twoim jedynym zadaniem jest przypisanie pytania klienta do DOKŁADNIE jednej kategorii.
 
@@ -46,21 +41,20 @@ Pytanie: "czy moge zaplacic blikiem" -> {"category": "platnosci"}
 Pytanie: "paczka nie doszła od tygodnia" -> {"category": "dostawa"}
 Pytanie: "jak napisać list motywacyjny" -> {"category": "poza_zakresem"}"""
 
-# --------------------------------------------------------------------------- generowanie danych treningowych
 GENERATE_TRAINING_SYSTEM = """Jesteś generatorem realistycznych danych treningowych dla klasyfikatora tekstu w języku polskim.
 Generujesz pytania, jakie klienci naprawdę wpisują w czacie sklepu internetowego z elektroniką."""
 
-GENERATE_TRAINING_USER = """Kategoria: {category} – {description}
+GENERATE_TRAINING_USER = """Kategoria: {category}, {description}
 
 Przykładowe pytania z bazy FAQ tej kategorii (NIE kopiuj ich, potraktuj jako inspirację tematyczną):
 {seeds}
 
 Wygeneruj {n} NOWYCH, zróżnicowanych pytań klientów należących do tej kategorii.
 Wymagania dotyczące różnorodności:
-- różne długości: od 3 słów do 2–3 zdań z kontekstem sytuacji,
+- różne długości: od 3 słów do 2-3 zdań z kontekstem sytuacji,
 - różne style: formalny, potoczny, zdenerwowany klient, bardzo krótki,
 - ok. 1/3 pytań bez polskich znaków lub z literówkami, ok. 1/4 bez znaku zapytania,
-- różne sformułowania – unikaj powtarzania tych samych słów kluczowych co w przykładach.
+- różne sformułowania: unikaj powtarzania tych samych słów kluczowych co w przykładach.
 
 Zwróć wyłącznie tablicę JSON z napisami, np. ["pytanie 1", "pytanie 2"]."""
 
@@ -70,13 +64,11 @@ zwrotów, konta, gwarancji). Przykłady tematów: pogoda, sport, gotowanie, poli
 o napisanie tekstu lub kodu, tłumaczenia, porady życiowe, pytania o inne firmy, porównania marek telefonów.
 Różne długości i style, ok. 1/3 bez polskich znaków. Zwróć wyłącznie tablicę JSON z napisami."""
 
-# --------------------------------------------------------------------------- przepisanie pytania (historia czatu)
 REWRITE_SYSTEM = """Przekształcasz ostatnie pytanie klienta w samodzielne pytanie, zrozumiałe bez historii rozmowy.
 Uzupełnij brakujący kontekst (np. „a ile to kosztuje?” -> „Ile kosztuje dostawa kurierem?”).
 Jeśli pytanie jest już samodzielne, przepisz je bez zmian. Nie odpowiadaj na pytanie.
 Zwróć tylko przepisane pytanie, bez cudzysłowów i komentarzy."""
 
-# --------------------------------------------------------------------------- pytanie złożone -> podpytania
 DECOMPOSE_SYSTEM = """Klient zadał w jednej wiadomości kilka pytań do obsługi sklepu internetowego.
 Rozbij wiadomość na listę SAMODZIELNYCH podpytań (każde zrozumiałe bez reszty wiadomości), maksymalnie 12. Łącz w jedno podpytanie drobne pytania o tę samą rzecz, ale nie pomijaj żadnej sprawy.
 Każde podpytanie ma zawierać potrzebny kontekst z wiadomości: o który produkt chodzi, jego cenę, daty zakupu
@@ -85,7 +77,6 @@ napisz „czy mogę oddać smartfon za 1800 zł kupiony w salonie 3 marca”).
 Jedna sprawa może dać kilka podpytań, jeśli pyta o kilka różnych rzeczy.
 Zwróć wyłącznie tablicę JSON z napisami, np. ["pytanie 1", "pytanie 2"]."""
 
-# --------------------------------------------------------------------------- obraz -> pytanie (3.5)
 VISION_EXTRACT = """Na obrazie jest wiadomość, dokument lub zdjęcie przesłane przez klienta sklepu internetowego.
 1. Odczytaj istotny tekst z obrazu (OCR).
 2. Sformułuj jedno konkretne pytanie, które klient chce zadać obsłudze sklepu, uwzględniając istotny
@@ -93,7 +84,6 @@ VISION_EXTRACT = """Na obrazie jest wiadomość, dokument lub zdjęcie przesłan
 
 Zwróć wyłącznie obiekt JSON: {"ocr": "<odczytany tekst>", "question": "<pytanie klienta po polsku>"}"""
 
-# --------------------------------------------------------------------------- odpowiedź RAG (5.0)
 QA_SYSTEM = f"""Jesteś wirtualnym konsultantem obsługi klienta sklepu internetowego {SHOP}.
 Odpowiadasz po polsku, uprzejmie, konkretnie i zwięźle (maks. 5-6 zdań lub krótka lista kroków).
 
@@ -134,9 +124,8 @@ CATEGORY_HINTS: dict[str, str] = {
     "zwroty_reklamacje": "Reklamację lub zwrot zgłosisz w zakładce „Moje zamówienia” → „Zgłoś reklamację” / „Zwróć produkt”.",
 }
 
-# --------------------------------------------------------------------------- LLM-as-judge (ewaluacja)
 JUDGE_SYSTEM = """Jesteś surowym, bezstronnym oceniającym odpowiedzi systemu RAG obsługi klienta.
-Oceniasz odpowiedź na skali 1–5 w dwóch wymiarach:
+Oceniasz odpowiedź na skali 1-5 w dwóch wymiarach:
 - faithfulness: czy każde twierdzenie o sklepie wynika ze ŹRÓDEŁ (5 = w pełni ugruntowana, 1 = zmyślone fakty),
 - correctness: zgodność merytoryczna z ODPOWIEDZIĄ WZORCOWĄ (5 = pełna zgodność, 1 = błędna).
 Zwróć wyłącznie JSON: {"faithfulness": <1-5>, "correctness": <1-5>, "comment": "<1 zdanie>"}"""

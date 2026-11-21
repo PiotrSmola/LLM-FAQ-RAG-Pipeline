@@ -1,4 +1,4 @@
-"""Eksport wyników (próg 4.5): raport tekstowy .txt i wizualizacja etapów pipeline'u .svg."""
+"""Eksport wyników: raport tekstowy .txt i wizualizacja etapów pipeline'u .svg."""
 
 from __future__ import annotations
 
@@ -8,20 +8,19 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 plt.rcParams["font.family"] = ["Arial", "DejaVu Sans"]  # prosty font systemowy, spójny z UI
 plt.rcParams["svg.fonttype"] = "none"                   # tekst w SVG jako tekst (da się zaznaczyć/kopiować)
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch  # noqa: E402
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
-from .config import CATEGORIES  # noqa: E402
-from .pipeline import PipelineTrace  # noqa: E402
-from .prompts import category_label  # noqa: E402
+from .config import CATEGORIES
+from .pipeline import PipelineTrace
+from .prompts import category_label
 
 COLORS = {"stage": "#2b4c7e", "accent": "#e07a1f", "muted": "#8a94a6", "ok": "#2e8b57"}
 
 
-# --------------------------------------------------------------------------------------------------- TXT
 def trace_to_text(tr: PipelineTrace) -> str:
     w = textwrap.TextWrapper(width=100, subsequent_indent="    ")
     lines = [
@@ -73,7 +72,6 @@ def save_text(text: str, path: str | Path) -> Path:
     return path
 
 
-# --------------------------------------------------------------------------------------------------- SVG
 def _box(ax, x, y, w, h, title, body, color):
     ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.01,rounding_size=0.02",
                                 fc="white", ec=color, lw=2))
@@ -103,7 +101,6 @@ def trace_to_figure(tr: PipelineTrace) -> plt.Figure:
     gs = fig.add_gridspec(2, 2, height_ratios=[1.05, 1], hspace=0.28, wspace=0.6)
     fig.suptitle(f"Przebieg pipeline'u: „{_short(tr.question, 90)}”", fontsize=12.5, fontweight="bold")
 
-    # --- schemat etapów
     ax = fig.add_subplot(gs[0, :])
     ax.set_xlim(-0.01, 1.01)
     ax.set_ylim(-0.02, 1.0)
@@ -138,7 +135,6 @@ def trace_to_figure(tr: PipelineTrace) -> plt.Figure:
     ax.text(0.5, 0.0, f"Routing: {_short(tr.route, 150)}   |   łączny czas: {tr.total_seconds:.2f} s",
             ha="center", va="bottom", fontsize=8.5, style="italic", color="#444")
 
-    # --- prawdopodobieństwa kategorii
     ax1 = fig.add_subplot(gs[1, 0])
     labels = [category_label(c) for c in CATEGORIES]
     vals = [tr.probs.get(c, 0.0) for c in CATEGORIES]
@@ -152,7 +148,6 @@ def trace_to_figure(tr: PipelineTrace) -> plt.Figure:
         ax1.text(v - 0.02 if inside else v + 0.01, i, f"{v:.0%}", va="center", fontsize=8,
                  ha="right" if inside else "left", color="white" if inside else "#222")
 
-    # --- wyniki retrievalu
     ax2 = fig.add_subplot(gs[1, 1])
     if tr.hits:
         names = [f"[{i}] {short_citation(h.chunk, 40)}" for i, h in enumerate(tr.hits, 1)]

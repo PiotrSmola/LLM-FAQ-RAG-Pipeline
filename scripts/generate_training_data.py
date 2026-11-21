@@ -1,4 +1,4 @@
-"""Automatyczne generowanie danych treningowych klasyfikatora przez LLM (automatyzacja – próg 4.0).
+"""Generowanie danych treningowych klasyfikatora przez LLM.
 
 Dla każdej kategorii model w LM Studio generuje parafrazy/nowe pytania klientów, inspirowane wpisami FAQ.
 Wynik: data/classifier/train.jsonl ({"text", "label", "source"}).
@@ -56,7 +56,6 @@ def main() -> None:
 
     rows: list[dict] = []
     seen: set[str] = set()
-    # pytania z FAQ też są przykładami treningowymi
     for f in faq:
         key = normalize(f["question"])
         if key not in test_texts:
@@ -73,7 +72,7 @@ def main() -> None:
             try:
                 batch = generate_batch(llm, cat, faq, args.batch, seed)
             except ValueError as e:
-                print(f"  [{cat}] partia {attempt}: błąd parsowania – pomijam ({e})")
+                print(f"  [{cat}] partia {attempt}: błąd parsowania, pomijam ({e})")
                 continue
             for text in batch:
                 key = normalize(text)

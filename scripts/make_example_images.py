@@ -1,4 +1,4 @@
-"""Generuje przykładowe obrazy do demonstracji funkcji wielomodalnej (próg 3.5).
+"""Generuje przykładowe obrazy do pytań zadawanych obrazem.
 
 Obrazy imitują zrzut ekranu wiadomości od klienta i zdjęcie paragonu - model z obsługą obrazu
 (Gemma + mmproj) ma z nich odczytać pytanie klienta.
@@ -25,15 +25,15 @@ def email_screenshot() -> Path:
     img = Image.new("RGB", (900, 520), "white")
     d = ImageDraw.Draw(img)
     d.rectangle([0, 0, 900, 60], fill="#2b4c7e")
-    d.text((24, 16), "Poczta  –  Odebrane", font=_font(24, True), fill="white")
+    d.text((24, 16), "Poczta: Odebrane", font=_font(24, True), fill="white")
     d.text((24, 80), "Od: Anna Kowalska <anna.k@example.com>", font=_font(20), fill="#333")
     d.text((24, 110), "Do: pomoc@zorza-elektronika.example", font=_font(20), fill="#333")
-    d.text((24, 140), "Temat: Zamówienie nr 48213 – telefon nie działa", font=_font(20, True), fill="#111")
+    d.text((24, 140), "Temat: Zamówienie nr 48213, telefon nie działa", font=_font(20, True), fill="#111")
     d.line([24, 180, 876, 180], fill="#ccc", width=2)
     body = (
         "Dzień dobry,\n\n"
         "wczoraj kurier dostarczył mi smartfon z zamówienia 48213. Po wyjęciu z pudełka\n"
-        "telefon w ogóle się nie włącza – nie reaguje na ładowarkę ani na przycisk.\n\n"
+        "telefon w ogóle się nie włącza: nie reaguje na ładowarkę ani na przycisk.\n\n"
         "Co mam teraz zrobić i czy dostanę nowy egzemplarz?\n\n"
         "Pozdrawiam,\nAnna Kowalska"
     )

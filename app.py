@@ -1,11 +1,11 @@
-"""Aplikacja Gradio – Asystent FAQ sklepu Zorza Elektronika.
+"""Aplikacja Gradio: Asystent FAQ sklepu Zorza Elektronika.
 
 Zakładki:
-  1. Asystent          – czat (tekst + obraz), podgląd etapów pipeline'u, źródła, eksport .txt/.svg
-  2. Twoje dokumenty   – przesyłanie plików .txt/.md/.pdf i zadawanie do nich pytań (RAG na plikach sesji)
-  3. Wsadowo           – hurtowe przetwarzanie pytań z pliku CSV/TXT
-  4. Parametry modelu  – eksperymenty z temperature/top_p/top_k/seed/max_tokens/reasoning
-  5. Ewaluacja         – wyniki porównań (klasyfikacja, retrieval, QA, ablacja)
+  1. Asystent: czat (tekst + obraz), podgląd etapów pipeline'u, źródła, eksport .txt/.svg
+  2. Twoje dokumenty: przesyłanie plików .txt/.md/.pdf i zadawanie do nich pytań (RAG na plikach sesji)
+  3. Wsadowo: hurtowe przetwarzanie pytań z pliku CSV/TXT
+  4. Parametry modelu: eksperymenty z temperature/top_p/top_k/seed/max_tokens/reasoning
+  5. Ewaluacja: wyniki porównań (klasyfikacja, retrieval, QA, ablacja)
 
 Uruchomienie:  python app.py   (wymaga działającego serwera LM Studio z modelami z pliku .env)
 """
@@ -46,7 +46,7 @@ def server_status() -> str:
         return (f"LM Studio: połączono z {settings.base_url} · LLM: {settings.llm_model}{state(ok_llm)} · "
                 f"embeddingi: {settings.embedding_model}{state(ok_emb)} · "
                 f"klasyfikator: {getattr(pipe.classifier, 'method', '-')} · baza wiedzy: {len(pipe.kb)} fragmentów")
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         return f"Brak połączenia z LM Studio ({settings.base_url}): {e}"
 
 
@@ -56,7 +56,6 @@ def params_from(temperature, top_p, top_k, max_tokens, seed, reasoning) -> Gener
                             reasoning_effort=reasoning)
 
 
-# ============================================================================================ 1. Asystent
 def stages_markdown(tr: PipelineTrace | None) -> str:
     if tr is None:
         return "_Zadaj pytanie, aby zobaczyć przebieg pipeline'u._"
@@ -173,7 +172,6 @@ def clear_chat():
     return [], [], [], stages_markdown(None), sources_md(None), None
 
 
-# ====================================================================================== 2. Twoje dokumenty
 def upload_docs(files, user_kb, chunk_size, overlap):
     if user_kb is None:
         user_kb = KnowledgeBase(name=f"user_{uuid.uuid4().hex[:8]}", llm=llm, persist=False)
@@ -185,7 +183,7 @@ def upload_docs(files, user_kb, chunk_size, overlap):
             n = user_kb.add(chunks)
             added += n
             rows.append({"plik": path.name, "fragmenty": len(chunks), "status": "zindeksowano" if n else "już był"})
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             rows.append({"plik": path.name, "fragmenty": 0, "status": f"błąd: {e}"})
     info = f"Dodano {added} fragmentów. W bazie sesji: {len(user_kb)} fragmentów z {len({c.source for c in user_kb.chunks})} plików."
     return user_kb, pd.DataFrame(rows), info, gr.update(value=True)
@@ -211,7 +209,6 @@ def ask_docs(question, user_kb, method, top_k, temperature, reasoning):
     return tr.answer, sources_md(tr), str(txt)
 
 
-# ============================================================================================ 3. Wsadowo
 def batch_run(file, method, top_k, make_svg, progress=gr.Progress()):
     import shutil
     import sys
@@ -231,7 +228,6 @@ def batch_run(file, method, top_k, make_svg, progress=gr.Progress()):
     return df, files
 
 
-# =================================================================================== 4. Parametry modelu
 PARAM_HELP = """
 | Parametr | Znaczenie | Typowe wartości |
 |---|---|---|
@@ -248,7 +244,7 @@ PARAM_HELP = """
 def param_playground(prompt, n, temperature, top_p, top_k, repeat_penalty, max_tokens, seed, reasoning):
     rows = []
     for i in range(int(n)):
-        s = None if seed < 0 else int(seed) + i * 0  # ten sam seed -> te same wyniki (demonstracja determinizmu)
+        s = None if seed < 0 else int(seed)
         p = GenerationParams(temperature=float(temperature), top_p=float(top_p), top_k=int(top_k),
                              repeat_penalty=float(repeat_penalty), max_tokens=int(max_tokens), seed=s,
                              reasoning_effort=reasoning)
@@ -263,7 +259,6 @@ def param_playground(prompt, n, temperature, top_p, top_k, repeat_penalty, max_t
     return df, f"Unikalnych odpowiedzi: **{uniq} / {len(df)}**" + (", wynik deterministyczny." if uniq == 1 else "")
 
 
-# ========================================================================================== 5. Ewaluacja
 def load_eval():
     def csv(p):
         p = RESULTS_DIR / p
@@ -274,7 +269,6 @@ def load_eval():
             csv("qa/qa_summary.csv"), imgs)
 
 
-# ================================================================================================== UI
 HELP_MD = """
 Asystent obsługuje klientów **fikcyjnego sklepu internetowego Zorza Elektronika**. Odpowiada na podstawie bazy FAQ
 (74 wpisy) i dokumentów firmowych: regulaminu, polityki zwrotów i reklamacji, cennika dostaw oraz warunków usługi
@@ -294,7 +288,7 @@ odpowiedź będzie dotyczyć zasad Zorza Elektronika.
 lub całą rozmowę (.txt). Po restarcie aplikacji odśwież stronę, bo historia sesji jest wtedy czyszczona.
 """
 
-# Font systemowy (Arial/Helvetica) zamiast fontu Google z motywu – bez ozdobnych glifów, działa offline.
+# Font systemowy zamiast fontu Google z domyślnego motywu Gradio.
 SYSTEM_FONT = [gr.themes.Font("Arial"), gr.themes.Font("Helvetica"), gr.themes.Font("sans-serif")]
 THEME = gr.themes.Base(
     primary_hue=gr.themes.colors.blue,

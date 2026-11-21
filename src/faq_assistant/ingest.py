@@ -31,7 +31,6 @@ class Chunk:
         return self.source if self.kind == "faq" else f"{self.source}: {self.title}"
 
 
-# ---------------------------------------------------------------------------------------------------- FAQ
 def load_faq(path: str | Path = DATA_DIR / "faq" / "faq.jsonl") -> list[Chunk]:
     chunks = []
     for row in read_jsonl(path):
@@ -43,7 +42,6 @@ def load_faq(path: str | Path = DATA_DIR / "faq" / "faq.jsonl") -> list[Chunk]:
     return chunks
 
 
-# ---------------------------------------------------------------------------------------------- dokumenty
 def read_document(path: str | Path) -> str:
     path = Path(path)
     if path.suffix.lower() == ".pdf":
@@ -62,7 +60,7 @@ def _split_markdown_sections(text: str) -> list[tuple[str, str]]:
     def flush() -> None:
         body = "\n".join(buf).strip()
         if body:
-            # pomijamy nagłówek H1 (tytuł całego dokumentu – jest w nazwie pliku), zostawiamy sekcje
+            # pomijamy nagłówek H1 (tytuł całego dokumentu, jest w nazwie pliku), zostawiamy sekcje
             path = stack[1:] if len(stack) > 1 else stack
             sections.append((" > ".join(path) or "(początek)", body))
         buf.clear()

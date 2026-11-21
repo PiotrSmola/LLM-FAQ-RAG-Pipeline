@@ -50,7 +50,7 @@ class GenerationParams:
     repeat_penalty: float = 1.1
     max_tokens: int = 2048
     seed: int | None = 42
-    # Gemma 4 jest modelem „rozumującym” – domyślnie generuje ukryty tok myślenia (reasoning_content),
+    # Gemma 4 jest modelem „rozumującym”, domyślnie generuje ukryty tok myślenia (reasoning_content),
     # który zużywa max_tokens i wydłuża odpowiedź. "none" wyłącza rozumowanie; "low"/"medium"/"high" włącza.
     reasoning_effort: str = "none"
 

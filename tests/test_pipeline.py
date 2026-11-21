@@ -1,4 +1,4 @@
-"""Testy jednostkowe – działają bez LM Studio (atrapa klienta LLM z deterministycznymi embeddingami)."""
+"""Testy jednostkowe: działają bez LM Studio (atrapa klienta LLM z deterministycznymi embeddingami)."""
 
 from __future__ import annotations
 
@@ -57,7 +57,6 @@ def kb():
     return k
 
 
-# ------------------------------------------------------------------------------------------------ ingest
 def test_faq_loaded():
     faq = load_faq()
     assert len(faq) >= 70
@@ -81,7 +80,6 @@ def test_chunk_document_has_metadata():
     assert chunks and all(c.kind == "doc" and c.source == "cennik_dostaw.md" for c in chunks)
 
 
-# --------------------------------------------------------------------------------------------- retrieval
 def test_tokenize_pl_stemming_and_accents():
     assert tokenize_pl("Zwroty zwrotów ZWROTEM") == ["zwroty", "zwroto", "zwrote"]
     assert "lodowk" in tokenize_pl("lodówka")
@@ -105,7 +103,6 @@ def test_hybrid_rrf_scores_sorted(kb):
     assert all(0 < s <= 2 / 61 for s in scores)  # RRF z k=60 i dwiema listami
 
 
-# ---------------------------------------------------------------------------------------------- pipeline
 def test_pipeline_out_of_scope_skips_llm(kb):
     from faq_assistant.pipeline import FAQPipeline
 
@@ -140,7 +137,6 @@ def test_pipeline_rewrites_with_history(kb):
     assert tr.question == "przepisane pytanie" and tr.rewritten
 
 
-# ------------------------------------------------------------------------------------------------ export
 def test_export_txt_and_svg(kb, tmp_path):
     from faq_assistant.export import save_svg, trace_to_text
     from faq_assistant.pipeline import FAQPipeline
@@ -153,7 +149,6 @@ def test_export_txt_and_svg(kb, tmp_path):
     assert svg.lstrip().startswith("<?xml") and "<svg" in svg
 
 
-# ------------------------------------------------------------------------------------------------- utils
 def test_parse_json_variants():
     assert parse_json('```json\n{"category": "dostawa"}\n```') == {"category": "dostawa"}
     assert parse_json('Oto wynik: ["a", "b"] koniec') == ["a", "b"]

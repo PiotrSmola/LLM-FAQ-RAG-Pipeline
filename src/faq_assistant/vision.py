@@ -1,4 +1,4 @@
-"""Funkcja wielomodalna (próg 3.5): obraz od klienta -> odczytany tekst + pytanie do pipeline'u."""
+"""Obraz od klienta -> odczytany tekst i pytanie do pipeline'u."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ def image_to_question(llm, image: str | Path | bytes, user_text: str = "") -> di
     """Zwraca {"ocr": ..., "question": ...}. Tekst wpisany przez użytkownika jest dołączany jako kontekst."""
     prompt = VISION_EXTRACT
     if user_text.strip():
-        prompt += f"\n\nKlient dopisał do obrazu wiadomość: \"{user_text.strip()}\" – uwzględnij ją w pytaniu."
+        prompt += f"\n\nKlient dopisał do obrazu wiadomość: \"{user_text.strip()}\", uwzględnij ją w pytaniu."
     raw = llm.vision(prompt, image, params=GenerationParams(temperature=0.1, max_tokens=1500, seed=0))
     try:
         data = parse_json(raw)

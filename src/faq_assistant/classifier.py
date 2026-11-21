@@ -1,9 +1,9 @@
 """Etap 1 pipeline'u: klasyfikacja (routing) zapytania klienta.
 
 Trzy wymienne implementacje o wspólnym interfejsie `predict(text) -> Prediction`:
-- BertClassifier  – dostrojony (fine-tuning) HerBERT / DistilBERT (główny router),
-- TfidfClassifier – baseline TF-IDF + regresja logistyczna (jak w Lab 2),
-- LLMClassifier   – klasyfikacja zero/few-shot przez LLM w LM Studio (porównanie).
+- BertClassifier: dostrojony (fine-tuning) HerBERT / DistilBERT (główny router),
+- TfidfClassifier: baseline TF-IDF + regresja logistyczna (jak w Lab 2),
+- LLMClassifier: klasyfikacja zero/few-shot przez LLM w LM Studio (porównanie).
 """
 
 from __future__ import annotations

@@ -1,8 +1,8 @@
 """Etap 3 pipeline'u: odpowiedź na pytanie na podstawie znalezionych fragmentów.
 
-- generatywnie: LLM (Gemma w LM Studio) z numerowanym kontekstem i cytowaniem [n] – tryb główny (RAG),
-- ekstrakcyjnie: model QA typu SQuAD wskazuje fragment tekstu (span) – porównanie, jak w Lab 3,
-- FLAN-T5 – generatywny model z Lab 3 (angielski), tylko do porównania w ewaluacji.
+- generatywnie: LLM (Gemma w LM Studio) z numerowanym kontekstem i cytowaniem [n], tryb główny (RAG),
+- ekstrakcyjnie: model QA typu SQuAD wskazuje fragment tekstu (span), porównanie, jak w Lab 3,
+- FLAN-T5: generatywny model z Lab 3 (angielski), tylko do porównania w ewaluacji.
 """
 
 from __future__ import annotations
@@ -46,14 +46,14 @@ def answer(llm, question: str, hits: list[Hit], history: list[dict] | None = Non
 
 
 def answer_without_context(llm, question: str, params: GenerationParams | None = None) -> str:
-    """Wariant ablacyjny „sam LLM” – bez RAG, model odpowiada z własnej wiedzy (ryzyko halucynacji)."""
+    """Wariant ablacyjny „sam LLM”: bez RAG, model odpowiada z własnej wiedzy (ryzyko halucynacji)."""
     system = ("Jesteś konsultantem obsługi klienta sklepu internetowego Zorza Elektronika. "
               "Odpowiadasz po polsku, konkretnie i zwięźle.")
     return llm.complete(question, system=system, params=params)
 
 
 class ExtractiveQA:
-    """Extractive QA (span) – kod jak w Lab 3, ale model wielojęzyczny (XLM-RoBERTa fine-tuned na SQuAD 2.0)."""
+    """Extractive QA (span): kod jak w Lab 3, ale model wielojęzyczny (XLM-RoBERTa fine-tuned na SQuAD 2.0)."""
 
     def __init__(self, model_name: str = "deepset/xlm-roberta-base-squad2", device: str | None = None) -> None:
         import torch
@@ -88,7 +88,7 @@ class ExtractiveQA:
         return text, prob
 
     def answer(self, question: str, hits: list[Hit]) -> tuple[str, float, int]:
-        """Zwraca (odpowiedź, pewność, numer źródła) – najlepszy span spośród znalezionych fragmentów."""
+        """Zwraca (odpowiedź, pewność, numer źródła), najlepszy span spośród znalezionych fragmentów."""
         best = ("", 0.0, 0)
         for i, h in enumerate(hits, 1):
             text, prob = self._best_span(question, h.chunk.text)
@@ -98,7 +98,7 @@ class ExtractiveQA:
 
 
 class FlanT5QA:
-    """Generatywny FLAN-T5 z Lab 3 – punkt odniesienia (model angielski, słaby dla polskiego)."""
+    """Generatywny FLAN-T5 z Lab 3: punkt odniesienia (model angielski, słaby dla polskiego)."""
 
     def __init__(self, model_name: str = "google/flan-t5-base", device: str | None = None) -> None:
         import torch

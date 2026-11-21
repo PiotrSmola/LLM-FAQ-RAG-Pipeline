@@ -1,9 +1,9 @@
 """Etap 1: fine-tuning klasyfikatora BERT do routingu zapytań + porównanie z baseline'ami.
 
 Tryby:
-    train   – fine-tuning modelu BERT (domyślnie polski HerBERT) na data/classifier/train.jsonl
-    compare – ewaluacja na ręcznym zbiorze testowym: BERT(y) vs TF-IDF+LR vs LLM zero-shot
-    curve   – learning curve: F1 od liczby przykładów treningowych (jak zad. 2.4 z Lab 2)
+    train: fine-tuning modelu BERT (domyślnie polski HerBERT) na data/classifier/train.jsonl
+    compare: ewaluacja na ręcznym zbiorze testowym: BERT(y) vs TF-IDF+LR vs LLM zero-shot
+    curve: learning curve: F1 od liczby przykładów treningowych (jak zad. 2.4 z Lab 2)
 
 Przykłady:
     python scripts/train_classifier.py train
@@ -32,7 +32,6 @@ def load_split() -> tuple[list[dict], list[dict]]:
     return read_jsonl(DATA_DIR / "classifier" / "train.jsonl"), read_jsonl(DATA_DIR / "classifier" / "test.jsonl")
 
 
-# ------------------------------------------------------------------------------------------------ train
 def finetune(model_name: str, train_rows: list[dict], out_dir: Path | None, epochs: int = 8, lr: float = 3e-5,
              batch_size: int = 16, seed: int = 42, val_frac: float = 0.1, quiet: bool = False):
     """Fine-tuning AutoModelForSequenceClassification (schemat z Lab 2, przykład 2). Zwraca (model, tokenizer)."""
@@ -72,7 +71,7 @@ def finetune(model_name: str, train_rows: list[dict], out_dir: Path | None, epoc
         learning_rate=lr,
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=64,
-        warmup_steps=max(1, int(0.1 * total_steps)),  # 10% kroków na rozgrzewkę LR
+        warmup_steps=max(1, int(0.1 * total_steps)),
         weight_decay=0.01,
         eval_strategy="epoch" if n_val else "no",
         save_strategy="epoch" if n_val else "no",
@@ -109,7 +108,6 @@ def cmd_train(a: argparse.Namespace) -> None:
     print(f"Model zapisany w {out} (trening {time.perf_counter() - t:.0f}s, {len(train_rows)} przykładów)")
 
 
-# ---------------------------------------------------------------------------------------------- compare
 def evaluate_predictions(name: str, y_true: list[str], y_pred: list[str], latency: float) -> dict:
     from sklearn.metrics import accuracy_score, f1_score
 
@@ -128,7 +126,7 @@ def save_confusion(name: str, y_true: list[str], y_pred: list[str]) -> None:
     fig, ax = plt.subplots(figsize=(7.5, 6.5))
     ConfusionMatrixDisplay.from_predictions(y_true, y_pred, labels=CATEGORIES, ax=ax, cmap="Blues",
                                             xticks_rotation=35, colorbar=False)
-    ax.set_title(f"Macierz pomyłek – {name}")
+    ax.set_title(f"Macierz pomyłek: {name}")
     fig.tight_layout()
     safe = name.replace("/", "_").replace(":", "_")
     for ext in ("png", "svg"):
@@ -181,7 +179,6 @@ def cmd_compare(a: argparse.Namespace) -> None:
     print(f"\nWyniki: {OUT_DIR / 'comparison.csv'}, błędy: {OUT_DIR / 'errors.csv'}")
 
 
-# ------------------------------------------------------------------------------------------------ curve
 def cmd_curve(a: argparse.Namespace) -> None:
     import matplotlib
 
@@ -201,7 +198,7 @@ def cmd_curve(a: argparse.Namespace) -> None:
     for size in a.sizes:
         for seed in a.seeds:
             rng = random.Random(seed)
-            # próbkowanie warstwowe – każda klasa reprezentowana proporcjonalnie
+            # próbkowanie warstwowe: każda klasa reprezentowana proporcjonalnie
             by_cls = {c: [r for r in train_rows if r["label"] == c] for c in CATEGORIES}
             subset = []
             for c in CATEGORIES:
