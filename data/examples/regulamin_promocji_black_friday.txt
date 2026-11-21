@@ -1,0 +1,22 @@
+Regulamin promocji „Black Friday w Zorza Elektronika”
+(firma fikcyjna, plik przykładowy do zakładki „Twoje dokumenty”)
+
+1. Organizator
+Organizatorem promocji jest Zorza Elektronika sp. z o.o., ul. Kwiatowa 12, 35-001 Rzeszów.
+
+2. Czas trwania
+Promocja trwa od 27 listopada 2026 r. godz. 00:00 do 30 listopada 2026 r. godz. 23:59 lub do wyczerpania zapasów.
+
+3. Zasady promocji
+3.1. Produkty oznaczone etykietą „Black Friday” są tańsze o 15% względem ceny regularnej.
+3.2. Przy zakupie dwóch dowolnych akcesoriów (kable, ładowarki, etui) trzecie, najtańsze, otrzymujesz za 1 zł.
+3.3. Dla zamówień powyżej 2000 zł przysługuje dodatkowy rabat 100 zł naliczany automatycznie w koszyku.
+3.4. Rabatów z punktów 3.1 i 3.3 nie łączy się z kodami rabatowymi z newslettera.
+3.5. Limit: maksymalnie 2 sztuki tego samego produktu promocyjnego na jedno zamówienie.
+
+4. Zwroty produktów promocyjnych
+4.1. Produkty kupione w promocji można zwrócić na ogólnych zasadach (30 dni od doręczenia).
+4.2. Przy zwrocie jednego z produktów objętych zasadą 3.2 zwracana kwota jest pomniejszana o udzielony rabat.
+
+5. Reklamacje dotyczące promocji
+Reklamacje dotyczące przebiegu promocji można składać do 14 grudnia 2026 r. na adres promocje@zorza-elektronika.example. Odpowiedź zostanie udzielona w ciągu 7 dni.

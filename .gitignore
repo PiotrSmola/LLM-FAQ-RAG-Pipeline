@@ -1,0 +1,27 @@
+# Środowisko
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Sekrety / lokalna konfiguracja
+.env
+
+# Duże artefakty generowane lokalnie
+models/
+chroma_db/
+cache/
+*.safetensors
+*.bin
+
+# Pliki tymczasowe Office / systemowe
+~$*
+Thumbs.db
+.DS_Store
+
+# Archiwum do oddania
+*_Projekt_LLM.zip
+
+# Metadane instalacji pakietu (pip install -e .)
+*.egg-info/

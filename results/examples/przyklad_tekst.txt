@@ -1,0 +1,51 @@
+====================================================================================================
+ASYSTENT FAQ: Zorza Elektronika        2026-11-21T15:27:28
+====================================================================================================
+Wejście użytkownika : Ile kosztuje pełna ochrona Zorza Ochrona+ na 2 lata dla laptopa za 4000 zł?
+Pytanie (końcowe)   : Ile kosztuje pełna ochrona Zorza Ochrona+ na 2 lata dla laptopa za 4000 zł?
+
+ETAP 1: KLASYFIKACJA / ROUTING
+    Klasyfikator : bert:herbert-faq
+    Kategoria    : Produkty i gwarancja (pewność 98.7%)
+    Decyzja      : Kategoria „Produkty i gwarancja” (pewność 99%): FAQ zawężone do kategorii + dokumenty firmowe
+        Płatności                  0.3%
+        Dostawa                    0.2%
+        Zwroty i reklamacje        0.2%
+        Konto i logowanie          0.2%
+        Produkty i gwarancja      98.7%
+        Poza zakresem              0.5%
+
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+    [1] warunki_zorza_ochrona_plus.md: 1. Czym jest Zorza Ochrona+  (wynik 0.0325)
+        [1. Czym jest Zorza Ochrona+] Zorza Ochrona+ to płatna usługa rozszerzonej ochrony
+    urządzenia, oferowana w trzech wariantach: na **1, 2 lub 3 lata**. Ochrona obejmuje: 1.
+    **usterki techniczne** po zakończeniu gwarancji producenta (wariant „Przedłużona gwarancja”), 2.
+    **przypadkowe uszkodzenia** od p…
+    [2] warunki_zorza_ochrona_plus.md: 2. Zakup  (wynik 0.0320)
+        [2. Zakup] - Usługę można dokupić razem z urządzeniem lub w ciągu **30 dni od zakupu** – w
+    koncie Klienta lub w salonie. - Usługa jest dostępna dla urządzeń o wartości od 300 zł do 25 000
+    zł: smartfony, tablety, laptopy, telewizory, konsole, aparaty, sprzęt AGD. - Cena zależy od
+    wartości urządzenia …
+    [3] GWA-02  (wynik 0.0317)
+        Pytanie: Co to jest Zorza Ochrona+? Odpowiedź: Zorza Ochrona+ to płatne rozszerzenie ochrony
+    na 1, 2 lub 3 lata. Obejmuje usterki po zakończeniu gwarancji producenta oraz przypadkowe
+    uszkodzenia, np. zalanie lub upadek. Można ją dokupić do 30 dni od zakupu urządzenia.…
+    [4] GWA-03  (wynik 0.0315)
+        Pytanie: Ile kosztuje rozszerzona gwarancja Zorza Ochrona+? Odpowiedź: Cena zależy od
+    wartości urządzenia i okresu ochrony – zwykle wynosi od 8% do 18% ceny produktu. Dokładną kwotę
+    zobaczysz w karcie produktu i w koszyku. Szczegóły zawierają warunki Zorza Ochrona+.…
+
+ETAP 3: ODPOWIEDŹ
+    Koszt pełnej ochrony Zorza Ochrona+ na okres 2 lat wynosi 600 zł.
+    Obliczenie: Cena usługi w tym wariancie to 15% ceny urządzenia [2]. Dla laptopa o wartości 4000
+    zł daje to kwotę 600 zł (wiedza ogólna).
+
+CZASY ETAPÓW
+    Klasyfikacja (routing)                   0.29 s
+    Wyszukiwanie (hybrid)                    2.08 s
+    Generowanie odpowiedzi (LLM)             1.35 s
+    RAZEM                                    3.71 s
+
+PARAMETRY GENEROWANIA
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
+====================================================================================================

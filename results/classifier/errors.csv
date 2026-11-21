@@ -1,0 +1,70 @@
+model,text,true,pred
+tfidf_word_lr,ile mam dni na zrobienie przelewu zanim anulujecie zamówienie,platnosci,dostawa
+tfidf_word_lr,"Zamówiłem wczoraj o 15, kiedy wyślecie paczkę?",dostawa,platnosci
+tfidf_word_lr,Zamówię online i odbiorę w sklepie w Rzeszowie – po jakim czasie?,dostawa,platnosci
+tfidf_word_lr,"Czy możecie wysłać słuchawki osobno, a monitor jak dojdzie?",dostawa,produkty_gwarancja
+tfidf_word_lr,Czy za odesłanie zwrotu muszę płacić?,zwroty_reklamacje,platnosci
+tfidf_word_lr,"wyrzucilem karton od telewizora, moge go jeszcze zwrocic?",zwroty_reklamacje,produkty_gwarancja
+tfidf_word_lr,telefon nie dziala od razu po wyjeciu z pudelka,zwroty_reklamacje,platnosci
+tfidf_word_lr,Chcę zamienić kupionego czarnego iPhone'a na biały,zwroty_reklamacje,poza_zakresem
+tfidf_word_lr,"odrzucili mi reklamacje, nie zgadzam sie z tym",zwroty_reklamacje,konto
+tfidf_word_lr,"kupilem w salonie, moge oddac przez paczkomat?",zwroty_reklamacje,dostawa
+tfidf_word_lr,jak sprawdzic co sie dzieje z moim zwrotem,zwroty_reklamacje,konto
+tfidf_word_lr,"Pralka przecieka po 13 miesiącach, kto za to odpowiada?",zwroty_reklamacje,platnosci
+tfidf_word_lr,"Link do resetu hasła nie działa, jest wygasły",konto,zwroty_reklamacje
+tfidf_word_lr,Ile mam punktów i na co mogę je wymienić?,konto,zwroty_reklamacje
+tfidf_word_lr,Gdzie są moje stare faktury i zamówienia?,konto,platnosci
+tfidf_word_lr,jaka gwarancje ma ten telewizor samsunga,produkty_gwarancja,poza_zakresem
+tfidf_word_lr,"Ukradli mi telefon, mam Ochronę+ – coś mi przysługuje?",produkty_gwarancja,zwroty_reklamacje
+tfidf_word_lr,"kiedy bedzie znowu dostepna konsola, ciagle brak",produkty_gwarancja,platnosci
+tfidf_word_lr,Zamówiłem grę w przedsprzedaży – dojdzie na dzień premiery?,produkty_gwarancja,zwroty_reklamacje
+tfidf_word_lr,"co to znaczy produkt outlet, jest używany?",produkty_gwarancja,zwroty_reklamacje
+tfidf_word_lr,jak ugotowac rosol,poza_zakresem,konto
+tfidf_word_lr,ile kosztuje bilet na pociąg do Krakowa,poza_zakresem,dostawa
+tfidf_word_lr,ile lat zyje zolw,poza_zakresem,dostawa
+tfidf_word_lr,Gdzie zjeść dobrą pizzę w Rzeszowie?,poza_zakresem,produkty_gwarancja
+tfidf_word_lr,jak wymienic olej w samochodzie,poza_zakresem,konto
+tfidf_char_wb_lr,"Zapomniałem podać NIP przy zamówieniu, da się jeszcze dopisać?",platnosci,konto
+tfidf_char_wb_lr,kiedy oddacie mi pieniądze za zwrócony telefon,platnosci,zwroty_reklamacje
+tfidf_char_wb_lr,Od ilu zł nie płacę za kuriera?,dostawa,platnosci
+tfidf_char_wb_lr,Zamówię online i odbiorę w sklepie w Rzeszowie – po jakim czasie?,dostawa,poza_zakresem
+tfidf_char_wb_lr,"Czy możecie wysłać słuchawki osobno, a monitor jak dojdzie?",dostawa,produkty_gwarancja
+tfidf_char_wb_lr,"kupilem w salonie, moge oddac przez paczkomat?",zwroty_reklamacje,dostawa
+tfidf_char_wb_lr,jak sprawdzic co sie dzieje z moim zwrotem,zwroty_reklamacje,konto
+tfidf_char_wb_lr,"Pralka przecieka po 13 miesiącach, kto za to odpowiada?",zwroty_reklamacje,dostawa
+tfidf_char_wb_lr,Ile mam punktów i na co mogę je wymienić?,konto,zwroty_reklamacje
+tfidf_char_wb_lr,Gdzie są moje stare faktury i zamówienia?,konto,platnosci
+tfidf_char_wb_lr,Czy ta ładowarka będzie pasować do mojego Pixela 8?,produkty_gwarancja,poza_zakresem
+tfidf_char_wb_lr,ile kosztuje bilet na pociąg do Krakowa,poza_zakresem,dostawa
+tfidf_char_wb_lr,ile lat zyje zolw,poza_zakresem,dostawa
+tfidf_char_wb_lr,jak wymienic olej w samochodzie,poza_zakresem,zwroty_reklamacje
+bert:herbert-faq,"chce kupic laptopa za 4 tys na raty, ile rat moge wziac?",platnosci,produkty_gwarancja
+bert:herbert-faq,kiedy oddacie mi pieniądze za zwrócony telefon,platnosci,zwroty_reklamacje
+bert:herbert-faq,"Laptop po tygodniu nie włącza się, jak go zareklamować?",zwroty_reklamacje,produkty_gwarancja
+bert:herbert-faq,Chcę zamienić kupionego czarnego iPhone'a na biały,zwroty_reklamacje,produkty_gwarancja
+bert:herbert-faq,Ile mam punktów i na co mogę je wymienić?,konto,zwroty_reklamacje
+bert:herbert-faq,"Dostałem SMS z linkiem do dopłaty 1,99 zł podobno od was – to prawda?",konto,platnosci
+bert:herbert-faq,Gdzie są moje stare faktury i zamówienia?,konto,zwroty_reklamacje
+bert:herbert-faq,"Ukradli mi telefon, mam Ochronę+ – coś mi przysługuje?",produkty_gwarancja,zwroty_reklamacje
+bert:herbert-faq,ile lat zyje zolw,poza_zakresem,produkty_gwarancja
+bert:herbert-faq,jak wymienic olej w samochodzie,poza_zakresem,produkty_gwarancja
+bert:distilbert-faq,kiedy oddacie mi pieniądze za zwrócony telefon,platnosci,zwroty_reklamacje
+bert:distilbert-faq,Od ilu zł nie płacę za kuriera?,dostawa,platnosci
+bert:distilbert-faq,"status od 3 dni 'w kompletacji', czemu nie wysłane",dostawa,zwroty_reklamacje
+bert:distilbert-faq,"Laptop po tygodniu nie włącza się, jak go zareklamować?",zwroty_reklamacje,platnosci
+bert:distilbert-faq,telefon nie dziala od razu po wyjeciu z pudelka,zwroty_reklamacje,dostawa
+bert:distilbert-faq,Chcę zamienić kupionego czarnego iPhone'a na biały,zwroty_reklamacje,produkty_gwarancja
+bert:distilbert-faq,Otworzyłem grę na PS5 i jednak nie chcę – mogę zwrócić?,zwroty_reklamacje,platnosci
+bert:distilbert-faq,"kupilem w salonie, moge oddac przez paczkomat?",zwroty_reklamacje,dostawa
+bert:distilbert-faq,"Pralka przecieka po 13 miesiącach, kto za to odpowiada?",zwroty_reklamacje,platnosci
+bert:distilbert-faq,Ile mam punktów i na co mogę je wymienić?,konto,zwroty_reklamacje
+bert:distilbert-faq,jak wlaczyc logowanie z kodem z aplikacji,konto,poza_zakresem
+bert:distilbert-faq,Gdzie są moje stare faktury i zamówienia?,konto,platnosci
+bert:distilbert-faq,Pomóż mi rozwiązać zadanie z całek,poza_zakresem,zwroty_reklamacje
+bert:distilbert-faq,ile kosztuje bilet na pociąg do Krakowa,poza_zakresem,produkty_gwarancja
+bert:distilbert-faq,przetlumacz na angielski: dzien dobry,poza_zakresem,produkty_gwarancja
+bert:distilbert-faq,polec dobry serial na netflixie,poza_zakresem,produkty_gwarancja
+bert:distilbert-faq,Jak napisać CV na stanowisko programisty?,poza_zakresem,konto
+bert:distilbert-faq,ile lat zyje zolw,poza_zakresem,dostawa
+bert:distilbert-faq,Gdzie zjeść dobrą pizzę w Rzeszowie?,poza_zakresem,dostawa
+bert:distilbert-faq,jak wymienic olej w samochodzie,poza_zakresem,zwroty_reklamacje
