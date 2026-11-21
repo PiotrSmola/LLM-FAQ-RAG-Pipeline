@@ -31,7 +31,8 @@ class LMStudioClient:
     def _kwargs(params: GenerationParams | None) -> dict:
         p = asdict(params or GenerationParams())
         # top_k i repeat_penalty nie należą do specyfikacji OpenAI - LM Studio przyjmuje je w extra_body
-        extra = {"top_k": p.pop("top_k"), "repeat_penalty": p.pop("repeat_penalty")}
+        extra = {"top_k": p.pop("top_k"), "repeat_penalty": p.pop("repeat_penalty"),
+                 "reasoning_effort": p.pop("reasoning_effort")}
         if p["seed"] is None:
             p.pop("seed")
         return {**p, "extra_body": extra}

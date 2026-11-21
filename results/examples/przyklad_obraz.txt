@@ -1,0 +1,68 @@
+====================================================================================================
+ASYSTENT FAQ – Zorza Elektronika        2026-11-21T14:37:55
+====================================================================================================
+Wejście użytkownika : (brak tekstu)
+Obraz               : mail_reklamacja.png
+Odczyt z obrazu     : Poczta – Odebrane Od: Anna Kowalska <anna.k@example.com> Do: pomoc@zorza-
+    elektronika.example Temat: Zamówienie nr 48213 – telefon nie działa  Dzień dobry,  wczoraj
+    kurier dostarczył mi smartfon z zamówienia 48213. Po wyjęciu z pudełka telefon w ogóle się nie
+    włącza – nie reaguje na ładowarkę ani na przycisk.  Co mam teraz zrobić i czy dostanę nowy
+    egzemplarz?  Pozdrawiam, Anna Kowalska
+Pytanie (końcowe)   : Jakie kroki mam podjąć w celu wymiany smartfona z zamówienia nr 48213, który nie uruchamia się po wyjęciu z pudełka?
+
+ETAP 1 – KLASYFIKACJA / ROUTING
+    Klasyfikator : llm_zero_shot
+    Kategoria    : Zwroty i reklamacje (pewność 100.0%)
+    Decyzja      : Kategoria „Zwroty i reklamacje” (pewność 100%) – FAQ zawężone do kategorii + dokumenty firmowe
+        Płatności                  0.0%
+        Dostawa                    0.0%
+        Zwroty i reklamacje      100.0%
+        Konto i logowanie          0.0%
+        Produkty i gwarancja       0.0%
+        Poza zakresem              0.0%
+
+ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+    [1] ZWR-10  (wynik 0.0320)
+        Pytanie: Czy mogę wymienić produkt na inny model? Odpowiedź: Nie prowadzimy bezpośrednich
+    wymian. Zwróć produkt w ramach 30-dniowego prawa zwrotu i złóż nowe zamówienie na wybrany model
+    – zwrot pieniędzy otrzymasz w ciągu 14 dni od otrzymania zwrotu.…
+    [2] polityka_zwrotow_i_reklamacji.md – 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.6. Stan zwracanego towaru  (wynik 0.0315)
+        [1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.6. Stan zwracanego towaru]
+    Towar można sprawdzić tak jak w sklepie stacjonarnym. Jeżeli używano go w stopniu wykraczającym
+    poza sprawdzenie (np. ślady użytkowania, brak akcesoriów, zalogowane konto producenta, aktywna
+    blokada urządzen…
+    [3] polityka_zwrotow_i_reklamacji.md – 2. Reklamacje (niezgodność towaru z umową) > 2.3. Terminy  (wynik 0.0310)
+        [2. Reklamacje (niezgodność towaru z umową) > 2.3. Terminy] - Odpowiedź na reklamację – do
+    **14 dni** od jej otrzymania. - Naprawa lub wymiana – w rozsądnym terminie, zwykle do 21 dni
+    roboczych. - Wada DOA (produkt niedziałający od pierwszego uruchomienia) – zgłoszenie w ciągu
+    **7 dni** od doręczeni…
+    [4] polityka_zwrotow_i_reklamacji.md – 2. Reklamacje (niezgodność towaru z umową) > 2.2. Jak złożyć reklamację  (wynik 0.0299)
+        [2. Reklamacje (niezgodność towaru z umową) > 2.2. Jak złożyć reklamację] 1. „Moje
+    zamówienia” → „Zgłoś reklamację” (lub formularz dla gości). 2. Opisz wadę, kiedy ją zauważono, i
+    dołącz zdjęcia lub nagranie. 3. Wybierz żądanie: naprawa, wymiana, obniżenie ceny lub
+    odstąpienie od umowy (dwa ostatnie…
+
+ETAP 3 – ODPOWIEDŹ
+    W przypadku produktu niedziałającego od pierwszego uruchomienia (wada DOA), należy postąpić
+    zgodnie z poniższymi krokami:
+    1. Zgłoś wadę w ciągu 7 dni od doręczenia zamówienia [3].
+    2. Złóż reklamację w panelu „Moje zamówienia” lub przez formularz dla gości, opisując wadę i
+    dołączając zdjęcia/nagranie [4].
+    3. Wybierz żądanie wymiany produktu [4].
+    4. Nadaj produkt bezpłatnie kodem reklamacyjnym w paczkomacie [4].
+    Po weryfikacji zgłoszenia (trwającej do 3 dni roboczych) wyślemy nowy egzemplarz smartfona [3].
+    Jeśli potrzebujesz dodatkowej pomocy, skontaktuj się z nami pod adresem pomoc@zorza-
+    elektronika.example lub numerem telefonu 17 000 00 00.
+    💡 Reklamację lub zwrot zgłosisz w zakładce „Moje zamówienia” → „Zgłoś reklamację” / „Zwróć
+    produkt”.
+
+CZASY ETAPÓW
+    Obraz → pytanie (vision)                 4.83 s
+    Klasyfikacja (routing)                   2.43 s
+    Wyszukiwanie (hybrid)                    0.05 s
+    Generowanie odpowiedzi (LLM)             3.24 s
+    RAZEM                                   10.56 s
+
+PARAMETRY GENEROWANIA
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+====================================================================================================
