@@ -2,7 +2,7 @@
 
 Projekt zaliczeniowy z przedmiotu dotyczącego dużych modeli językowych.
 **Temat 29: „Kompletny pipeline: klasyfikacja → QA → RAG dla firmowej bazy FAQ”.**
-Autor: Piotr Smoła, nr albumu 125162.
+Autor: Piotr Smoła, nr albumu 125162. Sprawozdanie: [Sprawozdanie_Projekt_LLM.docx](Sprawozdanie_Projekt_LLM.docx).
 
 Asystent obsługi klienta **fikcyjnego** sklepu internetowego *Zorza Elektronika*. Dla każdego pytania:
 

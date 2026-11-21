@@ -1,68 +1,62 @@
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T14:37:55
+ASYSTENT FAQ: Zorza Elektronika        2026-11-21T15:20:32
 ====================================================================================================
-Wejście użytkownika : (brak tekstu)
-Obraz               : mail_reklamacja.png
-Odczyt z obrazu     : Poczta – Odebrane Od: Anna Kowalska <anna.k@example.com> Do: pomoc@zorza-
-    elektronika.example Temat: Zamówienie nr 48213 – telefon nie działa  Dzień dobry,  wczoraj
-    kurier dostarczył mi smartfon z zamówienia 48213. Po wyjęciu z pudełka telefon w ogóle się nie
-    włącza – nie reaguje na ładowarkę ani na przycisk.  Co mam teraz zrobić i czy dostanę nowy
-    egzemplarz?  Pozdrawiam, Anna Kowalska
-Pytanie (końcowe)   : Jakie kroki mam podjąć w celu wymiany smartfona z zamówienia nr 48213, który nie uruchamia się po wyjęciu z pudełka?
+Wejście użytkownika : Czy zdążę jeszcze zwrócić ten laptop?
+Obraz               : faktura_laptop.png
+Odczyt z obrazu     : ZORZA ELEKTRONIKA sp. z o.o. ul. Kwiatowa 12, 35-001 Rzeszów · NIP
+    000-000-00-00 FAKTURA VAT nr FV/2026/11/0815 Data sprzedaży: 05.11.2026 Data doręczenia:
+    07.11.2026 Sposób zakupu: sklep internetowy, zam. 51240 Płatność: BLIK Lp. Nazwa Ilość Cena
+    brutto 1. Laptop Voltbook 14 i7/16GB/1TB 1 4 299,00 zł 2. Zorza Ochrona+ Pełna ochrona 2 lata 1
+    644,85 zł RAZEM: 4 943,85 zł
+Pytanie (końcowe)   : Czy zdążę jeszcze zwrócić laptop Voltbook 14 zakupiony w sklepie internetowym w dniu 05.11.2026?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
-    Klasyfikator : llm_zero_shot
-    Kategoria    : Zwroty i reklamacje (pewność 100.0%)
-    Decyzja      : Kategoria „Zwroty i reklamacje” (pewność 100%) – FAQ zawężone do kategorii + dokumenty firmowe
-        Płatności                  0.0%
-        Dostawa                    0.0%
-        Zwroty i reklamacje      100.0%
-        Konto i logowanie          0.0%
-        Produkty i gwarancja       0.0%
-        Poza zakresem              0.0%
+ETAP 1: KLASYFIKACJA / ROUTING
+    Klasyfikator : bert:herbert-faq
+    Kategoria    : Zwroty i reklamacje (pewność 98.2%)
+    Decyzja      : Kategoria „Zwroty i reklamacje” (pewność 98%): FAQ zawężone do kategorii + dokumenty firmowe
+        Płatności                  0.2%
+        Dostawa                    0.2%
+        Zwroty i reklamacje       98.2%
+        Konto i logowanie          0.1%
+        Produkty i gwarancja       1.2%
+        Poza zakresem              0.1%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
-    [1] ZWR-10  (wynik 0.0320)
-        Pytanie: Czy mogę wymienić produkt na inny model? Odpowiedź: Nie prowadzimy bezpośrednich
-    wymian. Zwróć produkt w ramach 30-dniowego prawa zwrotu i złóż nowe zamówienie na wybrany model
-    – zwrot pieniędzy otrzymasz w ciągu 14 dni od otrzymania zwrotu.…
-    [2] polityka_zwrotow_i_reklamacji.md – 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.6. Stan zwracanego towaru  (wynik 0.0315)
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+    [1] ZWR-01  (wynik 0.0325)
+        Pytanie: Ile mam czasu na zwrot towaru? Odpowiedź: Zakupiony przez internet towar możesz
+    zwrócić bez podania przyczyny w ciągu 30 dni od jego doręczenia. To dłużej niż ustawowe 14 dni.…
+    [2] polityka_zwrotow_i_reklamacji.md: 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.1. Termin  (wynik 0.0318)
+        [1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.1. Termin] Towar kupiony
+    przez internet można zwrócić w ciągu **30 dni od doręczenia**. Przy zamówieniu dostarczonym w
+    kilku przesyłkach termin liczy się od doręczenia ostatniej przesyłki. Do zachowania terminu
+    wystarczy nadanie paczk…
+    [3] ZWR-15  (wynik 0.0315)
+        Pytanie: Kupiłem produkt w salonie stacjonarnym. Czy mogę go zwrócić? Odpowiedź: Prawo do
+    30-dniowego zwrotu bez podania przyczyny dotyczy zakupów przez internet. Produkty kupione w
+    salonie możesz zwrócić w ciągu 14 dni w ramach dobrowolnej polityki „Zwrot w salonie”, jeśli są
+    nieużywane i kompletne…
+    [4] polityka_zwrotow_i_reklamacji.md: 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.6. Stan zwracanego towaru  (wynik 0.0310)
         [1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.6. Stan zwracanego towaru]
     Towar można sprawdzić tak jak w sklepie stacjonarnym. Jeżeli używano go w stopniu wykraczającym
     poza sprawdzenie (np. ślady użytkowania, brak akcesoriów, zalogowane konto producenta, aktywna
     blokada urządzen…
-    [3] polityka_zwrotow_i_reklamacji.md – 2. Reklamacje (niezgodność towaru z umową) > 2.3. Terminy  (wynik 0.0310)
-        [2. Reklamacje (niezgodność towaru z umową) > 2.3. Terminy] - Odpowiedź na reklamację – do
-    **14 dni** od jej otrzymania. - Naprawa lub wymiana – w rozsądnym terminie, zwykle do 21 dni
-    roboczych. - Wada DOA (produkt niedziałający od pierwszego uruchomienia) – zgłoszenie w ciągu
-    **7 dni** od doręczeni…
-    [4] polityka_zwrotow_i_reklamacji.md – 2. Reklamacje (niezgodność towaru z umową) > 2.2. Jak złożyć reklamację  (wynik 0.0299)
-        [2. Reklamacje (niezgodność towaru z umową) > 2.2. Jak złożyć reklamację] 1. „Moje
-    zamówienia” → „Zgłoś reklamację” (lub formularz dla gości). 2. Opisz wadę, kiedy ją zauważono, i
-    dołącz zdjęcia lub nagranie. 3. Wybierz żądanie: naprawa, wymiana, obniżenie ceny lub
-    odstąpienie od umowy (dwa ostatnie…
 
-ETAP 3 – ODPOWIEDŹ
-    W przypadku produktu niedziałającego od pierwszego uruchomienia (wada DOA), należy postąpić
-    zgodnie z poniższymi krokami:
-    1. Zgłoś wadę w ciągu 7 dni od doręczenia zamówienia [3].
-    2. Złóż reklamację w panelu „Moje zamówienia” lub przez formularz dla gości, opisując wadę i
-    dołączając zdjęcia/nagranie [4].
-    3. Wybierz żądanie wymiany produktu [4].
-    4. Nadaj produkt bezpłatnie kodem reklamacyjnym w paczkomacie [4].
-    Po weryfikacji zgłoszenia (trwającej do 3 dni roboczych) wyślemy nowy egzemplarz smartfona [3].
-    Jeśli potrzebujesz dodatkowej pomocy, skontaktuj się z nami pod adresem pomoc@zorza-
-    elektronika.example lub numerem telefonu 17 000 00 00.
-    💡 Reklamację lub zwrot zgłosisz w zakładce „Moje zamówienia” → „Zgłoś reklamację” / „Zwróć
-    produkt”.
+ETAP 3: ODPOWIEDŹ
+    Tak, masz jeszcze czas na zwrot laptopa. Zgodnie z regulaminem, towar kupiony przez internet
+    można zwrócić w ciągu 30 dni od jego doręczenia [1, 2]. Ponieważ Twoje zamówienie zostało
+    dostarczone 07.11.2026, termin zwrotu upływa 07.12.2026. Pamiętaj, aby przed wysyłką wylogować
+    się z konta producenta i wyłączyć blokadę aktywacji, ponieważ urządzenie z aktywną blokadą nie
+    zostanie przyjęte [4]. Do zachowania terminu wystarczy nadanie paczki przed jego upływem [2].
+    Wskazówka: Reklamację lub zwrot zgłosisz w zakładce „Moje zamówienia” → „Zgłoś reklamację” /
+    „Zwróć produkt”.
 
 CZASY ETAPÓW
-    Obraz → pytanie (vision)                 4.83 s
-    Klasyfikacja (routing)                   2.43 s
-    Wyszukiwanie (hybrid)                    0.05 s
-    Generowanie odpowiedzi (LLM)             3.24 s
-    RAZEM                                   10.56 s
+    Obraz → pytanie (vision)                 5.85 s
+    Klasyfikacja (routing)                   0.32 s
+    Wyszukiwanie (hybrid)                    0.03 s
+    Generowanie odpowiedzi (LLM)             2.55 s
+    RAZEM                                    8.75 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
