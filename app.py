@@ -317,7 +317,7 @@ THEME = gr.themes.Base(
 )
 CSS = """
 .gradio-container { max-width: 1400px !important; margin: 0 auto; }
-#app-header { padding: 18px 22px 12px; margin-bottom: 4px; border-bottom: 3px solid #2b4c7e;
+#app-header { padding: 18px 22px 12px; margin-bottom: 4px;
               background: #ffffff; border-radius: 4px; }
 #app-header h1 { font-size: 22px; font-weight: 700; margin: 0 0 4px; color: #1d2b3a; }
 #app-header p { margin: 0; color: #556270; font-size: 14px; }
@@ -329,7 +329,7 @@ CSS = """
 #sources p, #doc-sources p { margin: 0 0 10px; }
 #sources small, #doc-sources small { color: #6b7685; }
 /* tryb ciemny (gdy przeglądarka/system używa ciemnego motywu) */
-.dark #app-header { background: #171d26; border-bottom-color: #3a6db5; }
+.dark #app-header { background: #171d26; }
 .dark #app-header h1 { color: #e8edf3; }
 .dark #app-header p, .dark #status { color: #9aa6b5; }
 .dark .section-title h3 { color: #e8edf3; }
