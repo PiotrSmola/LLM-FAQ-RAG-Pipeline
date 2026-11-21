@@ -96,7 +96,16 @@ Zasady korzystania ze źródeł:
 3. Jeśli źródła nie zawierają odpowiedzi, powiedz wprost, że nie masz tej informacji, i zaproponuj
    kontakt: pomoc@zorza-elektronika.example lub infolinia 17 000 00 00.
 4. Gdy źródła są sprzeczne, wybierz bardziej szczegółowe (dokument/regulamin) i zaznacz to.
-5. Nie powtarzaj pytania i nie dodawaj listy źródeł na końcu – system wyświetla ją sam."""
+5. Nie powtarzaj pytania i nie dodawaj listy źródeł na końcu – system wyświetla ją sam.
+6. Jeśli jest sekcja TREŚĆ OBRAZU OD KLIENTA (np. paragon, faktura, e-mail), wykorzystaj zawarte w niej dane
+   klienta (daty, produkty, kwoty, miejsce zakupu), aby dopasować odpowiedź – np. policz, czy termin zwrotu
+   jeszcze trwa. Zasady sklepu nadal bierz wyłącznie ze ŹRÓDEŁ. Jeśli dokument pochodzi z innego sklepu niż
+   Zorza Elektronika, zaznacz to i wyjaśnij, że podajesz zasady obowiązujące w Zorza Elektronika."""
+
+QA_IMAGE_BLOCK = """TREŚĆ OBRAZU OD KLIENTA (odczyt automatyczny):
+{ocr}
+
+"""
 
 QA_USER = """ŹRÓDŁA:
 {context}

@@ -148,14 +148,16 @@ def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, 
 
 def export_last(traces, fmt: str):
     if not traces:
-        gr.Warning("Brak odpowiedzi do eksportu – najpierw zadaj pytanie.")
-        return None
+        gr.Warning("Brak odpowiedzi w tej sesji – zadaj pytanie (po restarcie aplikacji odśwież stronę).")
+        return gr.update(value=None, visible=False)
     stamp = time.strftime("%Y%m%d_%H%M%S")
     if fmt == "svg":
-        return str(save_svg(traces[-1], TMP / f"odpowiedz_{stamp}.svg"))
-    if fmt == "txt":
-        return str(save_text(trace_to_text(traces[-1]), TMP / f"odpowiedz_{stamp}.txt"))
-    return str(save_text(conversation_to_text(traces), TMP / f"rozmowa_{stamp}.txt"))
+        path = save_svg(traces[-1], TMP / f"odpowiedz_{stamp}.svg")
+    elif fmt == "txt":
+        path = save_text(trace_to_text(traces[-1]), TMP / f"odpowiedz_{stamp}.txt")
+    else:
+        path = save_text(conversation_to_text(traces), TMP / f"rozmowa_{stamp}.txt")
+    return gr.update(value=str(path), visible=True)
 
 
 def clear_chat():
@@ -264,6 +266,25 @@ def load_eval():
 
 
 # ================================================================================================== UI
+HELP_MD = """
+Asystent obsługuje klientów **fikcyjnego sklepu internetowego Zorza Elektronika**. Odpowiada na podstawie bazy FAQ
+(74 wpisy) i dokumentów firmowych: regulaminu, polityki zwrotów i reklamacji, cennika dostaw oraz warunków usługi
+Zorza Ochrona+. Każda odpowiedź ma numery źródeł [n] – lista źródeł jest w prawym panelu.
+
+**O co pytać** – płatności (BLIK, raty, faktury, „Zapłać później”), dostawa (ceny, terminy, paczkomaty, wniesienie),
+zwroty i reklamacje (terminy, procedura, wyjątki), konto (hasło, punkty lojalnościowe, usuwanie danych),
+gwarancja i Zorza Ochrona+ (ceny, udział własny, wyłączenia). Można dopytywać („a w sobotę?”) – asystent
+uzupełni pytanie z kontekstu rozmowy. Pytania niezwiązane ze sklepem (np. pogoda, przepisy) dostają odmowę.
+
+**Obrazy** (spinacz w polu pytania) – zrzut e-maila od klienta, zdjęcie paragonu lub faktury, zdjęcie notatki z pytaniem.
+Model odczytuje tekst z obrazu, formułuje pytanie i wykorzystuje dane z dokumentu (np. datę zakupu do policzenia
+terminu zwrotu). Do obrazu można dopisać własne pytanie. Dokument z innego sklepu zostanie odczytany, ale
+odpowiedź będzie dotyczyć zasad Zorza Elektronika.
+
+**Eksport** – przyciski pod listą źródeł zapisują ostatnią odpowiedź (.txt), wizualizację jej etapów (.svg)
+lub całą rozmowę (.txt). Po restarcie aplikacji odśwież stronę – historia sesji jest wtedy czyszczona.
+"""
+
 # Font systemowy (Arial/Helvetica) zamiast fontu Google z motywu – bez ozdobnych glifów, działa offline.
 SYSTEM_FONT = [gr.themes.Font("Arial"), gr.themes.Font("Helvetica"), gr.themes.Font("sans-serif")]
 THEME = gr.themes.Base(
@@ -274,11 +295,15 @@ THEME = gr.themes.Base(
     radius_size=gr.themes.sizes.radius_sm,
 ).set(
     body_background_fill="#f6f7f9",
+    body_background_fill_dark="#0f141b",
     block_background_fill="#ffffff",
+    block_background_fill_dark="#171d26",
     block_border_width="1px",
     block_shadow="none",
     button_primary_background_fill="#2b4c7e",
     button_primary_background_fill_hover="#223d66",
+    button_primary_background_fill_dark="#3a6db5",
+    button_primary_background_fill_hover_dark="#4a7dc5",
     button_primary_text_color="#ffffff",
 )
 CSS = """
@@ -294,6 +319,13 @@ CSS = """
                          padding: 8px 12px; background: #ffffff; border: 1px solid #e3e7ec; border-radius: 4px; }
 #sources p, #doc-sources p { margin: 0 0 10px; }
 #sources small, #doc-sources small { color: #6b7685; }
+/* tryb ciemny (gdy przeglądarka/system używa ciemnego motywu) */
+.dark #app-header { background: #171d26; border-bottom-color: #3a6db5; }
+.dark #app-header h1 { color: #e8edf3; }
+.dark #app-header p, .dark #status { color: #9aa6b5; }
+.dark .section-title h3 { color: #e8edf3; }
+.dark #sources, .dark #doc-sources { background: #171d26; border-color: #2a3340; }
+.dark #sources small, .dark #doc-sources small { color: #8a96a6; }
 """
 
 with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
@@ -307,6 +339,8 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
     user_kb_st = gr.State(None)
 
     with gr.Tab("Asystent"):
+        with gr.Accordion("Jak korzystać", open=False):
+            gr.Markdown(HELP_MD)
         with gr.Row():
             with gr.Column(scale=3):
                 chat = gr.Chatbot(label="Rozmowa", height=520, layout="bubble")
@@ -318,6 +352,7 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                     {"text": "Czy Ochrona+ pokryje zbity ekran i ile wtedy dopłacę?"},
                     {"text": "Laptop nie włącza się zaraz po rozpakowaniu – co robić?"},
                     {"text": "", "files": ["data/examples/paragon_pytanie.png"]},
+                    {"text": "Czy zdążę jeszcze zwrócić ten laptop?", "files": ["data/examples/faktura_laptop.png"]},
                     {"text": "Napisz mi wiersz o kotach"},
                 ], inputs=msg, label="Przykłady")
                 with gr.Row():
@@ -343,15 +378,15 @@ with gr.Blocks(title="Asystent FAQ – Zorza Elektronika") as demo:
                     b_txt = gr.Button("Odpowiedź .txt", size="sm")
                     b_svg = gr.Button("Etapy .svg", size="sm")
                     b_conv = gr.Button("Cała rozmowa .txt", size="sm")
-                export_file = gr.File(label="Plik do pobrania", interactive=False, height=70)
+                export_file = gr.File(label="Plik do pobrania", interactive=False, visible=False)
         plot = gr.Plot(label="Wizualizacja etapów (ostatnie pytanie)")
 
         inputs = [msg, chat, history_st, traces_st, user_kb_st, use_user_docs, method, top_k, use_cls,
                   temperature, top_p, tk, max_tokens, seed, reasoning]
         msg.submit(chat_submit, inputs, [chat, history_st, traces_st, stages, sources, plot, msg])
-        b_txt.click(lambda t: export_last(t, "txt"), traces_st, export_file)
-        b_svg.click(lambda t: export_last(t, "svg"), traces_st, export_file)
-        b_conv.click(lambda t: export_last(t, "conv"), traces_st, export_file)
+        b_txt.click(lambda t: export_last(t, "txt"), traces_st, export_file, api_name="export_txt")
+        b_svg.click(lambda t: export_last(t, "svg"), traces_st, export_file, api_name="export_svg")
+        b_conv.click(lambda t: export_last(t, "conv"), traces_st, export_file, api_name="export_conv")
         clear_btn.click(clear_chat, None, [chat, history_st, traces_st, stages, sources, plot])
 
     with gr.Tab("Twoje dokumenty"):

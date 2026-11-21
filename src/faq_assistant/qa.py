@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections.abc import Iterator
 
 from .config import GenerationParams
-from .prompts import QA_SYSTEM, QA_USER
+from .prompts import QA_IMAGE_BLOCK, QA_SYSTEM, QA_USER
 from .retrieval import Hit
 
 
@@ -18,18 +18,26 @@ def build_context(hits: list[Hit]) -> str:
     return "\n\n".join(f"[{i}] (źródło: {h.chunk.citation})\n{h.chunk.text}" for i, h in enumerate(hits, 1))
 
 
-def build_messages(question: str, hits: list[Hit], history: list[dict] | None = None) -> list[dict]:
-    messages: list[dict] = [{"role": "system", "content": QA_SYSTEM}]
+def build_messages(question: str, hits: list[Hit], history: list[dict] | None = None,
+                   image_text: str | None = None) -> list[dict]:
+    from datetime import date
+
+    # data jest potrzebna, by liczyć terminy (zwrot 30 dni, reklamacja DOA 7 dni) na podstawie dat z dokumentów
+    system = f"{QA_SYSTEM}\n\nDzisiejsza data: {date.today():%d.%m.%Y}."
+    messages: list[dict] = [{"role": "system", "content": system}]
     for turn in (history or [])[-6:]:  # krótka pamięć rozmowy (ostatnie 3 wymiany)
         messages.append({"role": turn["role"], "content": turn["content"]})
     context = build_context(hits) if hits else "(brak pasujących fragmentów w bazie wiedzy)"
-    messages.append({"role": "user", "content": QA_USER.format(context=context, question=question)})
+    user = QA_USER.format(context=context, question=question)
+    if image_text:
+        user = QA_IMAGE_BLOCK.format(ocr=image_text[:3000]) + user
+    messages.append({"role": "user", "content": user})
     return messages
 
 
 def answer_stream(llm, question: str, hits: list[Hit], history: list[dict] | None = None,
-                  params: GenerationParams | None = None) -> Iterator[str]:
-    yield from llm.chat_stream(build_messages(question, hits, history), params)
+                  params: GenerationParams | None = None, image_text: str | None = None) -> Iterator[str]:
+    yield from llm.chat_stream(build_messages(question, hits, history, image_text), params)
 
 
 def answer(llm, question: str, hits: list[Hit], history: list[dict] | None = None,

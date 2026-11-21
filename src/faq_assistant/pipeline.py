@@ -162,7 +162,7 @@ class FAQPipeline:
         t0 = time.perf_counter()
         params = GenerationParams(**tr.params)
         parts: list[str] = []
-        for token in answer_stream(self.llm, tr.question, tr.hits, history, params):
+        for token in answer_stream(self.llm, tr.question, tr.hits, history, params, tr.image_ocr):
             parts.append(token)
             yield token
         text = "".join(parts).strip()

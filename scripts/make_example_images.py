@@ -75,7 +75,36 @@ def receipt_photo() -> Path:
     return path
 
 
+def invoice() -> Path:
+    img = Image.new("RGB", (820, 620), "white")
+    d = ImageDraw.Draw(img)
+    d.text((30, 25), "ZORZA ELEKTRONIKA sp. z o.o.", font=_font(24, True), fill="#1d2b3a")
+    d.text((30, 58), "ul. Kwiatowa 12, 35-001 Rzeszów · NIP 000-000-00-00", font=_font(16), fill="#444")
+    d.text((520, 25), "FAKTURA VAT", font=_font(24, True), fill="#2b4c7e")
+    d.text((520, 58), "nr FV/2026/11/0815", font=_font(16), fill="#444")
+    rows = [("Data sprzedaży:", "05.11.2026"), ("Data doręczenia:", "07.11.2026"),
+            ("Sposób zakupu:", "sklep internetowy, zam. 51240"), ("Płatność:", "BLIK")]
+    y = 110
+    for k, v in rows:
+        d.text((30, y), k, font=_font(17, True), fill="#222")
+        d.text((210, y), v, font=_font(17), fill="#222")
+        y += 30
+    d.line([30, y + 10, 790, y + 10], fill="#2b4c7e", width=2)
+    y += 25
+    d.text((30, y), "Lp.  Nazwa                                   Ilość     Cena brutto", font=_font(16, True), fill="#222")
+    y += 32
+    for line in ["1.   Laptop Voltbook 14 i7/16GB/1TB            1         4 299,00 zł",
+                 "2.   Zorza Ochrona+ Pełna ochrona 2 lata        1           644,85 zł"]:
+        d.text((30, y), line, font=_font(16), fill="#222")
+        y += 28
+    d.line([30, y + 8, 790, y + 8], fill="#ccc", width=1)
+    d.text((520, y + 22), "RAZEM: 4 943,85 zł", font=_font(20, True), fill="#1d2b3a")
+    path = OUT / "faktura_laptop.png"
+    img.save(path)
+    return path
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    for p in (email_screenshot(), receipt_photo()):
+    for p in (email_screenshot(), receipt_photo(), invoice()):
         print("Zapisano", p)
