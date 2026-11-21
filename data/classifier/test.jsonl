@@ -1,0 +1,90 @@
+{"text": "czy da sie placic blikiem?", "label": "platnosci"}
+{"text": "Zapłaciłem kartą, bank pobrał kasę a w sklepie dalej pisze nieopłacone", "label": "platnosci"}
+{"text": "chce kupic laptopa za 4 tys na raty, ile rat moge wziac?", "label": "platnosci"}
+{"text": "potrzebuję fakture na firmę, gdzie wpisać NIP", "label": "platnosci"}
+{"text": "Zapomniałem podać NIP przy zamówieniu, da się jeszcze dopisać?", "label": "platnosci"}
+{"text": "mam kod -10% z newslettera i nie chce zadzialac w koszyku", "label": "platnosci"}
+{"text": "Czy mogę zapłacić za zamówienie dopiero za miesiąc?", "label": "platnosci"}
+{"text": "ile mam dni na zrobienie przelewu zanim anulujecie zamówienie", "label": "platnosci"}
+{"text": "Czy karta podarunkowa za 200 zł przepada po roku?", "label": "platnosci"}
+{"text": "da się opłacić część zamówienia punktami a resztę kartą?", "label": "platnosci"}
+{"text": "Wybrałem przelew tradycyjny, a jednak wolę BLIK – jak zmienić?", "label": "platnosci"}
+{"text": "kiedy oddacie mi pieniądze za zwrócony telefon", "label": "platnosci"}
+{"text": "Czy płacąc kartą z euro zapłacę w euro?", "label": "platnosci"}
+{"text": "czy przy odbiorze moge zaplacic gotowka kurierowi", "label": "platnosci"}
+{"text": "Płatność odrzucona przy kroku 3D Secure, co robię źle?", "label": "platnosci"}
+{"text": "ile kosztuje wysylka do paczkomatu", "label": "dostawa"}
+{"text": "Zamówiłem wczoraj o 15, kiedy wyślecie paczkę?", "label": "dostawa"}
+{"text": "Od ilu zł nie płacę za kuriera?", "label": "dostawa"}
+{"text": "gdzie jest moja paczka?? nie mam zadnego smsa", "label": "dostawa"}
+{"text": "Pomyliłem numer mieszkania w adresie, da się poprawić?", "label": "dostawa"}
+{"text": "wysylacie do niemiec?", "label": "dostawa"}
+{"text": "Kurier przywiózł karton cały zgnieciony, przyjąć czy nie?", "label": "dostawa"}
+{"text": "nie zdazylem odebrac z paczkomatu, co teraz", "label": "dostawa"}
+{"text": "Czy kurier może przyjechać w sobotę?", "label": "dostawa"}
+{"text": "Zamówię online i odbiorę w sklepie w Rzeszowie – po jakim czasie?", "label": "dostawa"}
+{"text": "czy kurier wniesie lodówkę na 4 piętro bez windy", "label": "dostawa"}
+{"text": "Chcę, żeby paczka przyszła do biura, a faktura na adres domowy", "label": "dostawa"}
+{"text": "status od 3 dni 'w kompletacji', czemu nie wysłane", "label": "dostawa"}
+{"text": "Czy możecie wysłać słuchawki osobno, a monitor jak dojdzie?", "label": "dostawa"}
+{"text": "jak dlugo idzie paczka kurierem", "label": "dostawa"}
+{"text": "Słuchawki mi nie pasują, chcę je oddać", "label": "zwroty_reklamacje"}
+{"text": "ile mam dni na oddanie towaru kupionego przez neta", "label": "zwroty_reklamacje"}
+{"text": "Czy za odesłanie zwrotu muszę płacić?", "label": "zwroty_reklamacje"}
+{"text": "wyrzucilem karton od telewizora, moge go jeszcze zwrocic?", "label": "zwroty_reklamacje"}
+{"text": "Laptop po tygodniu nie włącza się, jak go zareklamować?", "label": "zwroty_reklamacje"}
+{"text": "telefon nie dziala od razu po wyjeciu z pudelka", "label": "zwroty_reklamacje"}
+{"text": "Złożyłem reklamację 10 dni temu i cisza, ile to trwa?", "label": "zwroty_reklamacje"}
+{"text": "Chcę zamienić kupionego czarnego iPhone'a na biały", "label": "zwroty_reklamacje"}
+{"text": "odrzucili mi reklamacje, nie zgadzam sie z tym", "label": "zwroty_reklamacje"}
+{"text": "Otworzyłem grę na PS5 i jednak nie chcę – mogę zwrócić?", "label": "zwroty_reklamacje"}
+{"text": "kupilem w salonie, moge oddac przez paczkomat?", "label": "zwroty_reklamacje"}
+{"text": "Czy przy zwrocie oddacie też za kuriera?", "label": "zwroty_reklamacje"}
+{"text": "Mam firmę, kupiłem drukarkę na NIP – mogę ją zwrócić?", "label": "zwroty_reklamacje"}
+{"text": "jak sprawdzic co sie dzieje z moim zwrotem", "label": "zwroty_reklamacje"}
+{"text": "Pralka przecieka po 13 miesiącach, kto za to odpowiada?", "label": "zwroty_reklamacje"}
+{"text": "nie moge sie zalogowac, pisze bledne haslo", "label": "konto"}
+{"text": "Jak zrobić konto w waszym sklepie?", "label": "konto"}
+{"text": "Link do resetu hasła nie działa, jest wygasły", "label": "konto"}
+{"text": "konto zablokowane po kilku probach logowania", "label": "konto"}
+{"text": "Chcę zmienić maila w profilu na nowy", "label": "konto"}
+{"text": "jak skasowac konto i wszystkie moje dane", "label": "konto"}
+{"text": "Ile mam punktów i na co mogę je wymienić?", "label": "konto"}
+{"text": "spamujecie mnie mailami, jak to wylaczyc", "label": "konto"}
+{"text": "Kupowałem bez logowania, a teraz założyłem konto – nie widzę tamtego zamówienia", "label": "konto"}
+{"text": "Dostałem SMS z linkiem do dopłaty 1,99 zł podobno od was – to prawda?", "label": "konto"}
+{"text": "jak wlaczyc logowanie z kodem z aplikacji", "label": "konto"}
+{"text": "Gdzie są moje stare faktury i zamówienia?", "label": "konto"}
+{"text": "chce zmienic domyslny adres w profilu", "label": "konto"}
+{"text": "Mogę pobrać wszystkie dane, które o mnie przechowujecie?", "label": "konto"}
+{"text": "czy musze miec konto zeby kupic", "label": "konto"}
+{"text": "jaka gwarancje ma ten telewizor samsunga", "label": "produkty_gwarancja"}
+{"text": "Co daje ta dodatkowa ochrona za kilkadziesiąt zł przy telefonie?", "label": "produkty_gwarancja"}
+{"text": "Czy rozszerzona ochrona obejmuje zbity ekran?", "label": "produkty_gwarancja"}
+{"text": "ile kosztuje ochrona na 3 lata do laptopa za 5000", "label": "produkty_gwarancja"}
+{"text": "Ukradli mi telefon, mam Ochronę+ – coś mi przysługuje?", "label": "produkty_gwarancja"}
+{"text": "kiedy bedzie znowu dostepna konsola, ciagle brak", "label": "produkty_gwarancja"}
+{"text": "Zamówiłem grę w przedsprzedaży – dojdzie na dzień premiery?", "label": "produkty_gwarancja"}
+{"text": "co to znaczy produkt outlet, jest używany?", "label": "produkty_gwarancja"}
+{"text": "Czy zamontujecie mi TV na ścianie?", "label": "produkty_gwarancja"}
+{"text": "gdzie moge oddac stary laptop do utylizacji", "label": "produkty_gwarancja"}
+{"text": "Czy ta ładowarka będzie pasować do mojego Pixela 8?", "label": "produkty_gwarancja"}
+{"text": "czy macie towar z polskiej dystrybucji czy z importu", "label": "produkty_gwarancja"}
+{"text": "Czy w salonie mogę obejrzeć ten laptop przed zakupem?", "label": "produkty_gwarancja"}
+{"text": "ile trwa naprawa na gwarancji u producenta", "label": "produkty_gwarancja"}
+{"text": "Czy cena w salonie jest taka sama jak na stronie?", "label": "produkty_gwarancja"}
+{"text": "Jaka będzie jutro pogoda w Rzeszowie?", "label": "poza_zakresem"}
+{"text": "napisz mi wiersz o kotach", "label": "poza_zakresem"}
+{"text": "Kto wygrał mistrzostwa świata w piłce nożnej w 2022?", "label": "poza_zakresem"}
+{"text": "jak ugotowac rosol", "label": "poza_zakresem"}
+{"text": "Pomóż mi rozwiązać zadanie z całek", "label": "poza_zakresem"}
+{"text": "ile kosztuje bilet na pociąg do Krakowa", "label": "poza_zakresem"}
+{"text": "Jaki jest kurs bitcoina?", "label": "poza_zakresem"}
+{"text": "przetlumacz na angielski: dzien dobry", "label": "poza_zakresem"}
+{"text": "Kto jest prezydentem Francji?", "label": "poza_zakresem"}
+{"text": "polec dobry serial na netflixie", "label": "poza_zakresem"}
+{"text": "Jak napisać CV na stanowisko programisty?", "label": "poza_zakresem"}
+{"text": "ile lat zyje zolw", "label": "poza_zakresem"}
+{"text": "Napisz kod w Pythonie sortujący listę", "label": "poza_zakresem"}
+{"text": "Gdzie zjeść dobrą pizzę w Rzeszowie?", "label": "poza_zakresem"}
+{"text": "jak wymienic olej w samochodzie", "label": "poza_zakresem"}

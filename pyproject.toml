@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "faq-assistant"
+version = "0.1.0"
+description = "Pipeline klasyfikacja -> retrieval -> QA (RAG) dla firmowej bazy FAQ z lokalnym LLM w LM Studio"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

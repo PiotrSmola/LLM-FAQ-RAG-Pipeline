@@ -1,0 +1,37 @@
+# PyTorch z CUDA instalujemy osobno (patrz README), np.:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu132
+torch
+
+# Modele HuggingFace (klasyfikator HerBERT, extractive QA, FLAN-T5 do porównania)
+transformers
+datasets
+accelerate
+sentencepiece
+
+# Klient API LM Studio (zgodny z OpenAI)
+openai
+python-dotenv
+
+# Retrieval
+chromadb
+rank-bm25
+scikit-learn
+numpy
+
+# Dokumenty
+pypdf
+
+# Aplikacja
+gradio
+
+# Ewaluacja i raporty
+pandas
+matplotlib
+openpyxl
+rouge-score
+bert-score
+nltk
+
+# Testy / notebooki
+pytest
+ipykernel
