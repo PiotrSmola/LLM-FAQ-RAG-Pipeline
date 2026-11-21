@@ -106,7 +106,7 @@ Pełna instrukcja z wyjaśnieniem parametrów: **[docs/01_konfiguracja_lm_studio
 lms get lmstudio-community/gemma-4-12B-it-QAT-GGUF     # LLM + mmproj (~7,2 GB)
 lms get gpustack/bge-m3-GGUF                           # embeddingi (~0,6 GB)
 lms server start
-lms load google/gemma-4-12b-qat --gpu max --context-length 32768 -y
+lms load google/gemma-4-12b-qat --gpu max --context-length 32768 --parallel 1 -y
 lms load text-embedding-bge-m3 --gpu max -y
 ```
 

@@ -34,7 +34,7 @@ To samo w CLI (tak robi się to w projekcie):
 
 ```bash
 lms server start                                                  # serwer API na porcie 1234
-lms load google/gemma-4-12b-qat --gpu max --context-length 32768 -y
+lms load google/gemma-4-12b-qat --gpu max --context-length 32768 --parallel 1 -y
 lms load text-embedding-bge-m3 --gpu max -y
 lms ps                                                            # co jest załadowane
 ```
@@ -45,8 +45,9 @@ lms ps                                                            # co jest zał
 | **Context length** (`--context-length`) | 32768 | maksymalna liczba tokenów w oknie (prompt + historia + źródła RAG + odpowiedź + ewentualne rozumowanie). Większy kontekst = więcej VRAM na KV-cache. 32k mieści do 16 fragmentów dla pytań złożonych, historię rozmowy i długą odpowiedź |
 | **Flash Attention** | włączone (domyślnie) | wydajniejsza implementacja mechanizmu uwagi, mniejsze zużycie pamięci przy długim kontekście |
 | **KV cache quantization** | F16 (domyślnie) | kwantyzacja pamięci kluczy/wartości uwagi; Q8 zmniejsza zużycie VRAM kosztem minimalnej jakości |
-| **Parallel** | 4 | liczba równoległych żądań obsługiwanych przez serwer (np. czat + ewaluacja jednocześnie) |
+| **Parallel** (`--parallel`) | 1 | liczba równoległych zapytań obsługiwanych przez serwer. Każde miejsce rezerwuje własne bufory, więc wartość 4 (domyślna) podwajała zużycie RAM przez `llama-server` (14,4 GB wobec 7,5 GB przy 1). Aplikacja i tak wysyła zapytania po kolei |
 | **TTL** | brak | czas bezczynności, po którym model jest automatycznie wyładowywany |
+| **Keep model in memory / Try mmap()** (GUI: ustawienia ładowania modelu) | wyłączone, jeśli brakuje RAM | przy pełnym offloadzie na GPU LM Studio i tak trzyma kopię wag w RAM (ok. 7 GB dla Gemmy 12B). Wyłączenie obu opcji zwalnia tę pamięć kosztem nieco wolniejszego ponownego ładowania modelu |
 
 Zużycie VRAM w projekcie: Gemma 4 12B ≈ 6,7 GB + KV-cache, bge-m3 ≈ 0,6 GB, klasyfikator HerBERT ≈ 0,5 GB
 (w trakcie fine-tuningu ~3 GB) – całość mieści się w 16 GB.
