@@ -187,6 +187,7 @@ python app.py            # → http://127.0.0.1:7860
 | faktura na obrazie (przykład 3) | [faktura_laptop.png](data/examples/faktura_laptop.png) | [przyklad_obraz.txt](results/examples/przyklad_obraz.txt), [przyklad_obraz.svg](results/examples/przyklad_obraz.svg) |
 | pytanie złożone (przykład 4) | [pytanie_zlozone.txt](data/examples/pytanie_zlozone.txt) | [przyklad_zlozone.txt](results/examples/przyklad_zlozone.txt), [przyklad_zlozone.svg](results/examples/przyklad_zlozone.svg) |
 | poza zakresem (przykład 5) | tekst | [przyklad_poza_zakresem.txt](results/examples/przyklad_poza_zakresem.txt) |
+| pytanie do przesłanego pliku (zakładka *Twoje dokumenty*) | [regulamin_promocji_black_friday.txt](data/examples/regulamin_promocji_black_friday.txt) + pytanie „Do kiedy trwa promocja i czy rabat 15% łączy się z kodem z newslettera?” | odpowiedź: promocja 27-30.11.2026, rabat nie łączy się z kodami z newslettera [1], [2]; raport .txt z przyciskiem pobierania |
 | tryb wsadowy, 10 pytań | [pytania.csv](data/examples/pytania.csv) | [wyniki.xlsx](results/batch/wyniki.xlsx), [wyniki.csv](results/batch/wyniki.csv), [raport.txt](results/batch/raport.txt), [svg/](results/batch/svg/) |
 
 Zrzuty ekranu aplikacji: [docs/screenshots/](docs/screenshots/).
