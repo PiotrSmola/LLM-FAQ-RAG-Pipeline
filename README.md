@@ -178,7 +178,18 @@ python app.py            # → http://127.0.0.1:7860
 **Przykład 5 – pytanie poza zakresem**
 > **Pytanie:** Napisz mi przepis na sernik → klasyfikator: *poza zakresem* (100%) → odmowa bez wywołania LLM (0,4 s).
 
-Pełne raporty: [results/examples/](results/examples/) (TXT + SVG + PNG). Zrzuty ekranu: [docs/screenshots/](docs/screenshots/).
+**Przykładowe wyniki do pobrania** (wygenerowane przez aplikację, eksport .txt i .svg):
+
+| Przykład | Wejście | Wynik |
+|---|---|---|
+| pytanie z obliczeniem (przykład 1) | tekst | [przyklad_tekst.txt](results/examples/przyklad_tekst.txt), [przyklad_tekst.svg](results/examples/przyklad_tekst.svg) |
+| rozmowa z dopytaniem (przykład 2) | tekst + historia | [przyklad_rozmowa.txt](results/examples/przyklad_rozmowa.txt), [przyklad_dopytanie.svg](results/examples/przyklad_dopytanie.svg) |
+| faktura na obrazie (przykład 3) | [faktura_laptop.png](data/examples/faktura_laptop.png) | [przyklad_obraz.txt](results/examples/przyklad_obraz.txt), [przyklad_obraz.svg](results/examples/przyklad_obraz.svg) |
+| pytanie złożone (przykład 4) | [pytanie_zlozone.txt](data/examples/pytanie_zlozone.txt) | [przyklad_zlozone.txt](results/examples/przyklad_zlozone.txt), [przyklad_zlozone.svg](results/examples/przyklad_zlozone.svg) |
+| poza zakresem (przykład 5) | tekst | [przyklad_poza_zakresem.txt](results/examples/przyklad_poza_zakresem.txt) |
+| tryb wsadowy, 10 pytań | [pytania.csv](data/examples/pytania.csv) | [wyniki.xlsx](results/batch/wyniki.xlsx), [wyniki.csv](results/batch/wyniki.csv), [raport.txt](results/batch/raport.txt), [svg/](results/batch/svg/) |
+
+Zrzuty ekranu aplikacji: [docs/screenshots/](docs/screenshots/).
 
 ### 4.2. Skrypty (CLI)
 

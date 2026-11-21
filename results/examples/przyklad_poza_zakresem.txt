@@ -1,0 +1,31 @@
+====================================================================================================
+ASYSTENT FAQ: Zorza Elektronika        2026-11-21T15:27:35
+====================================================================================================
+Wejście użytkownika : Napisz mi przepis na sernik
+Pytanie (końcowe)   : Napisz mi przepis na sernik
+
+ETAP 1: KLASYFIKACJA / ROUTING
+    Klasyfikator : bert:herbert-faq
+    Kategoria    : Poza zakresem (pewność 99.0%)
+    Decyzja      : Poza zakresem (pewność 99%), odmowa bez wywołania LLM
+        Płatności                  0.2%
+        Dostawa                    0.2%
+        Zwroty i reklamacje        0.1%
+        Konto i logowanie          0.3%
+        Produkty i gwarancja       0.2%
+        Poza zakresem             99.0%
+
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 0
+
+ETAP 3: ODPOWIEDŹ
+    Jestem asystentem obsługi klienta sklepu Zorza Elektronika i mogę pomóc w sprawach zamówień,
+    płatności, dostawy, zwrotów i reklamacji, konta oraz gwarancji. Na to pytanie niestety nie
+    odpowiem. Czy mogę pomóc w czymś związanym z zakupami?
+
+CZASY ETAPÓW
+    Klasyfikacja (routing)                   0.05 s
+    RAZEM                                    0.05 s
+
+PARAMETRY GENEROWANIA
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
+====================================================================================================
