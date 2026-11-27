@@ -3,7 +3,7 @@
 Metody wyszukiwania:
 - "tfidf": TF-IDF + podobieństwo cosinusowe (punkt odniesienia z Lab 3, przykład 4),
 - "bm25": Okapi BM25 (rank-bm25, Lab 3 zad. 3.3) z prostym stemmingiem prefiksowym dla polskiego,
-- "dense": wyszukiwanie semantyczne: embeddingi bge-m3 (LM Studio) w bazie wektorowej ChromaDB,
+- "dense": wyszukiwanie semantyczne: embeddingi bge-m3 (serwer embeddingów) w bazie wektorowej ChromaDB,
 - "hybrid": połączenie BM25 i dense metodą Reciprocal Rank Fusion (RRF).
 
 Filtr kategorii (routing z etapu 1): wpisy FAQ są zawężane do rozpoznanej kategorii, dokumenty firmowe
@@ -65,10 +65,10 @@ class KnowledgeBase:
                  path: str | Path = CHROMA_DIR) -> None:
         import chromadb
 
-        from .llm import LMStudioClient
+        from .llm import LLMClient
 
         self.name = name
-        self.llm = llm or LMStudioClient()
+        self.llm = llm or LLMClient()
         self.path = Path(path)
         self.client = chromadb.PersistentClient(path=str(self.path)) if persist else chromadb.EphemeralClient()
         self.collection = self.client.get_or_create_collection(

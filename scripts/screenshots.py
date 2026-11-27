@@ -1,6 +1,6 @@
 """Zrzuty ekranu aplikacji Gradio do dokumentacji (Playwright + Chromium).
 
-Wymaga działającej aplikacji (python app.py) i LM Studio. Scenariusz: pytanie tekstowe, pytanie z obrazem,
+Wymaga działającej aplikacji (start.bat albo docker compose up -d). Scenariusz: pytanie tekstowe, pytanie z obrazem,
 pytanie poza zakresem, zakładki pomocnicze. Wynik: docs/screenshots/*.png
 
     pip install playwright && python -m playwright install chromium

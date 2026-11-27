@@ -1,6 +1,6 @@
 """Etap 3 pipeline'u: odpowiedź na pytanie na podstawie znalezionych fragmentów.
 
-- generatywnie: LLM (Gemma w LM Studio) z numerowanym kontekstem i cytowaniem [n], tryb główny (RAG),
+- generatywnie: LLM (Gemma 4 na serwerze llama.cpp) z numerowanym kontekstem i cytowaniem [n], tryb główny (RAG),
 - ekstrakcyjnie: model QA typu SQuAD wskazuje fragment tekstu (span), porównanie, jak w Lab 3,
 - FLAN-T5: generatywny model z Lab 3 (angielski), tylko do porównania w ewaluacji.
 """

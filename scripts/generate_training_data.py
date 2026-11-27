@@ -1,6 +1,6 @@
 """Generowanie danych treningowych klasyfikatora przez LLM.
 
-Dla każdej kategorii model w LM Studio generuje parafrazy/nowe pytania klientów, inspirowane wpisami FAQ.
+Dla każdej kategorii lokalny LLM (Gemma 4) generuje parafrazy/nowe pytania klientów, inspirowane wpisami FAQ.
 Wynik: data/classifier/train.jsonl ({"text", "label", "source"}).
 Zbiór testowy (data/classifier/test.jsonl) jest pisany ręcznie i usuwamy z treningu ewentualne duplikaty,
 żeby nie było przecieku danych.
@@ -16,7 +16,7 @@ import random
 import time
 
 from faq_assistant.config import CATEGORIES, DATA_DIR, OUT_OF_SCOPE, GenerationParams
-from faq_assistant.llm import LMStudioClient
+from faq_assistant.llm import LLMClient
 from faq_assistant.prompts import (
     CATEGORY_DESCRIPTIONS,
     GENERATE_OUT_OF_SCOPE_USER,
@@ -26,7 +26,7 @@ from faq_assistant.prompts import (
 from faq_assistant.utils import normalize, parse_json, read_jsonl, write_jsonl
 
 
-def generate_batch(llm: LMStudioClient, category: str, faq: list[dict], n: int, seed: int) -> list[str]:
+def generate_batch(llm: LLMClient, category: str, faq: list[dict], n: int, seed: int) -> list[str]:
     if category == OUT_OF_SCOPE:
         prompt = GENERATE_OUT_OF_SCOPE_USER.format(n=n)
     else:
@@ -50,7 +50,7 @@ def main() -> None:
     ap.add_argument("--out", default=str(DATA_DIR / "classifier" / "train.jsonl"))
     args = ap.parse_args()
 
-    llm = LMStudioClient()
+    llm = LLMClient()
     faq = read_jsonl(DATA_DIR / "faq" / "faq.jsonl")
     test_texts = {normalize(r["text"]) for r in read_jsonl(DATA_DIR / "classifier" / "test.jsonl")}
 

@@ -3,7 +3,7 @@
 Trzy wymienne implementacje o wspólnym interfejsie `predict(text) -> Prediction`:
 - BertClassifier: dostrojony (fine-tuning) HerBERT / DistilBERT (główny router),
 - TfidfClassifier: baseline TF-IDF + regresja logistyczna (jak w Lab 2),
-- LLMClassifier: klasyfikacja zero/few-shot przez LLM w LM Studio (porównanie).
+- LLMClassifier: klasyfikacja zero/few-shot przez LLM (Gemma 4, porównanie).
 """
 
 from __future__ import annotations
@@ -109,9 +109,9 @@ class LLMClassifier:
     method = "llm_zero_shot"
 
     def __init__(self, llm=None) -> None:
-        from .llm import LMStudioClient
+        from .llm import LLMClient
 
-        self.llm = llm or LMStudioClient()
+        self.llm = llm or LLMClient()
 
     def predict(self, text: str) -> Prediction:
         from .prompts import CLASSIFY_SYSTEM

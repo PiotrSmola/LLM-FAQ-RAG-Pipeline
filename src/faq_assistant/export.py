@@ -10,7 +10,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-plt.rcParams["font.family"] = ["Arial", "DejaVu Sans"]  # prosty font systemowy, spójny z UI
+plt.rcParams["font.family"] = ["Arial", "Liberation Sans", "DejaVu Sans"]  # Liberation Sans = Arial w kontenerze
 plt.rcParams["svg.fonttype"] = "none"                   # tekst w SVG jako tekst (da się zaznaczyć/kopiować)
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 

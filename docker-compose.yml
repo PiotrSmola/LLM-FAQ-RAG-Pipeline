@@ -1,0 +1,124 @@
+# Cały projekt w Dockerze: dwa serwery llama.cpp na GPU (LLM i embeddingi) oraz aplikacja.
+# Najprościej: start.bat (Windows) albo ./start.sh (Linux). Ręcznie:
+#   docker compose --profile setup run --rm models   # jednorazowo: pobranie modeli GGUF (~7,8 GB)
+#   docker compose up -d --build                     # start, aplikacja pod http://localhost:7860
+#   docker compose down                              # zatrzymanie
+# Opis konfiguracji i parametrów: docs/01_konfiguracja_docker_llama_cpp.md
+
+name: faq-assistant
+
+x-llama-server: &llama-server
+  image: ghcr.io/ggml-org/llama.cpp:server-cuda-b12808
+  restart: unless-stopped
+  volumes:
+    # Katalog z plikami GGUF (układ jak w LM Studio). Domyślnie ./models/gguf, zmiana: GGUF_DIR w .env
+    - ${GGUF_DIR:-./models/gguf}:/models:ro
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+  healthcheck:
+    test: ["CMD", "curl", "-fs", "http://localhost:8080/health"]
+    interval: 5s
+    timeout: 5s
+    retries: 120
+    start_period: 30s
+
+services:
+  llm:
+    <<: *llama-server
+    command:
+      - --model
+      - /models/lmstudio-community/gemma-4-12B-it-QAT-GGUF/gemma-4-12B-it-QAT-Q4_0.gguf
+      - --mmproj
+      - /models/lmstudio-community/gemma-4-12B-it-QAT-GGUF/mmproj-gemma-4-12B-it-QAT-BF16.gguf
+      - --alias
+      - google/gemma-4-12b-qat
+      - --n-gpu-layers
+      - "999"           # wszystkie warstwy na GPU
+      - --ctx-size
+      - "32768"         # okno kontekstu (prompt RAG + historia + odpowiedź)
+      - --parallel
+      - "1"             # jeden slot: cały kontekst dla jednego zapytania, mniejszy bufor KV
+      - --batch-size
+      - "2048"
+      - --ubatch-size
+      - "2048"          # >= 1120 tokenów obrazu Gemmy 4, inaczej llama.cpp tnie budżet obrazu do 512
+      - --jinja         # szablon czatu z pliku GGUF (rozumowanie, obrazy)
+      - --load-mode
+      - none            # bez mmap: wagi trafiają do VRAM i nie zostaje ich kopia w pamięci RAM
+      - --cache-ram
+      - "1024"          # pamięć podręczna poprzednich promptów w RAM (MiB); domyślnie llama.cpp bierze do 8 GB
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+    ports:
+      - "${LLM_PORT:-8080}:8080"
+
+  embeddings:
+    <<: *llama-server
+    command:
+      - --model
+      - /models/gpustack/bge-m3-GGUF/bge-m3-Q8_0.gguf
+      - --alias
+      - text-embedding-bge-m3
+      - --embeddings
+      - --n-gpu-layers
+      - "999"
+      - --ctx-size
+      - "8192"          # bge-m3 przyjmuje do 8192 tokenów
+      - --batch-size
+      - "8192"
+      - --ubatch-size
+      - "8192"          # przy embeddingach cały tekst musi zmieścić się w jednym ubatchu
+      - --parallel
+      - "1"
+      - --load-mode
+      - none
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+    ports:
+      - "${EMBEDDING_PORT:-8081}:8080"
+
+  app:
+    build: .
+    image: faq-assistant-app
+    restart: unless-stopped
+    depends_on:
+      llm:
+        condition: service_healthy
+      embeddings:
+        condition: service_healthy
+    environment:
+      LLM_BASE_URL: http://llm:8080/v1
+      EMBEDDING_BASE_URL: http://embeddings:8080/v1
+      LLM_MODEL: google/gemma-4-12b-qat
+      EMBEDDING_MODEL: text-embedding-bge-m3
+    ports:
+      - "${APP_PORT:-7860}:7860"
+    volumes:
+      - ./models:/app/models            # HerBERT (models/herbert-faq) i TF-IDF; trening zapisuje tutaj
+      - ./results:/app/results          # wyniki ewaluacji, batch, eksporty
+      - ./notebooks:/app/notebooks      # notebooki wykonywane w kontenerze
+      - chroma:/app/chroma_db           # indeks wektorowy, budowany przy pierwszym starcie
+      - hf_cache:/cache/huggingface     # modele z Hugging Face (np. do treningu i ewaluacji)
+
+  # Jednorazowe pobranie modeli GGUF: docker compose --profile setup run --rm models
+  models:
+    image: faq-assistant-app
+    build: .
+    profiles: ["setup"]
+    command: ["python", "scripts/download_models.py", "--dest", "/gguf"]
+    volumes:
+      - ${GGUF_DIR:-./models/gguf}:/gguf
+      - hf_cache:/cache/huggingface
+
+volumes:
+  chroma:
+  hf_cache:

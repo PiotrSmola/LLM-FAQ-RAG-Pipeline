@@ -9,12 +9,16 @@ Asystent obsługi klienta **fikcyjnego** sklepu internetowego *Zorza Elektronika
 1. **klasyfikuje** je dostrojonym modelem BERT (HerBERT) do jednej z 6 kategorii i na tej podstawie wybiera
    dalszą ścieżkę (routing),
 2. **wyszukuje** pasujące wpisy FAQ i fragmenty dokumentów firmowych (BM25 + embeddingi bge-m3 w ChromaDB),
-3. **generuje odpowiedź** lokalnym modelem Gemma 4 12B (LM Studio) wyłącznie na podstawie znalezionych
+3. **generuje odpowiedź** lokalnym modelem Gemma 4 12B (llama.cpp) wyłącznie na podstawie znalezionych
    źródeł i wskazuje je w tekście numerami `[n]`.
 
 Pytania można zadawać tekstem albo obrazem (zrzut e-maila, zdjęcie paragonu lub faktury). Długie wiadomości
 z kilkoma sprawami naraz są dzielone na podpytania, z osobnym routingiem i wyszukiwaniem dla każdego.
-Wszystkie modele działają **lokalnie na GPU**, bez usług w chmurze.
+Wszystkie modele działają **lokalnie na GPU**, bez usług w chmurze, a cały projekt w **kontenerach Dockera**.
+
+**Szybki start** (Windows z Docker Desktop i kartą NVIDIA): w katalogu projektu uruchom `start.bat`.
+Skrypt sprawdza GPU, pobiera modele (albo bierze je z LM Studio, jeśli są na komputerze), uruchamia kontenery
+i otwiera aplikację pod `http://localhost:7860`. Szczegóły w [punkcie 3](#3-konfiguracja-środowiska-krok-po-kroku).
 
 ![Aplikacja – odpowiedź z dopytaniem](docs/screenshots/02_asystent_dopytanie.png)
 
@@ -35,10 +39,10 @@ Wszystkie modele działają **lokalnie na GPU**, bez usług w chmurze.
 
 | Próg | Wymaganie (Projekt.pdf) | Gdzie zrealizowane |
 |---|---|---|
-| **3.0** | gotowe narzędzie do podstawowej funkcjonalności, kroki konfiguracji, znaczenie parametrów, przykłady | **LM Studio** (llama.cpp) z modelami GGUF; [docs/01_konfiguracja_lm_studio.md](docs/01_konfiguracja_lm_studio.md) (instalacja, ładowanie, parametry ładowania i generowania, typowe problemy); notebook [01_lm_studio_parametry.ipynb](notebooks/01_lm_studio_parametry.ipynb) (eksperymenty z temperature, top_p, top_k, seed, max_tokens, repeat_penalty, reasoning_effort); zakładka *Parametry modelu* w aplikacji |
+| **3.0** | gotowe narzędzie do podstawowej funkcjonalności, kroki konfiguracji, znaczenie parametrów, przykłady | **llama.cpp** (`llama-server`) z modelami GGUF w kontenerach Dockera, start jednym poleceniem (`start.bat`); [docs/01_konfiguracja_docker_llama_cpp.md](docs/01_konfiguracja_docker_llama_cpp.md) (kontenery, wymagania, modele, flagi serwera, zasoby, parametry generowania, typowe problemy); notebook [01_parametry_llm.ipynb](notebooks/01_parametry_llm.ipynb) (eksperymenty z temperature, top_p, top_k, seed, max_tokens, repeat_penalty, reasoning_effort i budżetem rozumowania); zakładka *Parametry modelu* w aplikacji |
 | **3.5** | funkcjonalność wielomodalna | pytania jako **obraz** (Gemma 4 + projektor `mmproj`): odczyt tekstu (OCR), sformułowanie pytania i wykorzystanie danych z dokumentu w odpowiedzi – `src/faq_assistant/vision.py`; przykłady w `data/examples/*.png` |
 | **4.0** | aplikacja w Pythonie realizująca automatyzację | `scripts/batch.py` i zakładka *Wsadowo*: hurtowe przetwarzanie pytań z CSV/TXT/XLSX → CSV, XLSX, JSONL, raport TXT, SVG; `scripts/generate_training_data.py`: **automatyczne generowanie 720 przykładów treningowych przez LLM** |
-| **4.5** | konwersacja przez API modelu, inżynieria promptów, pytania do przesłanych plików, pliki wynikowe *.txt i *.svg | czat wieloturowy przez API LM Studio (OpenAI-compatible, streaming); prompty w [prompts.py](src/faq_assistant/prompts.py) (rola, reguły, few-shot, wymuszony JSON, cytowania, przepisywanie pytań uzupełniających); zakładka *Twoje dokumenty* (upload .txt/.md/.pdf → indeks sesji → pytania); eksport odpowiedzi i rozmowy do **.txt** i wizualizacji etapów do **.svg** |
+| **4.5** | konwersacja przez API modelu, inżynieria promptów, pytania do przesłanych plików, pliki wynikowe *.txt i *.svg | czat wieloturowy przez API serwera llama.cpp (zgodne z OpenAI, streaming); prompty w [prompts.py](src/faq_assistant/prompts.py) (rola, reguły, few-shot, wymuszony JSON, cytowania, przepisywanie pytań uzupełniających); zakładka *Twoje dokumenty* (upload .txt/.md/.pdf → indeks sesji → pytania); eksport odpowiedzi i rozmowy do **.txt** i wizualizacji etapów do **.svg** |
 | **5.0** | odpowiedzi na podstawie wiedzy modelu i danych z dokumentów (RAG) | pełny pipeline RAG: FAQ i 4 dokumenty firmowe (oraz pliki użytkownika) → wyszukiwanie hybrydowe → odpowiedź z cytowaniem `[n]`; fakty o sklepie wyłącznie ze źródeł, wiedza ogólna modelu oznaczana dopiskiem „(wiedza ogólna)” |
 
 ### Wymagania tematu 29
@@ -75,7 +79,7 @@ Lab 5 (halucynacje, faithfulness).
         ETAP 2  Retrieval – BM25 (stemming PL) + dense (bge-m3, ChromaDB) → RRF → top-4
                  (+ pliki przesłane przez użytkownika w tej sesji)
                                             ▼
-        ETAP 3  Odpowiedź – Gemma 4 12B (LM Studio): prompt z rolą i regułami, numerowane źródła,
+        ETAP 3  Odpowiedź – Gemma 4 12B (llama.cpp): prompt z rolą i regułami, numerowane źródła,
                  cytowania [n], dane z obrazu klienta, data bieżąca → streaming do czatu
                                             ▼
         PipelineTrace ──► UI (etapy, źródła, wykres) · eksport .txt / .svg · batch CSV/XLSX
@@ -83,15 +87,16 @@ Lab 5 (halucynacje, faithfulness).
 
 | Warstwa | Technologia |
 |---|---|
-| Serwer modeli | LM Studio 0.4.28 (llama.cpp), API zgodne z OpenAI `http://localhost:1234/v1` |
+| Serwer modeli | llama.cpp b12808 (`llama-server`, obraz `ghcr.io/ggml-org/llama.cpp:server-cuda`), dwa kontenery na GPU: LLM `:8080`, embeddingi `:8081`; API zgodne z OpenAI |
+| Konteneryzacja | Docker Compose: `llm`, `embeddings`, `app` (python:3.14-slim, PyTorch CPU); start: `start.bat` / `start.sh` |
 | LLM | `google/gemma-4-12b-qat` (Gemma 4 12B Instruct, QAT Q4_0, 6,7 GB) + `mmproj` (obraz) |
 | Embeddingi | `text-embedding-bge-m3` (BGE-M3 Q8_0, wektory 1024-wym., wielojęzyczny) |
-| Klasyfikator | `allegro/herbert-base-cased` + HF Transformers `Trainer` (GPU, bf16) |
+| Klasyfikator | `allegro/herbert-base-cased` + HF Transformers `Trainer` (trening na GPU w bf16 albo na CPU w kontenerze) |
 | Baza wektorowa | ChromaDB 1.5 (persistent, metryka cosinusowa, filtr metadanych) |
 | Wyszukiwanie leksykalne | rank-bm25 (Okapi BM25), scikit-learn (TF-IDF) |
 | Aplikacja | Gradio 6.32; CLI: argparse |
 | Ewaluacja | scikit-learn, rouge-score, własny BERTScore (mBERT), LLM-as-judge |
-| Środowisko testowe | Windows 11, Python 3.14.3, PyTorch 2.15 + CUDA 13.2, RTX 5070 Ti 16 GB |
+| Środowisko testowe | Windows 11, Docker Desktop (WSL2), RTX 5070 Ti 16 GB; poza Dockerem Python 3.14.3, PyTorch 2.15 + CUDA 13.2 |
 
 Szczegóły modułów: [docs/02_architektura.md](docs/02_architektura.md).
 
@@ -99,52 +104,71 @@ Szczegóły modułów: [docs/02_architektura.md](docs/02_architektura.md).
 
 ## 3. Konfiguracja środowiska krok po kroku
 
-### 3.1. LM Studio i modele
-Pełna instrukcja z wyjaśnieniem parametrów: **[docs/01_konfiguracja_lm_studio.md](docs/01_konfiguracja_lm_studio.md)**. W skrócie:
+Pełna instrukcja z wyjaśnieniem flag serwera i parametrów generowania:
+**[docs/01_konfiguracja_docker_llama_cpp.md](docs/01_konfiguracja_docker_llama_cpp.md)**.
 
-```bash
-lms get lmstudio-community/gemma-4-12B-it-QAT-GGUF     # LLM + mmproj (~7,2 GB)
-lms get gpustack/bge-m3-GGUF                           # embeddingi (~0,6 GB)
-lms server start
-lms load google/gemma-4-12b-qat --gpu max --context-length 32768 --parallel 1 -y
-lms load text-embedding-bge-m3 --gpu max -y
+### 3.1. Wymagania
+* Windows 10/11 z **Docker Desktop** (backend WSL2) albo Linux z Docker Engine i NVIDIA Container Toolkit,
+* karta **NVIDIA** z co najmniej 12 GB VRAM i sterownikiem 570 lub nowszym (projekt zajmuje około 10,4 GB VRAM),
+* około 20 GB wolnego miejsca (modele 7,8 GB, obrazy Dockera 10,5 GB) i internet przy pierwszym uruchomieniu.
+
+Pythona, CUDA ani LM Studio nie trzeba instalować.
+
+### 3.2. Uruchomienie
+```bat
+start.bat
 ```
 
-### 3.2. Python
-Wymagany Python ≥ 3.11 (testowane na 3.14). W katalogu projektu:
+Na Linuksie: `./start.sh`. Skrypt kolejno: uruchamia Docker Desktop, jeśli nie działa; sprawdza, czy kontenery
+widzą kartę NVIDIA; szuka modeli GGUF (w `models/gguf/` albo w katalogu LM Studio) i w razie braku pobiera je
+z Hugging Face (7,8 GB); buduje obraz aplikacji, uruchamia trzy kontenery, czeka na załadowanie modeli i otwiera
+`http://localhost:7860`. Pierwsze uruchomienie trwa kilkanaście minut (pobieranie), kolejne około 1,5 minuty.
+
+| Polecenie | Działanie |
+|---|---|
+| `start.bat` | start całego projektu |
+| `start.bat stop` | zatrzymanie kontenerów (modele, indeks i wyniki zostają na dysku) |
+| `start.bat status` / `start.bat logs` | stan kontenerów / logi na żywo |
+| `start.bat test` | testy jednostkowe w kontenerze |
+| `start.bat train` | fine-tuning HerBERT w kontenerze (na CPU około 5 minut) |
+
+| Kontener | Zawartość | Adres na komputerze |
+|---|---|---|
+| `app` | aplikacja Gradio, pipeline, HerBERT, ChromaDB, skrypty i notebooki | `http://localhost:7860` |
+| `llm` | llama.cpp: Gemma 4 12B QAT + `mmproj` (obraz), GPU | `http://localhost:8080/v1` |
+| `embeddings` | llama.cpp: bge-m3, GPU | `http://localhost:8081/v1` |
+
+Ustawienia (porty, katalog modeli `GGUF_DIR`) są w pliku `.env`, który skrypt tworzy z `.env.example`.
+
+### 3.3. Pierwsze uruchomienie: co dzieje się automatycznie
+* **Modele GGUF** trafiają do `models/gguf/`. Jeśli są już w LM Studio (`%USERPROFILE%\.lmstudio\models`),
+  skrypt używa tej kopii i zapisuje ścieżkę w `.env` jako `GGUF_DIR`.
+* **Indeks bazy wiedzy** (wolumen `chroma`) buduje się sam przy pierwszym starcie aplikacji (ok. 8 s).
+* **Klasyfikator HerBERT** (`models/herbert-faq`, 479 MB) jest w archiwum do oddania, ale nie w repozytorium git.
+  Jeśli go brak, aplikacja sama trenuje zastępczy klasyfikator TF-IDF (< 1 s). Pełny HerBERT odtwarza
+  `start.bat train` (dane treningowe są w repozytorium).
+
+### 3.4. Uruchamianie poza Dockerem (opcjonalnie)
+Do pracy nad kodem aplikację i skrypty można uruchamiać w lokalnym środowisku Pythona (≥ 3.11, testowane na
+3.14), a modele zostawić w kontenerach (`docker compose up -d llm embeddings`) albo w LM Studio:
 
 ```bash
 python -m venv .venv
 .venv\Scripts\activate                     # Linux/macOS: source .venv/bin/activate
-# PyTorch z CUDA (dobierz wersję CUDA do sterownika; bez GPU wystarczy: pip install torch)
-pip install torch --index-url https://download.pytorch.org/whl/cu132
+pip install torch --index-url https://download.pytorch.org/whl/cu132   # PyTorch z CUDA, np. do treningu na GPU
 pip install -r requirements.txt
 pip install -e .                           # pakiet faq_assistant (src/)
-copy .env.example .env                     # adres serwera i identyfikatory modeli
+copy .env.example .env                     # adresy serwerów: porty 8080 i 8081 (LM Studio: 1234)
+python -m faq_assistant.llm data/examples/mail_reklamacja.png   # test: czat, embeddingi, obraz
+python app.py
 ```
-
-Test połączenia z LM Studio (czat, embeddingi, obraz):
-```bash
-python -m faq_assistant.llm data/examples/mail_reklamacja.png
-```
-
-### 3.3. Pierwsze uruchomienie – co dzieje się automatycznie
-* **Indeks bazy wiedzy** (`chroma_db/`) buduje się sam przy pierwszym starcie (ok. 8 s). Ręcznie: `python scripts/build_index.py`.
-* **Klasyfikator HerBERT** (`models/herbert-faq`, 479 MB) jest w archiwum do oddania, ale nie w repozytorium git. Jeśli go brak, aplikacja sama
-  trenuje zastępczy klasyfikator TF-IDF (< 1 s). Pełny HerBERT odtwarza się poleceniem (ok. 30 s na GPU,
-  kilka minut na CPU; dane treningowe są w repozytorium):
-  ```bash
-  python scripts/train_classifier.py train
-  ```
 
 ---
 
 ## 4. Uruchomienie i przykłady użycia
 
 ### 4.1. Aplikacja
-```bash
-python app.py            # → http://127.0.0.1:7860
-```
+Po `start.bat` aplikacja działa pod `http://localhost:7860`.
 
 | Zakładka | Funkcja |
 |---|---|
@@ -194,6 +218,11 @@ Zrzuty ekranu aplikacji: [docs/screenshots/](docs/screenshots/).
 
 ### 4.2. Skrypty (CLI)
 
+W Dockerze polecenia uruchamia się w kontenerze aplikacji: `docker compose exec app <polecenie>`, np.
+`docker compose exec app python scripts/batch.py data/examples/pytania.csv --out results/batch --svg`.
+Wyniki zapisują się w katalogach `results/`, `models/` i `notebooks/` na dysku. Poza Dockerem te same polecenia
+działają w środowisku z punktu 3.4.
+
 | Polecenie | Opis |
 |---|---|
 | `python scripts/batch.py data/examples/pytania.csv --out results/batch --svg` | przetwarzanie wsadowe (próg 4.0) |
@@ -203,9 +232,10 @@ Zrzuty ekranu aplikacji: [docs/screenshots/](docs/screenshots/).
 | `python scripts/train_classifier.py curve --sizes 50 100 200 400 800` | learning curve |
 | `python scripts/build_index.py` | przebudowa indeksu + porównanie metod wyszukiwania dla przykładowego pytania |
 | `python scripts/evaluate.py` | ewaluacja retrievalu, QA i ablacji (`--part retrieval|qa|bertscore`) |
-| `python scripts/build_notebooks.py` | zbudowanie i wykonanie notebooków |
-| `python scripts/screenshots.py` | zrzuty ekranu aplikacji (Playwright) |
-| `pytest` | 17 testów jednostkowych (bez LM Studio – atrapa LLM) |
+| `python scripts/build_notebooks.py` | zbudowanie i wykonanie notebooków (w Dockerze: `docker compose run --rm --build --no-deps app python scripts/build_notebooks.py`) |
+| `python scripts/download_models.py --check` | sprawdzenie plików GGUF (bez `--check`: pobranie z Hugging Face) |
+| `python scripts/screenshots.py` | zrzuty ekranu działającej aplikacji (Playwright, uruchamiane na komputerze) |
+| `pytest` | 21 testów jednostkowych, bez serwerów modeli (atrapa LLM); w Dockerze `start.bat test` |
 
 ---
 
@@ -267,9 +297,12 @@ Wnioski z ablacji (szerzej w [notebooks/03_ewaluacja_pipeline.ipynb](notebooks/0
 
 ```
 app.py                       aplikacja Gradio
+start.bat, start.ps1, start.sh  uruchomienie całego projektu w Dockerze jednym poleceniem
+docker-compose.yml           kontenery: llm i embeddings (llama.cpp, GPU), app, models (pobieranie GGUF)
+Dockerfile, docker/          obraz aplikacji, przypięte wersje bibliotek (constraints.txt)
 src/faq_assistant/
   config.py                  konfiguracja (.env), kategorie, parametry generowania
-  llm.py                     klient LM Studio: czat, streaming, obraz, embeddingi
+  llm.py                     klient serwerów modeli (API OpenAI): czat, streaming, obraz, embeddingi
   prompts.py                 szablony promptów (inżynieria promptów)
   classifier.py              BERT / TF-IDF / LLM – wspólny interfejs
   ingest.py                  FAQ i dokumenty → fragmenty
@@ -278,15 +311,15 @@ src/faq_assistant/
   vision.py                  obraz → pytanie
   pipeline.py                orkiestracja etapów, PipelineTrace
   export.py                  eksport .txt i .svg
-scripts/                     batch, generowanie danych, trening, indeks, ewaluacja, notebooki, zrzuty
+scripts/                     batch, generowanie danych, trening, indeks, ewaluacja, notebooki, zrzuty, pobieranie modeli
 data/faq/faq.jsonl           74 wpisy FAQ (5 kategorii)
 data/docs/                   regulamin, polityka zwrotów, cennik dostaw, warunki Zorza Ochrona+
 data/classifier/             train.jsonl (794, w tym 720 z LLM), test.jsonl (90, ręczny)
 data/eval/qa_eval.jsonl      40 pytań ewaluacyjnych ze źródłami i odpowiedziami wzorcowymi
 data/examples/               obrazy przykładowe, pytania do trybu wsadowego
-notebooks/                   01 parametry LM Studio · 02 klasyfikator · 03 ewaluacja
+notebooks/                   01 parametry LLM (llama.cpp) · 02 klasyfikator · 03 ewaluacja
 results/                     metryki, wykresy, przykładowe raporty
-docs/                        konfiguracja LM Studio, architektura, zrzuty ekranu
+docs/                        konfiguracja Dockera i llama.cpp, architektura, zrzuty ekranu
 tests/                       testy jednostkowe
 ```
 
@@ -306,5 +339,6 @@ tests/                       testy jednostkowe
 
 ### Archiwum do oddania
 Archiwum `Piotr_Smoła_125162_Projekt_LLM.zip` zawiera repozytorium razem z wytrenowanym klasyfikatorem
-`models/herbert-faq` (479 MB) i klasyfikatorem zastępczym `models/tfidf_lr.joblib`. Nie zawiera środowiska `.venv/`
-(instalacja według punktu 3.2) ani indeksu `chroma_db/` (budowany automatycznie przy pierwszym uruchomieniu).
+`models/herbert-faq` (479 MB) i klasyfikatorem zastępczym `models/tfidf_lr.joblib`. Nie zawiera plików modeli GGUF
+(`start.bat` pobiera je przy pierwszym uruchomieniu), środowiska `.venv/` ani indeksu bazy wiedzy (budowany
+automatycznie przy pierwszym uruchomieniu).

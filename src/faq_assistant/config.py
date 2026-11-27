@@ -36,13 +36,18 @@ CATEGORY_LABELS_PL: dict[str, str] = {
 OUT_OF_SCOPE = "poza_zakresem"
 
 
-def _env(name: str, default: str) -> str:
-    return os.getenv(name, default)
+def _env(name: str, default: str, *aliases: str) -> str:
+    """Wartość zmiennej środowiskowej; `aliases` to starsze nazwy (LMSTUDIO_*) sprawdzane, gdy nowej brak."""
+    for key in (name, *aliases):
+        value = os.getenv(key)
+        if value:
+            return value
+    return default
 
 
 @dataclass
 class GenerationParams:
-    """Parametry generowania przekazywane do LM Studio (opis w docs/01_konfiguracja_lm_studio.md)."""
+    """Parametry generowania przekazywane do serwera LLM (opis w docs/01_konfiguracja_docker_llama_cpp.md)."""
 
     temperature: float = 0.2
     top_p: float = 0.9
@@ -57,8 +62,12 @@ class GenerationParams:
 
 @dataclass
 class Settings:
-    base_url: str = field(default_factory=lambda: _env("LMSTUDIO_BASE_URL", "http://localhost:1234/v1"))
-    api_key: str = field(default_factory=lambda: _env("LMSTUDIO_API_KEY", "lm-studio"))
+    base_url: str = field(default_factory=lambda: _env("LLM_BASE_URL", "http://localhost:8080/v1",
+                                                       "LMSTUDIO_BASE_URL"))
+    # Embeddingi mogą działać na osobnym serwerze (w Dockerze: kontener `embeddings`); domyślnie ten sam adres
+    embedding_base_url: str = field(default_factory=lambda: _env("EMBEDDING_BASE_URL", "")
+                                    or _env("LLM_BASE_URL", "http://localhost:8080/v1", "LMSTUDIO_BASE_URL"))
+    api_key: str = field(default_factory=lambda: _env("LLM_API_KEY", "local", "LMSTUDIO_API_KEY"))
     llm_model: str = field(default_factory=lambda: _env("LLM_MODEL", "google/gemma-4-12b-qat"))
     embedding_model: str = field(default_factory=lambda: _env("EMBEDDING_MODEL", "text-embedding-bge-m3"))
     classifier_path: Path = field(default_factory=lambda: ROOT / _env("CLASSIFIER_PATH", "models/herbert-faq"))

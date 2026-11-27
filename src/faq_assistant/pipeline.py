@@ -106,9 +106,9 @@ def load_default_classifier():
 class FAQPipeline:
     def __init__(self, kb: KnowledgeBase | None = None, classifier=None, llm=None,
                  threshold: float | None = None) -> None:
-        from .llm import LMStudioClient
+        from .llm import LLMClient
 
-        self.llm = llm or LMStudioClient()
+        self.llm = llm or LLMClient()
         self.kb = kb or KnowledgeBase(llm=self.llm)
         if kb is None and len(self.kb) == 0:
             # pierwsze uruchomienie (brak folderu chroma_db/), budujemy indeks bazy wiedzy automatycznie
