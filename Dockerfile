@@ -1,9 +1,6 @@
-# Obraz aplikacji: Gradio + pipeline (klasyfikator HerBERT, retrieval, QA) + skrypty i notebooki.
-# Modele językowe działają w osobnych kontenerach llama.cpp (docker-compose.yml), tu jest tylko klient API.
 FROM python:3.14-slim
 
-# PyTorch w wersji CPU: HerBERT klasyfikuje pytanie w kilkadziesiąt ms, a obraz jest o kilka GB mniejszy.
-# Wariant z CUDA (np. do szybkiego treningu): --build-arg TORCH_INDEX=https://download.pytorch.org/whl/cu128
+# PyTorch CPU; z CUDA: --build-arg TORCH_INDEX=https://download.pytorch.org/whl/cu128
 ARG TORCH_INDEX=https://download.pytorch.org/whl/cpu
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -17,7 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     GRADIO_SERVER_PORT=7860 \
     GRADIO_ANALYTICS_ENABLED=False
 
-# fonts-liberation: Liberation Sans ma metryki Arial, którego używają wykresy SVG
+# Liberation Sans zamiast Arial w wykresach SVG
 RUN apt-get update \
     && apt-get install -y --no-install-recommends fonts-liberation curl \
     && rm -rf /var/lib/apt/lists/*

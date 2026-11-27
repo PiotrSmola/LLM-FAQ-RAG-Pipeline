@@ -26,7 +26,7 @@ def ask(page: Page, text: str = "", image: str | None = None, wait_s: int = 90) 
         page.wait_for_timeout(1500)
     box.fill(text)
     box.press("Enter")
-    # koniec przetwarzania = zniknęły komunikaty pośrednie handlera (start, generowanie, etap 3 „w trakcie”)
+    # koniec przetwarzania = zniknęły komunikaty pośrednie handlera (start, generowanie, etap 3 "w trakcie")
     page.wait_for_timeout(3000)
     page.wait_for_function("() => { const t = document.body.innerText; return !t.includes('Analizuję pytanie') "
                            "&& !t.includes('Generuję odpowiedź') && !t.includes('w trakcie…'); }",

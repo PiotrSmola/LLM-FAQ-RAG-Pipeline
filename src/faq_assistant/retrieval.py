@@ -46,7 +46,7 @@ def _strip_accents(s: str) -> str:
 
 
 def tokenize_pl(text: str, stem: int = 6) -> list[str]:
-    """Tokenizacja dla BM25: małe litery, bez diakrytyków, bez stop-słów, stemming = pierwsze `stem` znaków.
+    """Tokenizacja dla BM25: małe litery, bez diakrytyków, bez stop-słów, stemming: pierwsze `stem` znaków.
 
     Prefiksowy stemming to tani sposób na polską fleksję (np. „zwrotu”, „zwrotem”, „zwroty” -> „zwrot”).
     """

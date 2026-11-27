@@ -1,13 +1,13 @@
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:05:31
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:53:52
 ====================================================================================================
 Wejście użytkownika : Ile kosztuje dostawa do paczkomatu?
 Pytanie (końcowe)   : Ile kosztuje dostawa do paczkomatu?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Dostawa (pewność 99.3%)
-    Decyzja      : Kategoria „Dostawa” (pewność 99%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Dostawa” (pewność 99%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.1%
         Dostawa                   99.3%
         Zwroty i reklamacje        0.2%
@@ -15,7 +15,7 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       0.1%
         Poza zakresem              0.1%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     [1] DOS-01  (wynik 0.0328)
         Pytanie: Ile kosztuje dostawa? Odpowiedź: Dostawa do paczkomatu kosztuje 9,99 zł, kurierem
     14,99 zł, a kurierem z wniesieniem dużego sprzętu AGD/RTV 99 zł. Odbiór osobisty w salonie w
@@ -24,41 +24,41 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
         Pytanie: Od jakiej kwoty dostawa jest darmowa? Odpowiedź: Dostawa kurierem i do paczkomatu
     jest darmowa dla zamówień od 299 zł. Darmowa dostawa nie obejmuje usługi wniesienia dużego
     sprzętu ani dostawy w sobotę.…
-    [3] cennik_dostaw.md – 4. Paczkomaty  (wynik 0.0313)
+    [3] cennik_dostaw.md: 4. Paczkomaty  (wynik 0.0313)
         [4. Paczkomaty] - Paczka czeka 48 godzin; czas można jednorazowo przedłużyć o 24 godziny w
     aplikacji przewoźnika. - Nieodebrana przesyłka wraca do sklepu, zamówienie jest anulowane, a
     zapłacona kwota (z kosztem dostawy) zwracana w ciągu 14 dni.…
-    [4] cennik_dostaw.md – 1. Formy dostawy i ceny  (wynik 0.0313)
+    [4] cennik_dostaw.md: 1. Formy dostawy i ceny  (wynik 0.0313)
         [1. Formy dostawy i ceny] | Forma dostawy | Cena | Czas dostawy od nadania | Darmowa od 299
     zł | Uwagi | |---|---|---|---|---| | Paczkomat | 9,99 zł | 1–2 dni robocze | tak | maks. gabaryt
     41 × 38 × 64 cm, do 25 kg | | Kurier | 14,99 zł | 1–2 dni robocze | tak | do 31,5 kg | | Kurier
     – płatność przy…
 
-ETAP 3 – ODPOWIEDŹ
+ETAP 3: ODPOWIEDŹ
     Dostawa do paczkomatu kosztuje 9,99 zł [1]. Jest ona darmowa dla zamówień o wartości od 299 zł
-    (po uwzględnieniu rabatów i bez usług dodatkowych) [2, 4]. Czas dostawy wynosi zazwyczaj 1–2 dni
+    (po uwzględnieniu rabatów i bez usług dodatkowych) [2, 4]. Czas dostawy wynosi zazwyczaj 1-2 dni
     robocze [4].
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.32 s
-    Wyszukiwanie (hybrid)                    2.08 s
-    Generowanie odpowiedzi (LLM)             1.29 s
-    RAZEM                                    3.69 s
+    Klasyfikacja (routing)                   0.75 s
+    Wyszukiwanie (hybrid)                    0.05 s
+    Generowanie odpowiedzi (LLM)             1.84 s
+    RAZEM                                    2.64 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:05:35
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:53:55
 ====================================================================================================
 Wejście użytkownika : czy moge zaplacic przy odbiorze za laptopa za 6000 zl
 Pytanie (końcowe)   : czy moge zaplacic przy odbiorze za laptopa za 6000 zl
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Płatności (pewność 99.4%)
-    Decyzja      : Kategoria „Płatności” (pewność 99%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Płatności” (pewność 99%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                 99.4%
         Dostawa                    0.1%
         Zwroty i reklamacje        0.2%
@@ -66,12 +66,12 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       0.2%
         Poza zakresem              0.1%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     [1] PLA-02  (wynik 0.0328)
         Pytanie: Czy można zapłacić przy odbiorze? Odpowiedź: Tak. Płatność przy odbiorze (pobranie)
     jest dostępna dla dostawy kurierskiej i kosztuje dodatkowo 5 zł. Nie jest dostępna dla zamówień
     powyżej 5000 zł ani dla dostawy do paczkomatu.…
-    [2] regulamin_sklepu.md – § 4. Ceny i płatności  (wynik 0.0315)
+    [2] regulamin_sklepu.md: § 4. Ceny i płatności  (wynik 0.0315)
         [§ 4. Ceny i płatności] 1. Ceny podawane są w złotych polskich i zawierają podatek VAT. 2.
     Dostępne formy płatności: BLIK, karta płatnicza (Visa, Mastercard), szybki przelew online,
     przelew tradycyjny, płatność przy odbiorze, raty 0%, „Zapłać później”, karta podarunkowa oraz
@@ -80,38 +80,36 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
         Pytanie: Jak działa usługa Zapłać później? Odpowiedź: „Zapłać później” pozwala odebrać
     zamówienie i zapłacić za nie w ciągu 30 dni bez dodatkowych kosztów. Usługa jest dostępna dla
     zamówień do 3000 zł i wymaga posiadania konta w sklepie.…
-    [4] warunki_zorza_ochrona_plus.md – 2. Zakup  (wynik 0.0308)
+    [4] warunki_zorza_ochrona_plus.md: 2. Zakup  (wynik 0.0308)
         [2. Zakup] - Usługę można dokupić razem z urządzeniem lub w ciągu **30 dni od zakupu** – w
     koncie Klienta lub w salonie. - Usługa jest dostępna dla urządzeń o wartości od 300 zł do 25 000
     zł: smartfony, tablety, laptopy, telewizory, konsole, aparaty, sprzęt AGD. - Cena zależy od
     wartości urządzenia …
 
-ETAP 3 – ODPOWIEDŹ
+ETAP 3: ODPOWIEDŹ
     Niestety, nie może Pan opłacić zamówienia na laptopa o wartości 6000 zł przy odbiorze. Płatność
-    przy odbiorze jest dostępna wyłącznie dla zamówień do kwoty 5000 zł [1, 2]. W przypadku zamówień
-    przekraczających ten limit, należy skorzystać z innych dostępnych form płatności, takich jak
-    BLIK, karta płatnicza, szybki przelew online lub przelew tradycyjny [2].
+    przy odbiorze jest dostępna wyłącznie dla zamówień do kwoty 5000 zł [1, 2].
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.00 s
-    Wyszukiwanie (hybrid)                    2.03 s
-    Generowanie odpowiedzi (LLM)             1.69 s
-    RAZEM                                    3.73 s
+    Klasyfikacja (routing)                   0.02 s
+    Wyszukiwanie (hybrid)                    0.02 s
+    Generowanie odpowiedzi (LLM)             1.96 s
+    RAZEM                                    2.00 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:05:39
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:53:57
 ====================================================================================================
 Wejście użytkownika : Zamówiłem telewizor 65 cali – czy kurier go wniesie i zabierze stary?
 Pytanie (końcowe)   : Zamówiłem telewizor 65 cali – czy kurier go wniesie i zabierze stary?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Produkty i gwarancja (pewność 60.6%)
-    Decyzja      : Kategoria „Produkty i gwarancja” (pewność 61%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Produkty i gwarancja” (pewność 61%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.3%
         Dostawa                   12.3%
         Zwroty i reklamacje       26.2%
@@ -119,8 +117,8 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja      60.6%
         Poza zakresem              0.3%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
-    [1] cennik_dostaw.md – 3. Dostawa dużego sprzętu z wniesieniem  (wynik 0.0325)
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+    [1] cennik_dostaw.md: 3. Dostawa dużego sprzętu z wniesieniem  (wynik 0.0325)
         [3. Dostawa dużego sprzętu z wniesieniem] - Usługa obejmuje wniesienie na dowolne piętro
     (także bez windy) do wskazanego pomieszczenia oraz rozpakowanie i zabranie opakowania na
     życzenie. - Usługa nie obejmuje podłączenia urządzenia do instalacji wodnej, gazowej ani montażu
@@ -129,47 +127,47 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
         Pytanie: Co zrobić ze zużytym sprzętem elektronicznym? Odpowiedź: Zużyty sprzęt możesz
     bezpłatnie oddać w salonie w Rzeszowie. Przy dostawie dużego sprzętu AGD kurier z wniesieniem
     odbierze bezpłatnie zużyte urządzenie tego samego typu – zaznacz to w zamówieniu.…
-    [3] polityka_zwrotow_i_reklamacji.md – 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.3. Jak zwrócić  (wynik 0.0315)
+    [3] polityka_zwrotow_i_reklamacji.md: 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.3. Jak zwrócić  (wynik 0.0315)
         [1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.3. Jak zwrócić] 1. Zaloguj
     się i przejdź do „Moje zamówienia” → wybierz zamówienie → „Zwróć produkt”. Gość korzysta z
     formularza „Zwrot bez konta”, podając numer zamówienia i e-mail. 2. Wybierz produkty i sposób
     zwrotu pieniędzy. 3. O…
-    [4] cennik_dostaw.md – 1. Formy dostawy i ceny  (wynik 0.0315)
+    [4] cennik_dostaw.md: 1. Formy dostawy i ceny  (wynik 0.0315)
         [1. Formy dostawy i ceny] | Forma dostawy | Cena | Czas dostawy od nadania | Darmowa od 299
     zł | Uwagi | |---|---|---|---|---| | Paczkomat | 9,99 zł | 1–2 dni robocze | tak | maks. gabaryt
     41 × 38 × 64 cm, do 25 kg | | Kurier | 14,99 zł | 1–2 dni robocze | tak | do 31,5 kg | | Kurier
     – płatność przy…
 
-ETAP 3 – ODPOWIEDŹ
-    Dostawa telewizora o przekroczeniu 55 cali wymaga skorzystania z usługi „Kurier z wniesieniem”,
-    która kosztuje 99 zł [4]. Usługa ta obejmuje wniesienie sprzętu na dowolne piętro (również bez
-    windy) do wskazanego pomieszczenia oraz jego rozpakowanie [1]. Jeśli zamówią Państwo dostawę
-    dużego sprzętu AGD, kurier może bezpłatnie odebrać zużyty sprzęt tego samego typu – należy
-    jednak zaznaczyć tę opcję w zamówieniu [2]. Proszę pamiętać, że telewizor nie jest urządzeniem
-    AGD, więc darmowy odbiór starego sprzętu przy dostawie telewizora może być niemożliwy (wiedza
-    ogólna). W przypadku wątpliwości dotyczących konkretnego modelu, prosimy o kontakt pod numerem
-    17 000 00 00 lub e-mail pomoc@zorza-elektronika.example.
+ETAP 3: ODPOWIEDŹ
+    Dzień dobry! Odpowiadam na Twoje pytania dotyczące dostawy zamówionego telewizora:
+    1. W przypadku dużego sprzętu, takiego jak telewizor 65 cali, możesz skorzystać z usługi "Kurier
+    z wniesieniem", która obejmuje wniesienie urządzenia na dowolne piętro (również bez windy) do
+    wskazanego pomieszczenia oraz jego rozpakowanie [1]. Usługa ta jest płatna i kosztuje 99 zł [4].
+    2. Jeśli zamówisz usługę kuriera z wniesieniem, możesz również skorzystać z bezpłatnego odbioru
+    zużytego sprzętu tego samego typu (np. starego telewizora) [1, 2]. Pamiętaj, aby zaznaczyć tę
+    opcję w swoim zamówieniu oraz upewnić się, że urządzenie jest odłączone od instalacji i
+    opróżnione z wody [1, 2].
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.01 s
-    Wyszukiwanie (hybrid)                    2.04 s
-    Generowanie odpowiedzi (LLM)             3.02 s
-    RAZEM                                    5.07 s
+    Klasyfikacja (routing)                   0.02 s
+    Wyszukiwanie (hybrid)                    0.02 s
+    Generowanie odpowiedzi (LLM)             3.83 s
+    RAZEM                                    3.87 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:05:44
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:54:01
 ====================================================================================================
 Wejście użytkownika : Ile mam czasu na zwrot słuchawek nausznych kupionych przez internet?
 Pytanie (końcowe)   : Ile mam czasu na zwrot słuchawek nausznych kupionych przez internet?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Zwroty i reklamacje (pewność 95.7%)
-    Decyzja      : Kategoria „Zwroty i reklamacje” (pewność 96%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Zwroty i reklamacje” (pewność 96%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.3%
         Dostawa                    0.2%
         Zwroty i reklamacje       95.7%
@@ -177,7 +175,7 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       3.4%
         Poza zakresem              0.2%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     [1] ZWR-01  (wynik 0.0328)
         Pytanie: Ile mam czasu na zwrot towaru? Odpowiedź: Zakupiony przez internet towar możesz
     zwrócić bez podania przyczyny w ciągu 30 dni od jego doręczenia. To dłużej niż ustawowe 14 dni.…
@@ -186,48 +184,47 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     30-dniowego zwrotu bez podania przyczyny dotyczy zakupów przez internet. Produkty kupione w
     salonie możesz zwrócić w ciągu 14 dni w ramach dobrowolnej polityki „Zwrot w salonie”, jeśli są
     nieużywane i kompletne…
-    [3] polityka_zwrotow_i_reklamacji.md – 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.1. Termin  (wynik 0.0320)
+    [3] polityka_zwrotow_i_reklamacji.md: 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.1. Termin  (wynik 0.0320)
         [1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.1. Termin] Towar kupiony
     przez internet można zwrócić w ciągu **30 dni od doręczenia**. Przy zamówieniu dostarczonym w
     kilku przesyłkach termin liczy się od doręczenia ostatniej przesyłki. Do zachowania terminu
     wystarczy nadanie paczk…
-    [4] polityka_zwrotow_i_reklamacji.md – 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.5. Wyłączenia  (wynik 0.0301)
+    [4] polityka_zwrotow_i_reklamacji.md: 1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.5. Wyłączenia  (wynik 0.0301)
         [1. Zwrot towaru bez podania przyczyny (odstąpienie od umowy) > 1.5. Wyłączenia] Prawo
     zwrotu nie przysługuje dla: - oprogramowania, gier i filmów w zapieczętowanym opakowaniu, jeśli
     opakowanie zostało otwarte; - kluczy licencyjnych i treści cyfrowych, jeśli przed upływem
     terminu rozpoczęto pobieran…
 
-ETAP 3 – ODPOWIEDŹ
+ETAP 3: ODPOWIEDŹ
     Towar zakupiony przez internet możesz zwrócić bez podania przyczyny w ciągu 30 dni od jego
     doręczenia [1, 3]. W przypadku zamówienia dostarczonego w kilku przesyłkach, termin ten liczy
-    się od momentu doręczenia ostatniej paczki [3]. Aby zachować prawo do zwrotu, wystarczy nadać
-    przesyłkę przed upływem wyznaczonego terminu [3]. Proszę pamiętać, że słuchawki douszne są
-    wyłączone z możliwości zwrotu po zdjęciu fabrycznej folii ze względów higienicznych [4] (wiedza
-    ogólna: dotyczy to jednak tylko modeli dousznych, więc Twoje słuchawki nauszne powinny podlegać
-    standardowym zasadom).
+    się od momentu doręczenia ostatniej paczki [3]. Aby zachować prawo do zwrotu, wystarczy nadanie
+    przesyłki przed upływem wyznaczonego terminu [3]. Pamiętaj, że słuchawki douszne są wyłączone z
+    możliwości zwrotu po zdjęciu fabrycznej folii ze względów higienicznych, jednak w przypadku
+    słuchawek nausznych takie ograniczenie nie zostało wymienione [4] (wiedza ogólna).
     Wskazówka: Reklamację lub zwrot zgłosisz w zakładce „Moje zamówienia” → „Zgłoś reklamację” /
     „Zwróć produkt”.
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.01 s
-    Wyszukiwanie (hybrid)                    2.09 s
-    Generowanie odpowiedzi (LLM)             2.43 s
-    RAZEM                                    4.52 s
+    Klasyfikacja (routing)                   0.02 s
+    Wyszukiwanie (hybrid)                    0.01 s
+    Generowanie odpowiedzi (LLM)             2.81 s
+    RAZEM                                    2.85 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:05:49
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:54:04
 ====================================================================================================
 Wejście użytkownika : Mój telefon nie włącza się od pierwszego dnia, co robić?
 Pytanie (końcowe)   : Mój telefon nie włącza się od pierwszego dnia, co robić?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Zwroty i reklamacje (pewność 94.2%)
-    Decyzja      : Kategoria „Zwroty i reklamacje” (pewność 94%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Zwroty i reklamacje” (pewność 94%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.2%
         Dostawa                    0.7%
         Zwroty i reklamacje       94.2%
@@ -235,16 +232,16 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       4.3%
         Poza zakresem              0.2%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     [1] ZWR-08  (wynik 0.0320)
         Pytanie: Produkt nie działa zaraz po rozpakowaniu. Co robić? Odpowiedź: To tzw. wada DOA
     (dead on arrival). Zgłoś ją przez formularz reklamacyjny w ciągu 7 dni od doręczenia – po
     weryfikacji wymienimy produkt na nowy bez wysyłania go do serwisu.…
-    [2] polityka_zwrotow_i_reklamacji.md – 2. Reklamacje (niezgodność towaru z umową) > 2.5. Odwołanie  (wynik 0.0311)
+    [2] polityka_zwrotow_i_reklamacji.md: 2. Reklamacje (niezgodność towaru z umową) > 2.5. Odwołanie  (wynik 0.0311)
         [2. Reklamacje (niezgodność towaru z umową) > 2.5. Odwołanie] Od decyzji można się odwołać w
     ciągu 14 dni na adres reklamacje@zorza-elektronika.example. Odwołanie rozpatruje inny pracownik
     niż ten, który wydał pierwszą decyzję.…
-    [3] polityka_zwrotow_i_reklamacji.md – 2. Reklamacje (niezgodność towaru z umową) > 2.3. Terminy  (wynik 0.0310)
+    [3] polityka_zwrotow_i_reklamacji.md: 2. Reklamacje (niezgodność towaru z umową) > 2.3. Terminy  (wynik 0.0310)
         [2. Reklamacje (niezgodność towaru z umową) > 2.3. Terminy] - Odpowiedź na reklamację – do
     **14 dni** od jej otrzymania. - Naprawa lub wymiana – w rozsądnym terminie, zwykle do 21 dni
     roboczych. - Wada DOA (produkt niedziałający od pierwszego uruchomienia) – zgłoszenie w ciągu
@@ -255,36 +252,36 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     elektronika.example, lub skorzystać z pozasądowych metod rozwiązywania sporów, np. pomocy
     rzecznika konsumentów.…
 
-ETAP 3 – ODPOWIEDŹ
-    Dzień dobry! Skoro Twój telefon nie włącza się od pierwszego uruchomienia, mamy do czynienia z
-    wadą typu DOA (dead on arrival) [1]. Aby otrzymać nowy produkt bez konieczności wysyłania go do
-    serwisu, prosimy o zgłoszenie usterki przez formularz reklamacyjny w ciągu 7 dni od doręczenia
-    przesyłki [1, 3]. Po weryfikacji zgłoszenia (która trwa do 3 dni roboczych) wyślemy Ci nowy
-    egzemplarz [3]. W razie dodatkowych pytań prosimy o kontakt pod adresem pomoc@zorza-
-    elektronika.example lub numerem infolinii 17 000 00 00.
+ETAP 3: ODPOWIEDŹ
+    Dzień dobry! Skoro Twój telefon nie włącza się od pierwszego dnia, mamy do czynienia z wadą typu
+    DOA (dead on arrival) [1].
+    Oto kroki, które należy podjąć:
+    1. Zgłoś usterkę przez formularz reklamacyjny w ciągu 7 dni od doręczenia produktu [1, 3].
+    2. Po weryfikacji zgłoszenia, która trwa do 3 dni roboczych, wymienimy produkt na nowy bez
+    konieczności wysyłania go do serwisu [1, 3].
     Wskazówka: Reklamację lub zwrot zgłosisz w zakładce „Moje zamówienia” → „Zgłoś reklamację” /
     „Zwróć produkt”.
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.00 s
-    Wyszukiwanie (hybrid)                    2.06 s
-    Generowanie odpowiedzi (LLM)             2.37 s
-    RAZEM                                    4.43 s
+    Klasyfikacja (routing)                   0.02 s
+    Wyszukiwanie (hybrid)                    0.01 s
+    Generowanie odpowiedzi (LLM)             2.48 s
+    RAZEM                                    2.51 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:05:53
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:54:07
 ====================================================================================================
 Wejście użytkownika : Jak długo ważny jest link aktywacyjny do konta?
 Pytanie (końcowe)   : Jak długo ważny jest link aktywacyjny do konta?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Konto i logowanie (pewność 99.4%)
-    Decyzja      : Kategoria „Konto i logowanie” (pewność 99%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Konto i logowanie” (pewność 99%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.2%
         Dostawa                    0.1%
         Zwroty i reklamacje        0.1%
@@ -292,7 +289,7 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       0.1%
         Poza zakresem              0.1%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     [1] KON-02  (wynik 0.0328)
         Pytanie: Jak założyć konto? Odpowiedź: Kliknij „Zaloguj się” → „Załóż konto”, podaj adres
     e-mail i hasło (min. 10 znaków, w tym cyfra), a następnie potwierdź rejestrację linkiem wysłanym
@@ -311,32 +308,29 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     dowolnego newslettera albo odznacz zgodę w „Ustawieniach konta” → „Powiadomienia”. Zmiana działa
     natychmiast.…
 
-ETAP 3 – ODPOWIEDŹ
+ETAP 3: ODPOWIEDŹ
     Link aktywacyjny wysłany na e-mail podczas rejestracji konta jest ważny przez 24 godziny [1].
-    Jeśli nie dokonasz aktywacji w tym czasie, będziesz musiał powtórzyć proces rejestracji. (wiedza
-    ogólna) Warto sprawdzić folder spam, jeśli wiadomość z linkiem nie pojawi się w skrzynce
-    odbiorczej.
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.00 s
-    Wyszukiwanie (hybrid)                    2.05 s
-    Generowanie odpowiedzi (LLM)             1.33 s
-    RAZEM                                    3.39 s
+    Klasyfikacja (routing)                   0.02 s
+    Wyszukiwanie (hybrid)                    0.01 s
+    Generowanie odpowiedzi (LLM)             1.22 s
+    RAZEM                                    1.26 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:05:57
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:54:08
 ====================================================================================================
 Wejście użytkownika : Czy punkty lojalnościowe przepadają?
 Pytanie (końcowe)   : Czy punkty lojalnościowe przepadają?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Konto i logowanie (pewność 99.2%)
-    Decyzja      : Kategoria „Konto i logowanie” (pewność 99%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Konto i logowanie” (pewność 99%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.3%
         Dostawa                    0.1%
         Zwroty i reklamacje        0.2%
@@ -344,7 +338,7 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       0.1%
         Poza zakresem              0.2%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     [1] KON-07  (wynik 0.0323)
         Pytanie: Jak usunąć konto? Odpowiedź: W „Ustawieniach konta” → „Prywatność” wybierz „Usuń
     konto”. Konto i dane osobowe usuwamy w ciągu 30 dni, z wyjątkiem danych, które musimy
@@ -354,7 +348,7 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
         Pytanie: Jak działa program lojalnościowy Zorza Punkty? Odpowiedź: Za każdy wydany 1 zł
     otrzymujesz 1 punkt. 100 punktów można wymienić na 5 zł rabatu. Punkty są ważne 12 miesięcy od
     ich przyznania i są naliczane po upływie terminu na zwrot zamówienia.…
-    [3] regulamin_sklepu.md – § 9. Program lojalnościowy Zorza Punkty  (wynik 0.0323)
+    [3] regulamin_sklepu.md: § 9. Program lojalnościowy Zorza Punkty  (wynik 0.0323)
         [§ 9. Program lojalnościowy Zorza Punkty] 1. Uczestnikiem programu może być każdy Klient
     posiadający konto. 2. Za każdy wydany 1 zł (bez kosztów dostawy) przyznawany jest 1 punkt.
     Punkty naliczane są po upływie 30 dni od doręczenia zamówienia. 3. Punkty są ważne 12 miesięcy
@@ -364,32 +358,31 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     gość. Konto ułatwia jednak śledzenie zamówień, zwroty i reklamacje, zbieranie punktów
     lojalnościowych i korzystanie z usługi „Zapłać później”.…
 
-ETAP 3 – ODPOWIEDŹ
-    Tak, niewykorzystane punkty lojalnościowe przepadają po 12 miesiącach od ich przyznania [1, 3].
-    Punkty są naliczane po upływie terminu na zwrot zamówienia (zgodnie z regulaminem: 30 dni od
-    doręczenia) i nie podlegają wymianie na gotówkę [2, 3]. W przypadku zwrotu towaru punkty za dany
-    produkt są odejmowane z Twojego konta [3].
+ETAP 3: ODPOWIEDŹ
+    Tak, niewykorzystane punkty lojalnościowe przepadają po usunięciu konta [1]. Dodatkowo punkty są
+    ważne przez 12 miesięcy od momentu ich przyznania [2, 3]. Jeśli dokonasz zwrotu towaru, punkty
+    za ten produkt zostaną odejmujące z Twojego konta [3].
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.00 s
-    Wyszukiwanie (hybrid)                    2.05 s
-    Generowanie odpowiedzi (LLM)             1.57 s
-    RAZEM                                    3.62 s
+    Klasyfikacja (routing)                   0.02 s
+    Wyszukiwanie (hybrid)                    0.02 s
+    Generowanie odpowiedzi (LLM)             1.65 s
+    RAZEM                                    1.69 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:06:01
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:54:10
 ====================================================================================================
 Wejście użytkownika : Ile kosztuje Zorza Ochrona+ na 3 lata w wariancie przedłużonej gwarancji dla telewizora za 5000 zł?
 Pytanie (końcowe)   : Ile kosztuje Zorza Ochrona+ na 3 lata w wariancie przedłużonej gwarancji dla telewizora za 5000 zł?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Produkty i gwarancja (pewność 99.0%)
-    Decyzja      : Kategoria „Produkty i gwarancja” (pewność 99%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Produkty i gwarancja” (pewność 99%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.2%
         Dostawa                    0.1%
         Zwroty i reklamacje        0.3%
@@ -397,13 +390,13 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja      99.0%
         Poza zakresem              0.2%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
-    [1] warunki_zorza_ochrona_plus.md – 1. Czym jest Zorza Ochrona+  (wynik 0.0328)
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+    [1] warunki_zorza_ochrona_plus.md: 1. Czym jest Zorza Ochrona+  (wynik 0.0328)
         [1. Czym jest Zorza Ochrona+] Zorza Ochrona+ to płatna usługa rozszerzonej ochrony
     urządzenia, oferowana w trzech wariantach: na **1, 2 lub 3 lata**. Ochrona obejmuje: 1.
     **usterki techniczne** po zakończeniu gwarancji producenta (wariant „Przedłużona gwarancja”), 2.
     **przypadkowe uszkodzenia** od p…
-    [2] warunki_zorza_ochrona_plus.md – 2. Zakup  (wynik 0.0318)
+    [2] warunki_zorza_ochrona_plus.md: 2. Zakup  (wynik 0.0318)
         [2. Zakup] - Usługę można dokupić razem z urządzeniem lub w ciągu **30 dni od zakupu** – w
     koncie Klienta lub w salonie. - Usługa jest dostępna dla urządzeń o wartości od 300 zł do 25 000
     zł: smartfony, tablety, laptopy, telewizory, konsole, aparaty, sprzęt AGD. - Cena zależy od
@@ -417,31 +410,31 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
     na 1, 2 lub 3 lata. Obejmuje usterki po zakończeniu gwarancji producenta oraz przypadkowe
     uszkodzenia, np. zalanie lub upadek. Można ją dokupić do 30 dni od zakupu urządzenia.…
 
-ETAP 3 – ODPOWIEDŹ
-    Koszt usługi Zorza Ochrona+ w wariancie „Przedłużona gwarancja” na okres 3 lat wynosi 12% ceny
-    urządzenia [2]. Dla telewizora o wartości 5000 zł kwota ta wyniesie 600 zł. Dokładną kwotę mogą
-    Państwo sprawdzić również bezpośrednio w karcie produktu lub w koszyku [3].
+ETAP 3: ODPOWIEDŹ
+    Koszt usługi Zorza Ochrona+ w wariancie Przedłużona gwarancja na okres 3 lat wynosi 12% ceny
+    urządzenia [2]. Dla telewizora o wartości 5000 zł kwota ta wyniesie 600 zł. Dokładną kwotę
+    możesz sprawdzić również w karcie produktu oraz w koszyku podczas składania zamówienia [3].
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.01 s
-    Wyszukiwanie (hybrid)                    2.07 s
-    Generowanie odpowiedzi (LLM)             1.42 s
-    RAZEM                                    3.49 s
+    Klasyfikacja (routing)                   0.03 s
+    Wyszukiwanie (hybrid)                    0.01 s
+    Generowanie odpowiedzi (LLM)             1.80 s
+    RAZEM                                    1.84 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:06:04
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:54:12
 ====================================================================================================
 Wejście użytkownika : Czy wysyłacie zamówienia na Hel?
 Pytanie (końcowe)   : Czy wysyłacie zamówienia na Hel?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Dostawa (pewność 99.2%)
-    Decyzja      : Kategoria „Dostawa” (pewność 99%) – FAQ zawężone do kategorii + dokumenty firmowe
+    Decyzja      : Kategoria „Dostawa” (pewność 99%): FAQ zawężone do kategorii + dokumenty firmowe
         Płatności                  0.2%
         Dostawa                   99.2%
         Zwroty i reklamacje        0.2%
@@ -449,8 +442,8 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       0.1%
         Poza zakresem              0.2%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
-    [1] cennik_dostaw.md – 6. Zasięg  (wynik 0.0328)
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
+    [1] cennik_dostaw.md: 6. Zasięg  (wynik 0.0328)
         [6. Zasięg] Dostawy realizujemy wyłącznie na terenie Polski, łącznie z wyspami (Hel, Wolin,
     Uznam) – na wyspy czas dostawy kurierskiej może wydłużyć się o 1 dzień roboczy.…
     [2] DOS-07  (wynik 0.0318)
@@ -460,38 +453,36 @@ ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 4
         Pytanie: Kiedy zamówienie zostanie wysłane? Odpowiedź: Zamówienia opłacone w dni robocze do
     godziny 14:00 wysyłamy tego samego dnia, jeśli wszystkie produkty mają status „Dostępny od
     ręki”. Zamówienia złożone później wysyłamy następnego dnia roboczego.…
-    [4] cennik_dostaw.md – 2. Czas wysyłki  (wynik 0.0315)
+    [4] cennik_dostaw.md: 2. Czas wysyłki  (wynik 0.0315)
         [2. Czas wysyłki] - Produkty „Dostępne od ręki” zamówione i opłacone w dzień roboczy do
     14:00 wysyłamy tego samego dnia. - Produkty „Wysyłka do 7 dni” są sprowadzane od dystrybutora;
     zamówienie jest wysyłane w całości po skompletowaniu. - W okresie od Black Friday do 23 grudnia
     godzina graniczna wys…
 
-ETAP 3 – ODPOWIEDŹ
+ETAP 3: ODPOWIEDŹ
     Tak, realizujemy dostawy na terenie Polski, w tym również na wyspy takie jak Hel [6]. Proszę
-    pamiętać, że czas dostawy kurierskiej na wyspę może wydłużyć się o 1 dzień roboczy [6]. (wiedza
-    ogólna) Warto sprawdzić dokładny termin doręczenia w aplikacji przewoźnika po otrzymaniu numeru
-    przesyłki.
+    pamiętać, że czas dostawy kurierskiej na wyspę może wydłużyć się o 1 dzień roboczy [6].
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.00 s
-    Wyszukiwanie (hybrid)                    2.04 s
-    Generowanie odpowiedzi (LLM)             1.33 s
-    RAZEM                                    3.37 s
+    Klasyfikacja (routing)                   0.02 s
+    Wyszukiwanie (hybrid)                    0.01 s
+    Generowanie odpowiedzi (LLM)             1.44 s
+    RAZEM                                    1.47 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================
 
 ====================================================================================================
-ASYSTENT FAQ – Zorza Elektronika        2026-11-21T15:06:08
+ASYSTENT FAQ: Zorza Elektronika        2026-11-27T19:54:14
 ====================================================================================================
 Wejście użytkownika : Jaka będzie jutro pogoda?
 Pytanie (końcowe)   : Jaka będzie jutro pogoda?
 
-ETAP 1 – KLASYFIKACJA / ROUTING
+ETAP 1: KLASYFIKACJA / ROUTING
     Klasyfikator : bert:herbert-faq
     Kategoria    : Poza zakresem (pewność 99.1%)
-    Decyzja      : Poza zakresem (pewność 99%) – odmowa bez wywołania LLM
+    Decyzja      : Poza zakresem (pewność 99%), odmowa bez wywołania LLM
         Płatności                  0.2%
         Dostawa                    0.2%
         Zwroty i reklamacje        0.1%
@@ -499,17 +490,17 @@ ETAP 1 – KLASYFIKACJA / ROUTING
         Produkty i gwarancja       0.2%
         Poza zakresem             99.1%
 
-ETAP 2 – WYSZUKIWANIE (hybrid), znalezione fragmenty: 0
+ETAP 2: WYSZUKIWANIE (hybrid), znalezione fragmenty: 0
 
-ETAP 3 – ODPOWIEDŹ
+ETAP 3: ODPOWIEDŹ
     Jestem asystentem obsługi klienta sklepu Zorza Elektronika i mogę pomóc w sprawach zamówień,
     płatności, dostawy, zwrotów i reklamacji, konta oraz gwarancji. Na to pytanie niestety nie
-    odpowiem – czy mogę pomóc w czymś związanym z zakupami?
+    odpowiem. Czy mogę pomóc w czymś związanym z zakupami?
 
 CZASY ETAPÓW
-    Klasyfikacja (routing)                   0.00 s
-    RAZEM                                    0.00 s
+    Klasyfikacja (routing)                   0.02 s
+    RAZEM                                    0.02 s
 
 PARAMETRY GENEROWANIA
-    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=700  seed=42  reasoning=none
+    temperature=0.2  top_p=0.9  top_k=40  repeat_penalty=1.1  max_tokens=2048  seed=42  reasoning=none
 ====================================================================================================

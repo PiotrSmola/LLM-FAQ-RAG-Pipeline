@@ -1,9 +1,6 @@
-"""Klient lokalnych serwerów modeli z API zgodnym z OpenAI.
+"""Klient serwerów modeli (API zgodne z OpenAI): czat, obraz, embeddingi.
 
-Domyślnie są to dwa serwery llama.cpp w kontenerach Dockera (`llm`: Gemma 4 z mmproj, `embeddings`: bge-m3),
-ale ten sam klient działa z LM Studio lub innym serwerem zgodnym z OpenAI (adresy w .env).
-Obsługuje: czat (także strumieniowo), zapytania z obrazem oraz embeddingi.
-Uruchomienie `python -m faq_assistant.llm` wykonuje test dymny wszystkich trzech funkcji.
+Test: python -m faq_assistant.llm [obraz.png]
 """
 
 from __future__ import annotations
@@ -38,15 +35,12 @@ class LLMClient:
     @staticmethod
     def _kwargs(params: GenerationParams | None) -> dict:
         p = asdict(params or GenerationParams())
-        # top_k, repeat_penalty i reasoning_effort nie należą do podstawowej specyfikacji OpenAI,
-        # llama.cpp (i LM Studio) przyjmują je w extra_body. reasoning_effort="none" wyłącza myślenie Gemmy 4.
+        # parametry spoza API OpenAI idą w extra_body
         extra = {"top_k": p.pop("top_k"), "repeat_penalty": p.pop("repeat_penalty"),
                  "reasoning_effort": p.pop("reasoning_effort")}
         if p["seed"] is None:
             p.pop("seed")
-        # Przy włączonym rozumowaniu ukryte tokeny myślenia wliczają się do max_tokens. llama.cpp ucina myślenie
-        # po thinking_budget_tokens, a ten sam budżet doliczamy do max_tokens, aby max_tokens z UI oznaczał
-        # długość widocznej odpowiedzi (inaczej odpowiedź bywa pusta).
+        # myślenie wlicza się do max_tokens, więc doliczamy budżet (inaczej odpowiedź bywa pusta)
         budget = REASONING_BUDGET.get(extra["reasoning_effort"], 0)
         if budget:
             extra["thinking_budget_tokens"] = budget

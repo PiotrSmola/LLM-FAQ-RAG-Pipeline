@@ -40,7 +40,7 @@ ax[1].set_title("Czas na zapytanie [ms] (skala log)"); plt.tight_layout(); plt.s
     ("code", """err = pd.read_csv(f"{R}/errors.csv")
 print(err.groupby("model").size().rename("liczba błędów").to_string())
 err[err.model.str.contains("herbert")][["text", "true", "pred"]]"""),
-    ("code", """# pytania, które myli każdy model, „trudne” przypadki
+    ("code", """# pytania, które myli każdy model (trudne przypadki)
 hard = err.groupby("text").model.nunique()
 err[err.text.isin(hard[hard >= 3].index)].drop_duplicates("text")[["text", "true", "pred"]]"""),
     ("md", """## Learning curve: ile danych potrzeba? (jak zad. 2.4 z Lab 2)

@@ -2,7 +2,7 @@
 
 Części:
   retrieval: Recall@1/@3/@k i MRR dla TF-IDF, BM25, dense, hybrid; bez filtra i z filtrem kategorii (routing)
-  qa: ablacja „synergii komponentów” + porównanie z modelami z laboratoriów:
+  qa: ablacja (synergia komponentów) + porównanie z modelami z laboratoriów:
                 llm_bez_rag: sam LLM, bez dokumentów (Lab 5: halucynacje)
                 rag_bez_klasyfikatora: retrieval w całej bazie, bez routingu
                 pelny_pipeline: klasyfikacja -> retrieval z filtrem -> LLM

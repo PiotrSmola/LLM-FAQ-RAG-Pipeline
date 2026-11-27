@@ -16,7 +16,7 @@ from faq_assistant.utils import parse_json
 
 
 class FakeLLM:
-    """Embedding = znormalizowany „worek słów” po haszowaniu tokenów; czat zwraca stały tekst."""
+    """Embedding = znormalizowany "worek słów" po haszowaniu tokenów; czat zwraca stały tekst."""
 
     model = "fake"
 

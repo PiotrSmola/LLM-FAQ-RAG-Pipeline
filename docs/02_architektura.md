@@ -50,9 +50,9 @@ na komputerze (albo `http://localhost:1234/v1` dla LM Studio). Konfiguracja i pa
 | `config.py` | ustawienia z `.env`, kategorie, parametry generowania | `Settings`, `GenerationParams`, `CATEGORIES` |
 | `llm.py` | jedyny punkt kontaktu z serwerami modeli (API zgodne z OpenAI) | `LLMClient.chat / chat_stream / vision / embed`; osobne adresy serwera LLM i embeddingów; `top_k`, `repeat_penalty`, `reasoning_effort`, `thinking_budget_tokens` w `extra_body` |
 | `prompts.py` | wszystkie prompty w jednym miejscu | klasyfikacja few-shot (JSON), generowanie danych, przepisanie pytania, OCR obrazu, odpowiedź RAG, LLM-as-judge |
-| `classifier.py` | etap 1 – wspólny interfejs `predict(text) → Prediction` | `BertClassifier`, `TfidfClassifier`, `LLMClassifier` |
+| `classifier.py` | etap 1: wspólny interfejs `predict(text) → Prediction` | `BertClassifier`, `TfidfClassifier`, `LLMClassifier` |
 | `ingest.py` | podział bazy wiedzy na fragmenty | FAQ = 1 wpis → 1 fragment; dokumenty: sekcje markdown → okna ~1000 znaków z nakładką 150 |
-| `retrieval.py` | etap 2 – indeks i 4 metody wyszukiwania | `KnowledgeBase` (ChromaDB + BM25 + TF-IDF), `tokenize_pl` (bez diakrytyków, stop-słowa, stemming prefiksowy), RRF |
+| `retrieval.py` | etap 2: indeks i 4 metody wyszukiwania | `KnowledgeBase` (ChromaDB + BM25 + TF-IDF), `tokenize_pl` (bez diakrytyków, stop-słowa, stemming prefiksowy), RRF |
 | `qa.py` | etap 3 | `build_messages` (numerowane źródła), `ExtractiveQA` (XLM-R), `FlanT5QA` |
 | `vision.py` | wielomodalność | obraz → JSON `{ocr, question}` |
 | `pipeline.py` | orkiestracja i zapis przebiegu | `FAQPipeline.prepare / generate_stream / run`, `PipelineTrace`, automatyczny setup |
@@ -68,10 +68,10 @@ na komputerze (albo `http://localhost:1234/v1` dla LM Studio). Konfiguracja i pa
 | **PyTorch CPU w obrazie aplikacji** | HerBERT klasyfikuje w kilkadziesiąt ms także na CPU, a GPU zostaje dla LLM; obraz jest o kilka GB mniejszy |
 | **Gemma 4 12B QAT** | dobra jakość po polsku, wbudowana obsługa obrazu (mmproj), QAT = mała strata jakości przy Q4 |
 | **bge-m3** do embeddingów | jeden z najlepszych otwartych modeli wielojęzycznych; ten sam format GGUF i ten sam silnik co LLM |
-| **HerBERT** jako router | polski BERT – wymaganie tematu (fine-tuning BERT); 10 ms/zapytanie, działa bez serwera LLM |
+| **HerBERT** jako router | polski BERT, wymaganie tematu (fine-tuning BERT); 10 ms/zapytanie, działa bez serwera LLM |
 | **Dane treningowe z LLM** | brak realnych zgłoszeń klientów; LLM generuje różnorodne parafrazy (literówki, styl potoczny); test pisany ręcznie, aby nie oceniać modelu na danych z tego samego źródła |
 | **Filtr kategorii tylko dla FAQ** | dokumenty firmowe (regulamin itp.) dotyczą wielu kategorii naraz; filtr ograniczałby trafność |
-| **Hybryda RRF jako domyślna metoda** | najlepszy Recall@3/@4 – w RAG ważne, by właściwy fragment trafił do kontekstu; RRF nie wymaga normalizacji wyników różnych metod |
+| **Hybryda RRF jako domyślna metoda** | najlepszy Recall@3/@4; w RAG ważne, by właściwy fragment trafił do kontekstu; RRF nie wymaga normalizacji wyników różnych metod |
 | **Stemming prefiksowy w BM25** | prosty sposób na fleksję polską bez zewnętrznych narzędzi (np. „zwrotu/zwrotem/zwroty” → „zwrot”) |
 | **Odmowa bez LLM dla „poza zakresem”** | zero ryzyka halucynacji, odpowiedź w ~0,4 s, brak obciążenia GPU |
 | **Cytowania [n] + „(wiedza ogólna)”** | spełnia wymaganie 5.0 (wiedza modelu + dokumenty) przy zachowaniu przejrzystości, skąd pochodzi informacja |
@@ -81,7 +81,7 @@ na komputerze (albo `http://localhost:1234/v1` dla LM Studio). Konfiguracja i pa
 
 ## Format danych
 
-* `data/faq/faq.jsonl` – `{"id": "DOS-01", "category": "dostawa", "question": "...", "answer": "..."}`
-* `data/classifier/*.jsonl` – `{"text": "...", "label": "dostawa", "source": "llm|faq"}`
-* `data/eval/qa_eval.jsonl` – `{"id", "question", "category", "gold_sources": ["DOS-01", "cennik_dostaw.md"], "reference"}`
+* `data/faq/faq.jsonl`: `{"id": "DOS-01", "category": "dostawa", "question": "...", "answer": "..."}`
+* `data/classifier/*.jsonl`: `{"text": "...", "label": "dostawa", "source": "llm|faq"}`
+* `data/eval/qa_eval.jsonl`: `{"id", "question", "category", "gold_sources": ["DOS-01", "cennik_dostaw.md"], "reference"}`
   (trafienie w retrievalu = fragment, którego `source` jest na liście `gold_sources`)

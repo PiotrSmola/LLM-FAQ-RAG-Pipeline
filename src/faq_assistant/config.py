@@ -55,8 +55,7 @@ class GenerationParams:
     repeat_penalty: float = 1.1
     max_tokens: int = 2048
     seed: int | None = 42
-    # Gemma 4 jest modelem „rozumującym”, domyślnie generuje ukryty tok myślenia (reasoning_content),
-    # który zużywa max_tokens i wydłuża odpowiedź. "none" wyłącza rozumowanie; "low"/"medium"/"high" włącza.
+    # "none" wyłącza rozumowanie Gemmy 4, "low"/"medium"/"high" włącza
     reasoning_effort: str = "none"
 
 
@@ -64,7 +63,7 @@ class GenerationParams:
 class Settings:
     base_url: str = field(default_factory=lambda: _env("LLM_BASE_URL", "http://localhost:8080/v1",
                                                        "LMSTUDIO_BASE_URL"))
-    # Embeddingi mogą działać na osobnym serwerze (w Dockerze: kontener `embeddings`); domyślnie ten sam adres
+    # osobny serwer embeddingów (w Dockerze kontener embeddings), domyślnie ten sam adres
     embedding_base_url: str = field(default_factory=lambda: _env("EMBEDDING_BASE_URL", "")
                                     or _env("LLM_BASE_URL", "http://localhost:8080/v1", "LMSTUDIO_BASE_URL"))
     api_key: str = field(default_factory=lambda: _env("LLM_API_KEY", "local", "LMSTUDIO_API_KEY"))

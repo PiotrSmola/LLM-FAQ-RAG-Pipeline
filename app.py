@@ -1,14 +1,6 @@
 """Aplikacja Gradio: Asystent FAQ sklepu Zorza Elektronika.
 
-Zakładki:
-  1. Asystent: czat (tekst + obraz), podgląd etapów pipeline'u, źródła, eksport .txt/.svg
-  2. Twoje dokumenty: przesyłanie plików .txt/.md/.pdf i zadawanie do nich pytań (RAG na plikach sesji)
-  3. Wsadowo: hurtowe przetwarzanie pytań z pliku CSV/TXT
-  4. Parametry modelu: eksperymenty z temperature/top_p/top_k/seed/max_tokens/reasoning
-  5. Ewaluacja: wyniki porównań (klasyfikacja, retrieval, QA, ablacja)
-
-Uruchomienie:  start.bat / ./start.sh (wszystko w Dockerze, patrz README)
-               python app.py           (lokalnie; wymaga serwerów modeli pod adresami z pliku .env)
+Uruchomienie: start.bat (Docker) albo python app.py (serwery modeli z .env).
 """
 
 from __future__ import annotations
@@ -25,7 +17,7 @@ from faq_assistant.config import CATEGORIES, RESULTS_DIR, GenerationParams, sett
 from faq_assistant.export import conversation_to_text, save_svg, save_text, trace_to_figure, trace_to_text
 from faq_assistant.ingest import chunk_document
 from faq_assistant.llm import LLMClient
-from faq_assistant.pipeline import FAQPipeline, PipelineTrace, strip_long_dashes
+from faq_assistant.pipeline import FAQPipeline, PipelineTrace, normalize_punctuation
 from faq_assistant.prompts import category_label
 from faq_assistant.retrieval import KnowledgeBase
 
@@ -86,7 +78,7 @@ def stages_markdown(tr: PipelineTrace | None) -> str:
     if tr.timings:
         md.append("**Czasy:** " + " · ".join(f"{t.name}: {t.seconds:.2f}s" for t in tr.timings)
                   + f" · **razem {tr.total_seconds:.2f}s**")
-    return strip_long_dashes("\n\n".join(md))
+    return normalize_punctuation("\n\n".join(md))
 
 
 def sources_md(tr: PipelineTrace | None) -> str:
@@ -100,7 +92,7 @@ def sources_md(tr: PipelineTrace | None) -> str:
         body = body.split("] ", 1)[-1] if body.startswith("[") else body  # bez powtórzonego nagłówka sekcji
         items.append(f"**[{s['n']}] {s['source']}**  \n<small>{kind} · wynik {s['score']:.3f}</small>  \n"
                      f"{body[:260]}{'…' if len(body) > 260 else ''}")
-    return strip_long_dashes("\n\n".join(items))
+    return normalize_punctuation("\n\n".join(items))
 
 
 _CLASSIFIERS: dict = {}
@@ -149,7 +141,7 @@ def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, 
         chat[-1]["content"] = answer
         yield chat, history, traces, gr.update(), gr.update(), gr.update(), gr.update(value=None)
 
-    chat[-1]["content"] = tr.answer  # wersja po oczyszczeniu (bez długich myślników)
+    chat[-1]["content"] = tr.answer  # wersja po normalize_punctuation
     history = history + [{"role": "user", "content": tr.question}, {"role": "assistant", "content": tr.answer}]
     traces = traces + [tr]
     fig = trace_to_figure(tr)

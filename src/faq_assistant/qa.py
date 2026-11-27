@@ -46,7 +46,7 @@ def answer(llm, question: str, hits: list[Hit], history: list[dict] | None = Non
 
 
 def answer_without_context(llm, question: str, params: GenerationParams | None = None) -> str:
-    """Wariant ablacyjny „sam LLM”: bez RAG, model odpowiada z własnej wiedzy (ryzyko halucynacji)."""
+    """Wariant ablacyjny "sam LLM": bez RAG, model odpowiada z własnej wiedzy (ryzyko halucynacji)."""
     system = ("Jesteś konsultantem obsługi klienta sklepu internetowego Zorza Elektronika. "
               "Odpowiadasz po polsku, konkretnie i zwięźle.")
     return llm.complete(question, system=system, params=params)
