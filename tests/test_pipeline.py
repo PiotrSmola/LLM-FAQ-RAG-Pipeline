@@ -1,4 +1,4 @@
-"""Testy jednostkowe: działają bez LM Studio (atrapa klienta LLM z deterministycznymi embeddingami)."""
+"""Testy jednostkowe: działają bez serwerów modeli (atrapa klienta LLM z deterministycznymi embeddingami)."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from faq_assistant.utils import parse_json
 
 
 class FakeLLM:
-    """Embedding = znormalizowany „worek słów” po haszowaniu tokenów; czat zwraca stały tekst."""
+    """Embedding = znormalizowany "worek słów" po haszowaniu tokenów; czat zwraca stały tekst."""
 
     model = "fake"
 
@@ -154,3 +154,36 @@ def test_parse_json_variants():
     assert parse_json('Oto wynik: ["a", "b"] koniec') == ["a", "b"]
     with pytest.raises(ValueError):
         parse_json("brak jsona")
+
+
+ENV_KEYS = ("LLM_BASE_URL", "LMSTUDIO_BASE_URL", "EMBEDDING_BASE_URL", "LLM_API_KEY", "LMSTUDIO_API_KEY")
+
+
+def test_settings_separate_servers_and_aliases(monkeypatch):
+    from faq_assistant.config import Settings
+
+    for key in ENV_KEYS:
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")
+    s = Settings()
+    assert s.base_url == s.embedding_base_url == "http://localhost:1234/v1"
+    assert s.api_key == "local"
+
+    monkeypatch.setenv("LLM_BASE_URL", "http://llm:8080/v1")
+    monkeypatch.setenv("EMBEDDING_BASE_URL", "http://embeddings:8080/v1")
+    s = Settings()
+    assert (s.base_url, s.embedding_base_url) == ("http://llm:8080/v1", "http://embeddings:8080/v1")
+
+
+@pytest.mark.parametrize("effort", ["none", "low", "high"])
+def test_generation_kwargs_reasoning_budget(effort):
+    from faq_assistant.config import GenerationParams
+    from faq_assistant.llm import REASONING_BUDGET, LLMClient
+
+    kw = LLMClient._kwargs(GenerationParams(max_tokens=300, reasoning_effort=effort, seed=None))
+    extra = kw["extra_body"]
+    assert "seed" not in kw and extra["reasoning_effort"] == effort
+    assert {"top_k", "repeat_penalty"} <= extra.keys()
+    budget = REASONING_BUDGET[effort]
+    assert kw["max_tokens"] == 300 + budget
+    assert extra.get("thinking_budget_tokens") == (budget or None)

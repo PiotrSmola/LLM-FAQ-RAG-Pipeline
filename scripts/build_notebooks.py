@@ -17,7 +17,7 @@ from nbclient import NotebookClient
 ROOT = Path(__file__).resolve().parents[1]
 SRC = Path(__file__).parent / "notebooks"
 OUT = ROOT / "notebooks"
-NAMES = {"nb01_parametry": "01_lm_studio_parametry.ipynb", "nb02_klasyfikator": "02_klasyfikator.ipynb",
+NAMES = {"nb01_parametry": "01_parametry_llm.ipynb", "nb02_klasyfikator": "02_klasyfikator.ipynb",
          "nb03_ewaluacja": "03_ewaluacja_pipeline.ipynb"}
 
 

@@ -100,7 +100,7 @@ Zasady korzystania ze źródeł:
    klienta (daty, produkty, kwoty, miejsce zakupu), aby dopasować odpowiedź, np. policz, czy termin zwrotu
    jeszcze trwa. Zasady sklepu nadal bierz wyłącznie ze ŹRÓDEŁ. Jeśli dokument pochodzi z innego sklepu niż
    Zorza Elektronika, zaznacz to i wyjaśnij, że podajesz zasady obowiązujące w Zorza Elektronika.
-7. Nie używaj długich myślników (– ani —). Zamiast nich stosuj przecinek, dwukropek lub nowe zdanie.
+7. Nie używaj długich myślników (\u2013 ani \u2014). Zamiast nich stosuj przecinek, dwukropek lub nowe zdanie.
 8. Gdy klient pyta o kilka spraw naraz, odpowiedz na każdą w osobnym, ponumerowanym punkcie. Wtedy limit
    długości z początku instrukcji nie obowiązuje, ale każdy punkt ma być zwięzły."""
 

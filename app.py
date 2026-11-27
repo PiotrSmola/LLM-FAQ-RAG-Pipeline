@@ -1,13 +1,6 @@
 """Aplikacja Gradio: Asystent FAQ sklepu Zorza Elektronika.
 
-Zakładki:
-  1. Asystent: czat (tekst + obraz), podgląd etapów pipeline'u, źródła, eksport .txt/.svg
-  2. Twoje dokumenty: przesyłanie plików .txt/.md/.pdf i zadawanie do nich pytań (RAG na plikach sesji)
-  3. Wsadowo: hurtowe przetwarzanie pytań z pliku CSV/TXT
-  4. Parametry modelu: eksperymenty z temperature/top_p/top_k/seed/max_tokens/reasoning
-  5. Ewaluacja: wyniki porównań (klasyfikacja, retrieval, QA, ablacja)
-
-Uruchomienie:  python app.py   (wymaga działającego serwera LM Studio z modelami z pliku .env)
+Uruchomienie: start.bat (Docker) albo python app.py (serwery modeli z .env).
 """
 
 from __future__ import annotations
@@ -23,31 +16,32 @@ import pandas as pd
 from faq_assistant.config import CATEGORIES, RESULTS_DIR, GenerationParams, settings
 from faq_assistant.export import conversation_to_text, save_svg, save_text, trace_to_figure, trace_to_text
 from faq_assistant.ingest import chunk_document
-from faq_assistant.llm import LMStudioClient
-from faq_assistant.pipeline import FAQPipeline, PipelineTrace, strip_long_dashes
+from faq_assistant.llm import LLMClient
+from faq_assistant.pipeline import FAQPipeline, PipelineTrace, normalize_punctuation
 from faq_assistant.prompts import category_label
 from faq_assistant.retrieval import KnowledgeBase
 
 TMP = Path(tempfile.gettempdir()) / "faq_assistant_exports"
 TMP.mkdir(exist_ok=True)
 
-llm = LMStudioClient()
+llm = LLMClient()
 pipe = FAQPipeline(llm=llm)
 
 
 def server_status() -> str:
-    try:
-        models = llm.list_models()
-        ok_llm = settings.llm_model in models
-        ok_emb = settings.embedding_model in models
-        def state(ok: bool) -> str:
-            return "" if ok else " (niezaładowany)"
+    def state(name: str, models: list[str]) -> str:
+        return name if name in models else f"{name} (niezaładowany)"
 
-        return (f"LM Studio: połączono z {settings.base_url} · LLM: {settings.llm_model}{state(ok_llm)} · "
-                f"embeddingi: {settings.embedding_model}{state(ok_emb)} · "
-                f"klasyfikator: {getattr(pipe.classifier, 'method', '-')} · baza wiedzy: {len(pipe.kb)} fragmentów")
+    try:
+        llm_state = state(settings.llm_model, llm.list_models())
     except Exception as e:
-        return f"Brak połączenia z LM Studio ({settings.base_url}): {e}"
+        return f"Brak połączenia z serwerem LLM ({llm.base_url}): {e}"
+    try:
+        emb_state = state(settings.embedding_model, llm.list_embedding_models())
+    except Exception as e:
+        return f"Brak połączenia z serwerem embeddingów ({llm.embedding_base_url}): {e}"
+    return (f"Serwer LLM: `{llm.base_url}` · LLM: {llm_state} · embeddingi: {emb_state} · "
+            f"klasyfikator: {getattr(pipe.classifier, 'method', '-')} · baza wiedzy: {len(pipe.kb)} fragmentów")
 
 
 def params_from(temperature, top_p, top_k, max_tokens, seed, reasoning) -> GenerationParams:
@@ -84,7 +78,7 @@ def stages_markdown(tr: PipelineTrace | None) -> str:
     if tr.timings:
         md.append("**Czasy:** " + " · ".join(f"{t.name}: {t.seconds:.2f}s" for t in tr.timings)
                   + f" · **razem {tr.total_seconds:.2f}s**")
-    return strip_long_dashes("\n\n".join(md))
+    return normalize_punctuation("\n\n".join(md))
 
 
 def sources_md(tr: PipelineTrace | None) -> str:
@@ -98,7 +92,7 @@ def sources_md(tr: PipelineTrace | None) -> str:
         body = body.split("] ", 1)[-1] if body.startswith("[") else body  # bez powtórzonego nagłówka sekcji
         items.append(f"**[{s['n']}] {s['source']}**  \n<small>{kind} · wynik {s['score']:.3f}</small>  \n"
                      f"{body[:260]}{'…' if len(body) > 260 else ''}")
-    return strip_long_dashes("\n\n".join(items))
+    return normalize_punctuation("\n\n".join(items))
 
 
 _CLASSIFIERS: dict = {}
@@ -147,7 +141,7 @@ def chat_submit(message, chat, history, traces, user_kb, use_user_docs, method, 
         chat[-1]["content"] = answer
         yield chat, history, traces, gr.update(), gr.update(), gr.update(), gr.update(value=None)
 
-    chat[-1]["content"] = tr.answer  # wersja po oczyszczeniu (bez długich myślników)
+    chat[-1]["content"] = tr.answer  # wersja po normalize_punctuation
     history = history + [{"role": "user", "content": tr.question}, {"role": "assistant", "content": tr.answer}]
     traces = traces + [tr]
     fig = trace_to_figure(tr)
@@ -233,7 +227,7 @@ PARAM_HELP = """
 |---|---|---|
 | **temperature** | „Ostrość” rozkładu prawdopodobieństwa tokenów: logity dzielone przez T. Niska → deterministycznie, wysoka → kreatywnie i ryzykownie. | 0-0.3 fakty/RAG, 0.7-1.0 kreatywne |
 | **top_p** (nucleus) | Losujemy tylko z najmniejszego zbioru tokenów o łącznym prawdopodobieństwie ≥ p. | 0.9-0.95 |
-| **top_k** | Losujemy tylko spośród k najbardziej prawdopodobnych tokenów (LM Studio, `extra_body`). | 20-64 |
+| **top_k** | Losujemy tylko spośród k najbardziej prawdopodobnych tokenów (llama.cpp, `extra_body`). | 20-64 |
 | **repeat_penalty** | Kara za powtarzanie tokenów już użytych (ogranicza degenerację i pętle). | 1.0-1.2 |
 | **max_tokens** | Limit długości odpowiedzi (w tokenach); po jego osiągnięciu tekst jest ucinany (`finish_reason=length`). | 256-1024 |
 | **seed** | Ziarno generatora losowego: ten sam seed + te same parametry = powtarzalny wynik. -1 = losowo. | dowolna liczba |
@@ -334,7 +328,7 @@ CSS = """
 with gr.Blocks(title="Asystent FAQ Zorza Elektronika") as demo:
     gr.Markdown("# Asystent FAQ: Zorza Elektronika\n"
                 "Klasyfikacja zapytania (HerBERT) → wyszukiwanie w bazie wiedzy (BM25 + bge-m3) → "
-                "odpowiedź RAG ze źródłami (Gemma 4, LM Studio)", elem_id="app-header")
+                "odpowiedź RAG ze źródłami (Gemma 4, llama.cpp w Dockerze)", elem_id="app-header")
     status = gr.Markdown(server_status(), elem_id="status")
 
     history_st = gr.State([])
@@ -435,7 +429,7 @@ with gr.Blocks(title="Asystent FAQ Zorza Elektronika") as demo:
         b_run.click(batch_run, [bfile, b_method, b_k, b_svg_cb], [b_df, b_files])
 
     with gr.Tab("Parametry modelu"):
-        gr.Markdown("Eksperymenty z parametrami generowania (wywołania API LM Studio). "
+        gr.Markdown("Eksperymenty z parametrami generowania (wywołania API serwera llama.cpp). "
                     "Ustaw np. temperature=1.2 i seed=-1, a potem temperature=0 i porównaj różnorodność.")
         gr.Markdown(PARAM_HELP)
         with gr.Row():

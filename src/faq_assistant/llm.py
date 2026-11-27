@@ -1,7 +1,6 @@
-"""Klient lokalnego serwera LM Studio (API zgodne z OpenAI).
+"""Klient serwerów modeli (API zgodne z OpenAI): czat, obraz, embeddingi.
 
-Obsługuje: czat (także strumieniowo), zapytania z obrazem (model z mmproj) oraz embeddingi.
-Uruchomienie `python -m faq_assistant.llm` wykonuje test dymny wszystkich trzech funkcji.
+Test: python -m faq_assistant.llm [obraz.png]
 """
 
 from __future__ import annotations
@@ -20,28 +19,39 @@ Message = dict[str, object]
 REASONING_BUDGET = {"none": 0, "low": 2048, "medium": 4096, "high": 8192}
 
 
-class LMStudioClient:
+class LLMClient:
     def __init__(self, base_url: str | None = None, api_key: str | None = None,
-                 model: str | None = None, embedding_model: str | None = None) -> None:
-        self.client = OpenAI(base_url=base_url or settings.base_url, api_key=api_key or settings.api_key)
+                 model: str | None = None, embedding_model: str | None = None,
+                 embedding_base_url: str | None = None) -> None:
+        key = api_key or settings.api_key
+        self.base_url = base_url or settings.base_url
+        self.embedding_base_url = embedding_base_url or (base_url if base_url else settings.embedding_base_url)
+        self.client = OpenAI(base_url=self.base_url, api_key=key)
+        self.emb_client = (self.client if self.embedding_base_url == self.base_url
+                           else OpenAI(base_url=self.embedding_base_url, api_key=key))
         self.model = model or settings.llm_model
         self.embedding_model = embedding_model or settings.embedding_model
 
     @staticmethod
     def _kwargs(params: GenerationParams | None) -> dict:
         p = asdict(params or GenerationParams())
-        # top_k i repeat_penalty nie należą do specyfikacji OpenAI - LM Studio przyjmuje je w extra_body
+        # parametry spoza API OpenAI idą w extra_body
         extra = {"top_k": p.pop("top_k"), "repeat_penalty": p.pop("repeat_penalty"),
                  "reasoning_effort": p.pop("reasoning_effort")}
         if p["seed"] is None:
             p.pop("seed")
-        # Przy włączonym rozumowaniu ukryte tokeny myślenia wliczają się do max_tokens. Doliczamy budżet,
-        # aby max_tokens z UI oznaczał długość widocznej odpowiedzi (inaczej odpowiedź bywa pusta).
-        p["max_tokens"] += REASONING_BUDGET.get(extra["reasoning_effort"], 0)
+        # myślenie wlicza się do max_tokens, więc doliczamy budżet (inaczej odpowiedź bywa pusta)
+        budget = REASONING_BUDGET.get(extra["reasoning_effort"], 0)
+        if budget:
+            extra["thinking_budget_tokens"] = budget
+        p["max_tokens"] += budget
         return {**p, "extra_body": extra}
 
     def list_models(self) -> list[str]:
         return [m.id for m in self.client.models.list().data]
+
+    def list_embedding_models(self) -> list[str]:
+        return [m.id for m in self.emb_client.models.list().data]
 
     def chat(self, messages: list[Message], params: GenerationParams | None = None) -> str:
         resp = self.client.chat.completions.create(model=self.model, messages=messages, **self._kwargs(params))
@@ -85,17 +95,19 @@ class LMStudioClient:
     def embed(self, texts: list[str], batch_size: int = 32) -> list[list[float]]:
         out: list[list[float]] = []
         for i in range(0, len(texts), batch_size):
-            resp = self.client.embeddings.create(model=self.embedding_model, input=texts[i:i + batch_size])
+            resp = self.emb_client.embeddings.create(model=self.embedding_model, input=texts[i:i + batch_size])
             out.extend(d.embedding for d in sorted(resp.data, key=lambda d: d.index))
         return out
+
 
 
 def _smoke_test() -> None:
     import sys
     import time
 
-    llm = LMStudioClient()
-    print("Modele w LM Studio:", llm.list_models())
+    llm = LLMClient()
+    print(f"Serwer LLM ({llm.base_url}):", llm.list_models())
+    print(f"Serwer embeddingów ({llm.embedding_base_url}):", llm.list_embedding_models())
 
     t = time.perf_counter()
     answer = llm.complete("Odpowiedz jednym zdaniem: czym jest RAG?")

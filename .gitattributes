@@ -1,0 +1,3 @@
+# Skrypty startowe: bash wymaga LF, cmd CRLF (niezależnie od core.autocrlf)
+*.sh text eol=lf
+*.bat text eol=crlf

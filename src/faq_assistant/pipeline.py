@@ -1,7 +1,7 @@
 """Orkiestracja pipeline'u: (obraz ->) przepisanie pytania -> klasyfikacja -> retrieval -> odpowiedź RAG.
 
 Każde wywołanie zwraca obiekt `PipelineTrace` z wynikami i czasami wszystkich etapów, na jego podstawie
-UI pokazuje „wizualizację etapów”, a moduł export tworzy pliki .txt i .svg.
+UI pokazuje wizualizację etapów, a moduł export tworzy pliki .txt i .svg.
 """
 
 from __future__ import annotations
@@ -69,12 +69,12 @@ def is_compound(question: str) -> bool:
     return len(question) > 250 and (question.count("?") >= 3 or numbered >= 2)
 
 
-def strip_long_dashes(text: str) -> str:
-    """Usuwa długie myślniki (– —) z odpowiedzi: wtrącenie „ – ” zamienia na przecinek, zakres „5–6” na łącznik."""
-    text = re.sub(r"^([ \t]*)[–—][ \t]*", r"\1- ", text, flags=re.M)  # punktor na początku linii
-    text = re.sub(r"[ \t]+[–—][ \t]+", ", ", text)                      # wtrącenie w zdaniu
-    text = re.sub(r"(?<=\S)[–—](?=\S)", "-", text)                      # zakres, np. 9:00–16:00
-    return text.replace("–", "-").replace("—", "-")
+def normalize_punctuation(text: str) -> str:
+    """Ujednolica interpunkcję odpowiedzi: punktory, wtrącenia i zakresy liczb."""
+    text = re.sub(r"^([ \t]*)[\u2013\u2014][ \t]*", r"\1- ", text, flags=re.M)  # punktor na początku linii
+    text = re.sub(r"[ \t]+[\u2013\u2014][ \t]+", ", ", text)                      # wtrącenie w zdaniu
+    text = re.sub(r"(?<=\S)[\u2013\u2014](?=\S)", "-", text)                      # zakres, np. 9:00-16:00
+    return text.replace("\u2013", "-").replace("\u2014", "-")
 
 
 def load_default_classifier():
@@ -106,9 +106,9 @@ def load_default_classifier():
 class FAQPipeline:
     def __init__(self, kb: KnowledgeBase | None = None, classifier=None, llm=None,
                  threshold: float | None = None) -> None:
-        from .llm import LMStudioClient
+        from .llm import LLMClient
 
-        self.llm = llm or LMStudioClient()
+        self.llm = llm or LLMClient()
         self.kb = kb or KnowledgeBase(llm=self.llm)
         if kb is None and len(self.kb) == 0:
             # pierwsze uruchomienie (brak folderu chroma_db/), budujemy indeks bazy wiedzy automatycznie
@@ -146,7 +146,7 @@ class FAQPipeline:
             question = res["question"] or question
             tr.add_timing("Obraz → pytanie (vision)", t0)
 
-        # pytanie uzupełniające (np. „a w sobotę?”) -> samodzielne
+        # pytanie uzupełniające (np. "a w sobotę?") -> samodzielne
         if history:
             t0 = time.perf_counter()
             new_q = self.rewrite(question, history)
@@ -272,7 +272,7 @@ class FAQPipeline:
         for token in answer_stream(self.llm, tr.question, tr.hits, history, params, tr.image_ocr):
             parts.append(token)
             yield token
-        text = strip_long_dashes("".join(parts).strip())
+        text = normalize_punctuation("".join(parts).strip())
         if not text:
             # model zużył cały limit tokenów (np. na ukryte rozumowanie) i nie zwrócił treści
             text = ("Nie udało się wygenerować odpowiedzi: model wykorzystał cały limit tokenów, zanim zaczął "

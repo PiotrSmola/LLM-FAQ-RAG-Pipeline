@@ -1,4 +1,4 @@
-# PyTorch z CUDA instalujemy osobno (patrz README), np.:
+# PyTorch: obraz Dockera instaluje wersję CPU (Dockerfile). Poza Dockerem, z CUDA (patrz README):
 #   pip install torch --index-url https://download.pytorch.org/whl/cu132
 torch
 
@@ -8,7 +8,7 @@ datasets
 accelerate
 sentencepiece
 
-# Klient API LM Studio (zgodny z OpenAI)
+# Klient API serwerów llama.cpp (zgodny z OpenAI)
 openai
 python-dotenv
 
@@ -36,6 +36,7 @@ nltk
 pytest
 ipykernel
 
-# Notebooki (wykonywanie z linii polecen)
+# Notebooki (wykonywanie z linii poleceń, zapytania HTTP do serwera)
 nbformat
 nbclient
+requests

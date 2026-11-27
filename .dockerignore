@@ -1,0 +1,13 @@
+.git
+.venv
+.env
+**/__pycache__
+.pytest_cache
+.ipynb_checkpoints
+models
+chroma_db
+cache
+*.zip
+*.docx
+~$*
+docs/screenshots
