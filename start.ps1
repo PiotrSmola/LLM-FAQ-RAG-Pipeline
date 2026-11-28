@@ -1,17 +1,19 @@
 ﻿<#
-Uruchamia cały projekt w Dockerze: serwery llama.cpp (LLM i embeddingi na GPU) oraz aplikację Gradio.
+Uruchamia cały projekt w Dockerze: serwery llama.cpp (LLM i embeddingi) oraz aplikację Gradio.
 
-  start.bat              start (pierwszy raz: pobranie modeli i budowa obrazu), potem otwiera przeglądarkę
+  start.bat              start (pierwszy raz: pobranie modeli i budowa obrazu), potem otwiera przeglądarkę;
+                         bez karty NVIDIA modele działają na CPU (wolniej)
+  start.bat cpu          start na CPU także wtedy, gdy jest karta NVIDIA
   start.bat stop         zatrzymanie i usunięcie kontenerów (modele, indeks i wyniki zostają)
   start.bat status       stan kontenerów
   start.bat logs         logi na żywo (Ctrl+C kończy podgląd)
   start.bat train        fine-tuning HerBERT w kontenerze (gdy brak models/herbert-faq), potem restart aplikacji
   start.bat test         testy jednostkowe (pytest) w kontenerze
 
-Wymagania: Docker Desktop z backendem WSL2 i karta NVIDIA z aktualnym sterownikiem.
+Wymagania: Docker Desktop z backendem WSL2; karta NVIDIA z aktualnym sterownikiem albo około 12 GB RAM dla Dockera.
 #>
 param(
-    [ValidateSet("start", "stop", "status", "logs", "train", "test")]
+    [ValidateSet("start", "cpu", "stop", "status", "logs", "train", "test")]
     [string]$Command = "start"
 )
 
@@ -65,21 +67,44 @@ function Ensure-Docker {
     Fail "Silnik Dockera nie wystartował. Uruchom Docker Desktop ręcznie i spróbuj ponownie."
 }
 
-function Ensure-Gpu {
+function Test-Gpu {
+    if (-not (Get-Command nvidia-smi -ErrorAction SilentlyContinue)) {
+        Say "Nie znaleziono karty NVIDIA (brak nvidia-smi)."
+        return $false
+    }
     Say "Sprawdzam dostęp do GPU w kontenerach..."
     docker image inspect $LlamaImage *> $null
     if ($LASTEXITCODE -ne 0) {
         Say "Pobieram obraz serwera llama.cpp (CUDA, około 2,6 GB, jednorazowo)..."
-        docker pull $LlamaImage
+        docker pull $LlamaImage | Out-Host
         if ($LASTEXITCODE -ne 0) { Fail "Nie udało się pobrać obrazu $LlamaImage." }
     }
     $gpu = docker run --rm --gpus all --entrypoint nvidia-smi $LlamaImage -L 2>&1
     if ($LASTEXITCODE -ne 0) {
         Write-Host ($gpu | Out-String)
-        Fail ("Kontenery nie widzą karty NVIDIA. Potrzebne są: Docker Desktop z backendem WSL2 " +
-              "(Settings > General > Use the WSL 2 based engine) i aktualny sterownik NVIDIA.")
+        Say ("Kontenery nie widzą karty NVIDIA. Do pracy na GPU potrzebne są: Docker Desktop z backendem WSL2 " +
+             "(Settings > General > Use the WSL 2 based engine) i aktualny sterownik NVIDIA.")
+        return $false
     }
     Say "GPU: $(($gpu | Select-Object -First 1))"
+    return $true
+}
+
+function Use-Cpu {
+    $env:COMPOSE_FILE = "docker-compose.yml;docker-compose.cpu.yml"
+    Say "Tryb CPU: modele działają w pamięci RAM. Odpowiedź trwa około 30 s, pytanie z obrazem około 1,5 min."
+    $memGb = [math]::Round([double](docker info --format "{{.MemTotal}}") / 1GB, 1)
+    if ($memGb -lt 11.5) {
+        Write-Host ("[projekt] UWAGA: Docker ma do dyspozycji $memGb GB RAM, a tryb CPU potrzebuje około 12 GB. " +
+                    "Zwiększ pamięć w pliku $env:USERPROFILE\.wslconfig (sekcja [wsl2], wiersz memory=12GB), " +
+                    "potem wykonaj wsl --shutdown i uruchom projekt ponownie.") -ForegroundColor Yellow
+    }
+}
+
+function Select-Mode([bool]$ForceCpu) {
+    $env:COMPOSE_FILE = "docker-compose.yml"
+    if ($ForceCpu) { Use-Cpu; return }
+    if (-not (Test-Gpu)) { Use-Cpu }
 }
 
 function Ensure-Models {
@@ -110,7 +135,7 @@ function Get-Health([string]$Service) {
 }
 
 function Wait-Ready {
-    Say "Czekam, aż modele załadują się na GPU i aplikacja wystartuje (pierwszy start: 1-3 min)..."
+    Say "Czekam, aż modele się załadują i aplikacja wystartuje (pierwszy start: 1-3 min)..."
     $deadline = (Get-Date).AddMinutes(15)
     $last = ""
     while ((Get-Date) -lt $deadline) {
@@ -127,10 +152,10 @@ function Wait-Ready {
     Fail "Aplikacja nie wystartowała w ciągu 15 minut, logi powyżej."
 }
 
-function Start-Project {
+function Start-Project([bool]$ForceCpu = $false) {
     Ensure-Docker
     if (-not (Test-Path ".env")) { Copy-Item ".env.example" ".env"; Say "Utworzono .env z .env.example" }
-    Ensure-Gpu
+    Select-Mode $ForceCpu
     Ensure-Models
     if (-not (Test-Path "models/herbert-faq/config.json")) {
         Say "Brak wytrenowanego HerBERT (models/herbert-faq): aplikacja użyje klasyfikatora TF-IDF."
@@ -153,6 +178,7 @@ function Start-Project {
 
 switch ($Command) {
     "start"  { Start-Project }
+    "cpu"    { Start-Project $true }
     "stop"   { Ensure-Docker; docker compose down; Say "Zatrzymano. Modele, indeks i wyniki zostają na dysku." }
     "status" { Ensure-Docker; docker compose ps }
     "logs"   { Ensure-Docker; docker compose logs -f --tail 50 }

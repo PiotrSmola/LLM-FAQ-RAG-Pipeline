@@ -15,9 +15,10 @@ Asystent obsługi klienta **fikcyjnego** sklepu internetowego *Zorza Elektronika
 Pytania można zadawać tekstem albo obrazem (zrzut e-maila, zdjęcie paragonu lub faktury). Długie wiadomości
 z kilkoma sprawami naraz są dzielone na podpytania, z osobnym routingiem i wyszukiwaniem dla każdego.
 Wszystkie modele działają **lokalnie na GPU**, bez usług w chmurze, a cały projekt w **kontenerach Dockera**.
+Bez karty NVIDIA projekt działa na procesorze, wolniej.
 
-**Szybki start** (Windows z Docker Desktop i kartą NVIDIA): w katalogu projektu uruchom `start.bat`.
-Skrypt sprawdza GPU, pobiera modele (albo bierze je z LM Studio, jeśli są na komputerze), uruchamia kontenery
+**Szybki start** (Windows z Docker Desktop): w katalogu projektu uruchom `start.bat`.
+Skrypt sprawdza GPU (bez karty NVIDIA wybiera tryb CPU), pobiera modele (albo bierze je z LM Studio, jeśli są na komputerze), uruchamia kontenery
 i otwiera aplikację pod `http://localhost:7860`. Szczegóły w [punkcie 3](#3-konfiguracja-środowiska-krok-po-kroku).
 
 ![Aplikacja: odpowiedź z dopytaniem](docs/screenshots/02_asystent_dopytanie.png)
@@ -88,7 +89,7 @@ Lab 5 (halucynacje, faithfulness).
 | Warstwa | Technologia |
 |---|---|
 | Serwer modeli | llama.cpp b12808 (`llama-server`, obraz `ghcr.io/ggml-org/llama.cpp:server-cuda`), dwa kontenery na GPU: LLM `:8080`, embeddingi `:8081`; API zgodne z OpenAI |
-| Konteneryzacja | Docker Compose: `llm`, `embeddings`, `app` (python:3.14-slim, PyTorch CPU); start: `start.bat` / `start.sh` |
+| Konteneryzacja | Docker Compose: `llm`, `embeddings`, `app` (python:3.14-slim, PyTorch CPU); start: `start.bat` / `start.sh`; bez GPU nakładka `docker-compose.cpu.yml` |
 | LLM | `google/gemma-4-12b-qat` (Gemma 4 12B Instruct, QAT Q4_0, 6,7 GB) + `mmproj` (obraz) |
 | Embeddingi | `text-embedding-bge-m3` (BGE-M3 Q8_0, wektory 1024-wym., wielojęzyczny) |
 | Klasyfikator | `allegro/herbert-base-cased` + HF Transformers `Trainer` (trening na GPU w bf16 albo na CPU w kontenerze) |
@@ -108,8 +109,11 @@ Pełna instrukcja z wyjaśnieniem flag serwera i parametrów generowania:
 **[docs/01_konfiguracja_docker_llama_cpp.md](docs/01_konfiguracja_docker_llama_cpp.md)**.
 
 ### 3.1. Wymagania
-* Windows 10/11 z **Docker Desktop** (backend WSL2) albo Linux z Docker Engine i NVIDIA Container Toolkit,
-* karta **NVIDIA** z co najmniej 12 GB VRAM i sterownikiem 570 lub nowszym (projekt zajmuje około 10,4 GB VRAM),
+* Windows 10/11 z **Docker Desktop** (backend WSL2) albo Linux z Docker Engine (z kartą NVIDIA także NVIDIA
+  Container Toolkit),
+* karta **NVIDIA** z co najmniej 12 GB VRAM i sterownikiem 570 lub nowszym (projekt zajmuje około 10,4 GB VRAM)
+  **albo** tryb CPU: około 12 GB RAM dla Dockera, odpowiedź trwa wtedy około 30 s zamiast 3 s
+  ([pomiary](docs/01_konfiguracja_docker_llama_cpp.md#tryb-cpu-komputer-bez-karty-nvidia)),
 * około 20 GB wolnego miejsca (modele 7,8 GB, obrazy Dockera 10,5 GB) i internet przy pierwszym uruchomieniu.
 
 Pythona, CUDA ani LM Studio nie trzeba instalować.
@@ -120,13 +124,14 @@ start.bat
 ```
 
 Na Linuksie: `./start.sh`. Skrypt kolejno: uruchamia Docker Desktop, jeśli nie działa; sprawdza, czy kontenery
-widzą kartę NVIDIA; szuka modeli GGUF (w `models/gguf/` albo w katalogu LM Studio) i w razie braku pobiera je
+widzą kartę NVIDIA, a jeśli nie, uruchamia modele na CPU; szuka modeli GGUF (w `models/gguf/` albo w katalogu LM Studio) i w razie braku pobiera je
 z Hugging Face (7,8 GB); buduje obraz aplikacji, uruchamia trzy kontenery, czeka na załadowanie modeli i otwiera
 `http://localhost:7860`. Pierwsze uruchomienie trwa kilkanaście minut (pobieranie), kolejne około 1,5 minuty.
 
 | Polecenie | Działanie |
 |---|---|
 | `start.bat` | start całego projektu |
+| `start.bat cpu` | start w trybie CPU, także gdy jest karta NVIDIA |
 | `start.bat stop` | zatrzymanie kontenerów (modele, indeks i wyniki zostają na dysku) |
 | `start.bat status` / `start.bat logs` | stan kontenerów / logi na żywo |
 | `start.bat test` | testy jednostkowe w kontenerze |
@@ -299,6 +304,7 @@ Wnioski z ablacji (szerzej w [notebooks/03_ewaluacja_pipeline.ipynb](notebooks/0
 app.py                       aplikacja Gradio
 start.bat, start.ps1, start.sh  uruchomienie całego projektu w Dockerze jednym poleceniem
 docker-compose.yml           kontenery: llm i embeddings (llama.cpp, GPU), app, models (pobieranie GGUF)
+docker-compose.cpu.yml       nakładka dla komputera bez karty NVIDIA (modele na CPU)
 Dockerfile, docker/          obraz aplikacji, przypięte wersje bibliotek (constraints.txt)
 src/faq_assistant/
   config.py                  konfiguracja (.env), kategorie, parametry generowania

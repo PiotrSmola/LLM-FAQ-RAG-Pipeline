@@ -17,6 +17,9 @@ llama.cpp build b12808 (CUDA 12.8).
 | `app` | `faq-assistant-app` (budowany z `Dockerfile`) | aplikacja Gradio, pipeline, HerBERT (CPU), skrypty, notebooki | 7860 (aplikacja) |
 | `models` | `faq-assistant-app` | jednorazowe pobranie plików GGUF (profil `setup`, nie startuje z resztą) | brak |
 
+Na komputerze bez karty NVIDIA `llm` i `embeddings` działają na obrazie `server-b12808` (bez CUDA) i liczą na
+procesorze (tryb CPU, punkt 6).
+
 Aplikacja widzi serwery pod nazwami usług z `docker-compose.yml`: `http://llm:8080/v1` i
 `http://embeddings:8080/v1`. Porty 8080 i 8081 są wystawione na komputer, żeby dało się wywołać API ręcznie
 (`curl`, notebook, skrypty uruchamiane poza Dockerem).
@@ -37,7 +40,9 @@ Na dysku, poza kontenerami, zostają:
   **Linux**: Docker Engine z wtyczką `docker compose` i **NVIDIA Container Toolkit**.
 * **Karta NVIDIA** z aktualnym sterownikiem (CUDA 12.8, czyli sterownik 570 lub nowszy) i co najmniej 12 GB VRAM.
   Projekt zajmuje około 10,4 GB VRAM (szczegóły w punkcie 6).
-* Około 20 GB miejsca na dysku: modele 7,8 GB, obraz llama.cpp 7,1 GB, obraz aplikacji 3,4 GB.
+  **Bez karty NVIDIA** modele działają na procesorze (tryb CPU, punkt 6): potrzeba wtedy około 12 GB RAM dla
+  Dockera, a odpowiedź trwa około 30 s zamiast 3 s.
+* Około 20 GB miejsca na dysku: modele 7,8 GB, obraz llama.cpp 7,1 GB (w trybie CPU 1,2 GB), obraz aplikacji 3,4 GB.
 * Przy pierwszym uruchomieniu: dostęp do internetu (obrazy z GitHub Container Registry i Docker Hub,
   modele z Hugging Face).
 
@@ -53,20 +58,23 @@ Na Linuksie: `./start.sh`. Skrypt wykonuje kolejno:
 
 1. sprawdza, czy działa Docker, a jeśli nie, uruchamia Docker Desktop i czeka na silnik;
 2. tworzy `.env` z `.env.example`, jeśli go brak;
-3. pobiera obraz llama.cpp i uruchamia w nim `nvidia-smi`, żeby sprawdzić, czy kontenery widzą kartę;
+3. sprawdza kartę graficzną: pobiera obraz llama.cpp z CUDA i uruchamia w nim `nvidia-smi`, żeby sprawdzić, czy
+   kontenery widzą kartę. Jeśli komputer nie ma karty NVIDIA albo kontenery jej nie widzą, przechodzi w tryb CPU
+   (bez pobierania obrazu CUDA) i sprawdza, czy Docker ma dość pamięci RAM;
 4. szuka modeli GGUF: w `GGUF_DIR` z `.env`, w `models/gguf/`, a potem w katalogu modeli LM Studio
    (`%USERPROFILE%\.lmstudio\models`). Jeśli znajdzie je w LM Studio, zapisuje tę ścieżkę w `.env` i niczego nie
    pobiera. Jeśli nie ma ich nigdzie, pobiera je z Hugging Face do `models/gguf/` (kontener `models`);
 5. buduje obraz aplikacji i uruchamia kontenery (`docker compose up -d --build`);
-6. czeka, aż oba serwery załadują modele na GPU, a aplikacja zbuduje indeks i odpowie na zapytanie HTTP;
+6. czeka, aż oba serwery załadują modele, a aplikacja zbuduje indeks i odpowie na zapytanie HTTP;
 7. otwiera `http://localhost:7860` w przeglądarce.
 
 Pierwsze uruchomienie z pobieraniem trwa kilkanaście minut (zależnie od łącza). Kolejne trwają około 1,5 minuty,
-z czego większość to ładowanie modeli na GPU.
+z czego większość to ładowanie modeli, na GPU i na CPU tak samo.
 
 | Polecenie | Działanie |
 |---|---|
-| `start.bat` | start całego projektu |
+| `start.bat` | start całego projektu (bez karty NVIDIA automatycznie w trybie CPU) |
+| `start.bat cpu` | start w trybie CPU także na komputerze z kartą NVIDIA |
 | `start.bat stop` | zatrzymanie i usunięcie kontenerów; modele, indeks i wyniki zostają |
 | `start.bat status` | stan kontenerów |
 | `start.bat logs` | logi wszystkich kontenerów na żywo (Ctrl+C kończy podgląd) |
@@ -78,6 +86,7 @@ To samo ręcznie, bez skryptu:
 ```bash
 docker compose --profile setup run --rm models    # jednorazowo: pobranie modeli do models/gguf
 docker compose up -d --build                      # start
+docker compose -f docker-compose.yml -f docker-compose.cpu.yml up -d --build   # start w trybie CPU
 docker compose ps                                 # stan (kolumna STATUS: healthy)
 docker compose down                               # zatrzymanie
 ```
@@ -133,6 +142,38 @@ i `--cache-ram 1024`.
 HerBERT klasyfikuje pytanie na CPU w kilkadziesiąt milisekund, dlatego obraz aplikacji zawiera PyTorch w wersji
 CPU (obraz ma 3,4 GB, z PyTorch CUDA byłby o kilka GB większy). Wariant z CUDA:
 `docker compose build --build-arg TORCH_INDEX=https://download.pytorch.org/whl/cu128 app`.
+
+### Tryb CPU (komputer bez karty NVIDIA)
+
+Plik `docker-compose.cpu.yml` jest nakładką na `docker-compose.yml`: oba serwery dostają obraz llama.cpp bez CUDA
+(`server-b12808`, 1,2 GB), nie rezerwują karty graficznej, ładują wszystkie warstwy do RAM (`--n-gpu-layers 0`),
+a okno kontekstu LLM jest zmniejszone do 16384 tokenów, żeby ograniczyć pamięć. Aplikacja i kod są te same,
+zmienia się tylko szybkość. `start.bat` wybiera ten tryb sam, gdy nie znajdzie karty, a `start.bat cpu` wymusza go.
+
+Pomiar na tym samym komputerze (procesor AMD Ryzen 7 9800X3D, 8 rdzeni), te same pytania, pierwsze zapytania
+po starcie:
+
+| | GPU (RTX 5070 Ti) | CPU |
+|---|---|---|
+| generowanie tekstu | 87,7 tokenów/s | 7,8 tokenów/s |
+| pytanie tekstowe, cały pipeline | 3,5 s | 26,3 s |
+| pytanie z obrazem faktury | 12,4 s | 82,0 s (odczyt obrazu 42 s) |
+| pytanie poza zakresem (bez LLM) | poniżej 0,1 s | 0,4 s |
+| start projektu (`start.bat`) | 79 s | 82 s |
+
+Odpowiedzi w obu trybach są poprawne i mają tę samą treść merytoryczną.
+
+Pamięć RAM w trybie CPU: kontener `llm` zajmuje na stałe około 8,4 GB (llama.cpp przekształca wagi do układu
+szybszego dla procesora), a przy ładowaniu chwilowo do 12,7 GB razem z pamięcią podręczną pliku modelu;
+`embeddings` 0,4 GB, `app` 0,7 do 1,3 GB. Docker Desktop dostaje domyślnie połowę pamięci komputera, więc na
+komputerze z 16 GB RAM ma tylko 8 GB i to za mało. Wtedy w pliku `%USERPROFILE%\.wslconfig` trzeba ustawić
+
+```ini
+[wsl2]
+memory=12GB
+```
+
+i wykonać `wsl --shutdown`. `start.bat` w trybie CPU sprawdza tę pamięć i ostrzega, gdy jest jej mniej niż 11,5 GB.
 
 ## 7. API i test połączenia
 
@@ -249,7 +290,8 @@ Fine-tuning HerBERT w kontenerze na CPU trwa około 4,5 minuty (8 epok, 794 przy
 
 | Objaw | Przyczyna i rozwiązanie |
 |---|---|
-| `start.bat` kończy się komunikatem, że kontenery nie widzą karty NVIDIA | Docker Desktop nie korzysta z WSL2 albo sterownik NVIDIA jest za stary. Włącz *Use the WSL 2 based engine*, zaktualizuj sterownik, sprawdź `docker run --rm --gpus all --entrypoint nvidia-smi ghcr.io/ggml-org/llama.cpp:server-cuda-b12808` |
+| `start.bat` pisze, że kontenery nie widzą karty NVIDIA, i uruchamia tryb CPU, choć karta jest | Docker Desktop nie korzysta z WSL2 albo sterownik NVIDIA jest za stary. Włącz *Use the WSL 2 based engine*, zaktualizuj sterownik, sprawdź `docker run --rm --gpus all --entrypoint nvidia-smi ghcr.io/ggml-org/llama.cpp:server-cuda-b12808` |
+| w trybie CPU kontener `llm` się restartuje albo odpowiedzi trwają kilka minut | za mało pamięci dla Dockera; zwiększ ją w `.wslconfig` (punkt 6, tryb CPU) |
 | kontener `llm` w stanie `exited`, w logach `failed to load model` | brak lub niepełny plik GGUF. `python scripts/download_models.py --check`, a potem ponowne pobranie: `docker compose --profile setup run --rm models` |
 | w logach `cudaMalloc failed: out of memory` | za mało VRAM, bo inne programy zajmują kartę. Zamknij je albo zmniejsz `--ctx-size` w `docker-compose.yml` (np. 16384) |
 | `Error code: 503 - Loading model` | serwer jeszcze ładuje model; `docker compose ps` pokaże `healthy`, gdy będzie gotowy |
