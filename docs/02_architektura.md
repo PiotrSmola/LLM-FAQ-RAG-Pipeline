@@ -39,7 +39,8 @@ export.trace_to_text / save_svg   ·   UI: etapy, źródła, wykres
 ```
 
 Aplikacja startuje dopiero, gdy oba serwery odpowiadają na `/health` (`depends_on: service_healthy`).
-Adresy serwerów aplikacja bierze z `LLM_BASE_URL` i `EMBEDDING_BASE_URL`; poza Dockerem są to porty 8080 i 8081
+Na komputerze bez karty NVIDIA nakładka `docker-compose.cpu.yml` zamienia obraz serwerów na wersję bez CUDA
+i usuwa rezerwację GPU; układ kontenerów zostaje ten sam. Adresy serwerów aplikacja bierze z `LLM_BASE_URL` i `EMBEDDING_BASE_URL`; poza Dockerem są to porty 8080 i 8081
 na komputerze (albo `http://localhost:1234/v1` dla LM Studio). Konfiguracja i parametry:
 [01_konfiguracja_docker_llama_cpp.md](01_konfiguracja_docker_llama_cpp.md).
 
@@ -66,6 +67,7 @@ na komputerze (albo `http://localhost:1234/v1` dla LM Studio). Konfiguracja i pa
 | **Docker Compose** | cały projekt startuje jednym poleceniem (`start.bat`) na dowolnym komputerze z kartą NVIDIA, bez instalowania Pythona, CUDA i LM Studio; wersje bibliotek i serwera są przypięte (`docker/constraints.txt`, tag obrazu llama.cpp) |
 | **Osobne kontenery LLM i embeddingów** | llama.cpp obsługuje jeden model na proces; dwa serwery z tego samego obrazu mają własne ustawienia (kontekst 32k i obraz dla Gemmy, tryb embeddingów i ubatch 8192 dla bge-m3) |
 | **PyTorch CPU w obrazie aplikacji** | HerBERT klasyfikuje w kilkadziesiąt ms także na CPU, a GPU zostaje dla LLM; obraz jest o kilka GB mniejszy |
+| **Tryb CPU jako nakładka Compose** | projekt uruchomi się na komputerze bez karty NVIDIA bez zmian w kodzie; jeden plik nadpisuje tylko obraz, rezerwację GPU i rozmiar kontekstu, a `start.bat` wybiera tryb automatycznie |
 | **Gemma 4 12B QAT** | dobra jakość po polsku, wbudowana obsługa obrazu (mmproj), QAT = mała strata jakości przy Q4 |
 | **bge-m3** do embeddingów | jeden z najlepszych otwartych modeli wielojęzycznych; ten sam format GGUF i ten sam silnik co LLM |
 | **HerBERT** jako router | polski BERT, wymaganie tematu (fine-tuning BERT); 10 ms/zapytanie, działa bez serwera LLM |

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Uruchamia cały projekt w Dockerze (Linux z kartą NVIDIA i NVIDIA Container Toolkit). Odpowiednik start.bat.
-#   ./start.sh [start|stop|status|logs|train|test]
+# Uruchamia cały projekt w Dockerze (Linux). Odpowiednik start.bat.
+# Z kartą NVIDIA potrzebny jest NVIDIA Container Toolkit, bez niej modele działają na CPU (wolniej).
+#   ./start.sh [start|cpu|stop|status|logs|train|test]
 set -u
 cd "$(dirname "$0")"
 
@@ -29,13 +30,30 @@ ensure_docker() {
   docker info >/dev/null 2>&1 || fail "Silnik Dockera nie działa (sudo systemctl start docker)."
 }
 
-ensure_gpu() {
+gpu_ok() {
+  command -v nvidia-smi >/dev/null || { say "Nie znaleziono karty NVIDIA (brak nvidia-smi)."; return 1; }
   say "Sprawdzam dostęp do GPU w kontenerach..."
   docker image inspect "$LLAMA_IMAGE" >/dev/null 2>&1 || docker pull "$LLAMA_IMAGE" || fail "Nie udało się pobrać $LLAMA_IMAGE."
   local gpu
-  gpu=$(docker run --rm --gpus all --entrypoint nvidia-smi "$LLAMA_IMAGE" -L 2>&1) \
-    || fail "Kontenery nie widzą karty NVIDIA (potrzebny sterownik i NVIDIA Container Toolkit). $gpu"
+  if ! gpu=$(docker run --rm --gpus all --entrypoint nvidia-smi "$LLAMA_IMAGE" -L 2>&1); then
+    say "Kontenery nie widzą karty NVIDIA (potrzebny NVIDIA Container Toolkit). $gpu"
+    return 1
+  fi
   say "GPU: $(echo "$gpu" | head -1)"
+}
+
+use_cpu() {
+  export COMPOSE_FILE="docker-compose.yml:docker-compose.cpu.yml"
+  say "Tryb CPU: modele działają w pamięci RAM. Odpowiedź trwa około 30 s, pytanie z obrazem około 1,5 min."
+  local mem; mem=$(docker info --format '{{.MemTotal}}')
+  if [ "$mem" -lt 12348030976 ]; then
+    say "UWAGA: Docker ma do dyspozycji $((mem / 1073741824)) GB RAM, a tryb CPU potrzebuje około 12 GB."
+  fi
+}
+
+select_mode() {
+  export COMPOSE_FILE="docker-compose.yml"
+  if [ "$1" = cpu ] || ! gpu_ok; then use_cpu; fi
 }
 
 ensure_models() {
@@ -62,7 +80,7 @@ health() {
 }
 
 wait_ready() {
-  say "Czekam, aż modele załadują się na GPU i aplikacja wystartuje (pierwszy start: 1-3 min)..."
+  say "Czekam, aż modele się załadują i aplikacja wystartuje (pierwszy start: 1-3 min)..."
   local last="" states end=$((SECONDS + 900))
   while [ $SECONDS -lt $end ]; do
     states="llm: $(health llm) | embeddings: $(health embeddings) | app: $(health app)"
@@ -77,7 +95,7 @@ wait_ready() {
 start_project() {
   ensure_docker
   [ -f .env ] || { cp .env.example .env; say "Utworzono .env z .env.example"; }
-  ensure_gpu
+  select_mode "${1:-}"
   ensure_models
   if [ ! -f models/herbert-faq/config.json ]; then
     say "Brak wytrenowanego HerBERT (models/herbert-faq): aplikacja użyje klasyfikatora TF-IDF."
@@ -95,6 +113,7 @@ start_project() {
 
 case "${1:-start}" in
   start)  start_project ;;
+  cpu)    start_project cpu ;;
   stop)   ensure_docker; docker compose down; say "Zatrzymano. Modele, indeks i wyniki zostają na dysku." ;;
   status) ensure_docker; docker compose ps ;;
   logs)   ensure_docker; docker compose logs -f --tail 50 ;;
@@ -105,5 +124,5 @@ case "${1:-start}" in
     [[ "$(health app)" == running* ]] && { docker compose restart app; say "Aplikacja uruchomiona ponownie z HerBERT."; }
     ;;
   test)   ensure_docker; docker compose run --rm --build --no-deps app python -m pytest -q ;;
-  *) echo "Użycie: ./start.sh [start|stop|status|logs|train|test]"; exit 1 ;;
+  *) echo "Użycie: ./start.sh [start|cpu|stop|status|logs|train|test]"; exit 1 ;;
 esac

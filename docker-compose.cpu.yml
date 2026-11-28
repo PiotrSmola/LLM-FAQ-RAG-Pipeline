@@ -1,0 +1,57 @@
+# Tryb CPU (komputer bez karty NVIDIA): nakładka na docker-compose.yml.
+#   docker compose -f docker-compose.yml -f docker-compose.cpu.yml up -d --build
+# start.bat / start.sh wybierają ten tryb same, gdy kontenery nie widzą GPU (albo: start.bat cpu).
+# Modele działają w RAM, odpowiedzi są kilkanaście razy wolniejsze niż na GPU (docs/01_konfiguracja_docker_llama_cpp.md).
+
+services:
+  llm:
+    image: ghcr.io/ggml-org/llama.cpp:server-b12808
+    deploy: !reset {}
+    command:
+      - --model
+      - /models/lmstudio-community/gemma-4-12B-it-QAT-GGUF/gemma-4-12B-it-QAT-Q4_0.gguf
+      - --mmproj
+      - /models/lmstudio-community/gemma-4-12B-it-QAT-GGUF/mmproj-gemma-4-12B-it-QAT-BF16.gguf
+      - --alias
+      - google/gemma-4-12b-qat
+      - --n-gpu-layers
+      - "0"
+      - --ctx-size
+      - "16384"         # mniejszy KV cache w RAM
+      - --parallel
+      - "1"
+      - --batch-size
+      - "2048"
+      - --ubatch-size
+      - "2048"
+      - --jinja
+      - --cache-ram
+      - "1024"
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+
+  embeddings:
+    image: ghcr.io/ggml-org/llama.cpp:server-b12808
+    deploy: !reset {}
+    command:
+      - --model
+      - /models/gpustack/bge-m3-GGUF/bge-m3-Q8_0.gguf
+      - --alias
+      - text-embedding-bge-m3
+      - --embeddings
+      - --n-gpu-layers
+      - "0"
+      - --ctx-size
+      - "8192"
+      - --batch-size
+      - "8192"
+      - --ubatch-size
+      - "8192"
+      - --parallel
+      - "1"
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
